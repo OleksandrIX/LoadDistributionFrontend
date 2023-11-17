@@ -1,0 +1,61 @@
+@import "app/styles/mixin";
+
+.page__header {
+    padding: 10px 60px;
+    background-color: var(--primary-color);
+    color: var(--light-gray-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        text-decoration: none;
+
+        &__img {
+            height: auto;
+            width: 40px;
+        }
+
+        &__text {
+            font-weight: bold;
+            font-size: 2rem;
+            color: var(--light-gray-color);
+        }
+    }
+
+    .header__navigation {
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+
+            &__element {
+                cursor: pointer;
+            }
+
+            &__link {
+                padding: 5px 10px;
+                text-decoration: none;
+                color: var(--light-gray-color);
+
+                &.active {
+                    transition: all .25s ease-in-out;
+                    border-radius: 5px;
+                    color: var(--primary-color);
+                    background-color: var(--light-gray-color);
+                }
+            }
+        }
+    }
+}
+
+@include md-screen {
+    .page__header {
+        position: relative;
+        padding: 15px;
+    }
+}

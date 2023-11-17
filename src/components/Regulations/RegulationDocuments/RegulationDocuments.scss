@@ -1,0 +1,40 @@
+@import "app/styles/mixin";
+
+.regulation-documents{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__title{
+        font-weight: bold;
+    }
+
+    .regulation-document{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        &__img{
+            width: 160px;
+            height: 40px;
+        }
+
+        &__link{
+            color: #4c7cce;
+            font-size: 1.2rem;
+            text-decoration: none;
+            text-align: justify;
+            transition: color .5s ease;
+
+            &:hover{
+                color: #03035d;
+            }
+        }
+    }
+}
+
+@include md-screen{
+    .regulation-document{
+        flex-direction: column;
+    }
+}

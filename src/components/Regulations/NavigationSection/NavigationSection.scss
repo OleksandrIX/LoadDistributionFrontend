@@ -1,0 +1,40 @@
+@import "app/styles/mixin";
+
+.navigation {
+    width: 90%;
+    height: fit-content;
+    position: sticky;
+    top: 30px;
+    left: 10px;
+    margin-top: 30px;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px 20px;
+
+    &__title {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__element {
+        font-size: 1.3rem;
+    }
+
+    &__link {
+        text-decoration: none;
+    }
+}
+
+@include md-screen {
+    .navigation {
+        position: static;
+        background-color: var(--white-color);
+    }
+}

@@ -1,0 +1,17 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .marquee{
+        height: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        overflow: hidden;
+    }
+
+    .page__body{
+        flex: 1;
+        min-height: 90vh;
+    }
+}

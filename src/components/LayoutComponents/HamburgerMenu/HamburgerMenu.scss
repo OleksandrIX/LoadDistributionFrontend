@@ -1,0 +1,91 @@
+.header__navigation-menu{
+    position: relative;
+
+    .header__nav-list-wrapper{
+        z-index: 1;
+        position: fixed;
+        left: 100%;
+        top: 0;
+        transition: all .6s ease;
+    }
+
+    .nav-list{
+        z-index: 2;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.9);
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px 10px 0 10px;
+        border-radius: 0 0 16px 16px;
+        transition: all .4s ease;
+
+        &__element{
+            font-size: 2rem;
+        }
+
+        &__link{
+            display: inline-block;
+            width: 100%;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: var(--light-gray-color);
+
+            &.active {
+                font-weight: bold;
+                width: 80%;
+                transition: all .25s ease-in-out;
+                border-radius: 5px;
+                color: var(--primary-color);
+                background-color: var(--light-gray-color);
+            }
+        }
+    }
+
+    .header__hamburger-menu-btn {
+        .line{
+            z-index: 2;
+            display: block;
+            background-color: #fff;
+            position: absolute;
+            right: 10px;
+            height: 4px;
+            width: 30px;
+            transition: transform .2s ease;
+            border-radius: 2px;
+        }
+
+        .line:first-child {
+            content: "";
+            margin-top: -8px;
+        }
+
+        .line:last-child {
+            content: "";
+            margin-top: 8px;
+        }
+
+        &.open{
+            .line:first-child {
+                margin-top: 0;
+                transform: rotate(-45deg);
+            }
+
+            .line:nth-child(2) {
+                opacity: 0;
+            }
+
+            .line:last-child {
+                margin-top: 0;
+                transform: rotate(45deg);
+            }
+        }
+
+        &.open + .header__nav-list-wrapper{
+            left: 0;
+            display: block;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+@import "app/styles/mixin";
+
+.regulations {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    gap: 30px;
+
+    .sections {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        margin: 30px 30px 30px 0;
+    }
+}
+
+@include md-screen {
+    .regulations {
+        grid-template-columns: 1fr;
+        place-items: center;
+        gap: 10px;
+
+        .sections {
+            margin: 0;
+        }
+    }
+}
