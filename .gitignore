@@ -1,7 +1,10 @@
-.idea
-.vscode
+.idea/
+.vscode/
 
-/node_modules
+ssl/
+
+node_modules/
 
 .env
 .env.*
+
