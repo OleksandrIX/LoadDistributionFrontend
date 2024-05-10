@@ -1,0 +1,53 @@
+.home-page {
+    .intro {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-bottom: 100px;
+
+        &__block {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 50px;
+
+            &_left {
+                text-align: right;
+                color: #104d56;
+            }
+
+            &_right {
+                text-align: left;
+                color: rgba(14, 56, 105, 0.98);
+            }
+        }
+
+        &__department-img {
+            height: 164px;
+            width: 164px;
+        }
+
+        &__image {
+            height: 300px;
+            width: 500px;
+        }
+
+        &__text {
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+    }
+}
+
+//@include md-screen {
+//    .intro {
+//        &__block {
+//            flex-direction: column;
+//        }
+//
+//        &__image {
+//            height: 300px;
+//            width: 400px;
+//        }
+//    }
+//}
