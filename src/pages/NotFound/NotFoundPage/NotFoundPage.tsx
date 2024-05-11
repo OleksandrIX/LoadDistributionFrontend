@@ -1,13 +1,13 @@
-import { FC } from "react";
+import {FC} from "react";
+import {Link} from "react-router-dom";
+import {Footer, Header} from "components/LayoutComponents";
 import "./NotFoundPage.scss";
-import { Link } from "react-router-dom";
-import { Footer, Header } from "../../../components/LayoutComponents";
 
 const NotFoundPage: FC = () => {
 
     return (
         <div className="page-container">
-            <Header />
+            <Header/>
 
             <div className="page-container__not-found">
                 <h1 className="not-found__title">Oops!</h1>
@@ -15,9 +15,9 @@ const NotFoundPage: FC = () => {
                 <Link to="/">Home page</Link>
             </div>
 
-            <Footer />
+            <Footer/>
         </div>
     );
 };
 
-export { NotFoundPage };
+export {NotFoundPage};

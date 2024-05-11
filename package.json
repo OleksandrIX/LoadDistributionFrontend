@@ -5,7 +5,7 @@
     "author": "Oleksandr Zagorenko",
     "license": "ISC",
     "scripts": {
-        "start": "craco start",
+        "start": "HTTPS=true craco start",
         "build": "craco build",
         "test": "craco test"
     },

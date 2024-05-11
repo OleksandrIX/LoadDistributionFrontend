@@ -1,7 +1,7 @@
 export interface Department {
-    id: number;
-    name: string;
-    description: string;
-    specialty: string;
-    specialization: string;
+    id: string;
+    department_name: string;
+    department_code: string;
+    created_at: string;
+    updated_at: string;
 }
