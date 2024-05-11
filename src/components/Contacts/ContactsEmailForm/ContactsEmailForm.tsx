@@ -1,11 +1,8 @@
-import {Button, Col, Form, Row} from "react-bootstrap";
 import {ReactSVG} from "react-svg";
-
 import {ChangeEvent, FC, FormEvent, useState} from "react";
+import {Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Textarea, VStack} from "@chakra-ui/react";
 import {sendIcon} from "assets/media/svg-icon";
-import mapImage from "assets/media/images/contacts-image.png";
-
-import "bootstrap/dist/css/bootstrap.min.css";
+import {ContactImage} from "assets/media/images";
 import "./ContactsEmailForm.scss";
 
 
@@ -30,87 +27,91 @@ const ContactsEmailForm: FC = () => {
     const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) =>
         setEmail(event.target.value);
 
-    const handleChangeMessage = (event: ChangeEvent<HTMLInputElement>) =>
+    const handleChangeMessage = (event: ChangeEvent<HTMLTextAreaElement>) =>
         setMessage(event.target.value);
 
     return (
         <div className="contacts__email-wrapper">
-            <img className="map-image" src={mapImage} alt="img"/>
+            <img className="map-image" src={ContactImage} alt="img"/>
 
-            <Form
-                noValidate validated={validated}
-                className="email-form" onSubmit={handleSubmitForm}
-            >
-                <h3 className="email-form__title">Надіслати повідомлення</h3>
+            <form noValidate onSubmit={handleSubmitForm} className="email-form">
+                <VStack spacing="4" align="start">
+                    <h3 className="email-form__title">Надіслати повідомлення</h3>
 
-                <Row className="mb-3">
-                    <Form.Group controlId="firstName" as={Col}>
-                        <Form.Label className="mb-2">Ім&apos;я</Form.Label>
-                        <Form.Control
-                            required minLength={2} maxLength={30}
-                            value={firstName} onChange={handleChangeFirstName}
-                            type="text" placeholder="Введіть ім'я..."
+                    <HStack spacing="4">
+                        <FormControl id="firstName" isRequired isInvalid={validated && !firstName}>
+                            <FormLabel>Ім&apos;я</FormLabel>
+                            <Input
+                                type="text"
+                                placeholder="Введіть ім'я..."
+                                value={firstName}
+                                onChange={handleChangeFirstName}
+                                minLength={2} maxLength={30}
+                            />
+                            <FormErrorMessage>
+                                Будь ласка, введіть ім&apos;я.
+                                <br/>
+                                (від 2 до 30 літер)
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="lastName" isRequired isInvalid={validated && !lastName}>
+                            <FormLabel>Прізвище</FormLabel>
+                            <Input
+                                type="text"
+                                placeholder="Введіть прізвище..."
+                                value={lastName}
+                                onChange={handleChangeLastName}
+                                minLength={2} maxLength={30}
+                            />
+                            <FormErrorMessage>
+                                Будь ласка, введіть прізвище.
+                                <br/>
+                                (від 2 до 30 літер)
+                            </FormErrorMessage>
+                        </FormControl>
+                    </HStack>
+
+                    <FormControl id="email" isRequired isInvalid={validated && !email}>
+                        <FormLabel>Пошта</FormLabel>
+                        <Input
+                            type="email"
+                            placeholder="name@example.com"
+                            value={email}
+                            onChange={handleChangeEmail}
                         />
-                        <Form.Control.Feedback type="invalid">
-                            Будь ласка, введіть ім&apos;я.
-                            <br/>
-                            (від 2 до 30 літер)
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                        <FormErrorMessage>
+                            Будь ласка, введіть правильну адресу електронної пошти.
+                        </FormErrorMessage>
+                    </FormControl>
 
-                    <Form.Group controlId="lastName" as={Col}>
-                        <Form.Label className="mb-2">Прізвище</Form.Label>
-                        <Form.Control
-                            required minLength={2} maxLength={30}
-                            value={lastName} onChange={handleChangeLastName}
-                            type="text" placeholder="Введіть прізвище..."
+                    <FormControl id="message" isRequired isInvalid={validated && !message}>
+                        <FormLabel>Повідомлення</FormLabel>
+                        <Textarea
+                            className="email-form__textarea"
+                            placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+                            value={message}
+                            onChange={handleChangeMessage}
+                            minLength={10} maxLength={1024}
                         />
-                        <Form.Control.Feedback type="invalid">
-                            Будь ласка, введіть прізвище.
+                        <FormErrorMessage>
+                            Будь ласка, введіть повідомлення.
                             <br/>
-                            (від 2 до 30 літер)
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
+                            (від 10 до 1024 знаків)
+                        </FormErrorMessage>
+                    </FormControl>
 
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label className="mb-2">Пошта</Form.Label>
-                    <Form.Control
-                        required
-                        value={email} onChange={handleChangeEmail}
-                        type="email" placeholder="name@example.com"
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        Будь ласка, введіть правильну адресу електронної пошти.
-                    </Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group controlId="message">
-                    <Form.Label className="mb-2">Повідомлення</Form.Label>
-                    <Form.Control
-                        required minLength={10} maxLength={1024}
-                        value={message} onChange={handleChangeMessage}
-                        rows={3} as="textarea" className="email-form__textarea"
-                        placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        Будь ласка, введіть повідомлення.
-                        <br/>
-                        (від 10 до 1024 знаків)
-                    </Form.Control.Feedback>
-                </Form.Group>
-
-                <div className="email-form__btn-wrapper">
-                    <Button
-                        className="email-form__btn-submit"
-                        type="submit"
-                    >
-                        <ReactSVG src={sendIcon}/> Відправити
-                    </Button>
-                </div>
-            </Form>
+                    <div className="email-form__btn-wrapper">
+                        <Button type="submit" colorScheme="blue" variant="solid">
+                            <ReactSVG src={sendIcon}/> Відправити
+                        </Button>
+                    </div>
+                </VStack>
+            </form>
         </div>
     );
 };
 
-export {ContactsEmailForm};
+export {
+    ContactsEmailForm
+};

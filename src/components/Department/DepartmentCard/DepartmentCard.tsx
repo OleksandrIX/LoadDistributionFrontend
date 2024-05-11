@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {Department} from "entities/Department";
-import {Card} from "react-bootstrap";
+import {Card, CardBody, Text} from "@chakra-ui/react";
 import "./DepartmentCard.scss";
 
 interface DepartmentCardProps {
@@ -10,14 +10,14 @@ interface DepartmentCardProps {
 const DepartmentCard: FC<DepartmentCardProps> = ({department}) => {
     return (
         <Card className="department">
-            <Card.Body>
-                <Card.Title className="department__name">
+            <CardBody>
+                <Text className="department__name">
                     {department.department_code} {department.department_name}
-                </Card.Title>
-                <Card.Subtitle>
+                </Text>
+                <Text>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, veritatis.
-                </Card.Subtitle>
-            </Card.Body>
+                </Text>
+            </CardBody>
         </Card>
     );
 };
