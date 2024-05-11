@@ -1,15 +1,16 @@
 import {FC} from "react";
 import {NavigationList} from "../NavigationList/NavigationList";
 import {Logo} from "../Logo/Logo";
-import logo from "assets/media/logo.png";
+import {Logo as LogoImage} from "assets/media/images";
 import "./Footer.scss";
+
 
 const Footer: FC = () => {
     return (
         <footer className="page__footer">
             <div className="footer__container-info">
                 <div className="footer__brand">
-                    <Logo className="footer__brand-img" imgSrc={logo} altText="Logo">
+                    <Logo className="footer__brand-img" imgSrc={LogoImage} altText="Logo">
                         <p className="logo__text">
                             Розподіл
                             <br/>
