@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ReactSVG } from "react-svg";
-import { emailIcon, telegramIcon, telephoneIcon } from "assets/media/icon";
+import { emailIcon, telegramIcon, telephoneIcon } from "assets/media/svg-icon";
 import "./ContactsSocialMedia.scss";
 
 const ContactsSocialMedia: FC = () => {

@@ -1,58 +1,24 @@
-import { ChangeEvent, FC, FormEvent, useState } from "react";
-import { Form, Button, Col, Row } from "react-bootstrap";
-import { ReactSVG } from "react-svg";
-import { sendIcon } from "assets/media/icon";
-import mapImage from "assets/media/contacts-image.png";
+import {Button, Col, Form, Row} from "react-bootstrap";
+import {ReactSVG} from "react-svg";
+
+import {ChangeEvent, FC, FormEvent, useState} from "react";
+import {sendIcon} from "assets/media/svg-icon";
+import mapImage from "assets/media/images/contacts-image.png";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./ContactsEmailForm.scss";
 
-import { toast } from "react-toastify";
-import { successOptions } from "utils/toast.options";
-
-import { emailSendOptions } from "./EmailSend.options";
-import emailjs from "@emailjs/browser";
 
 const ContactsEmailForm: FC = () => {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [message, setMessage] = useState<string>("");
-    const [validated, setValidated] = useState<boolean>(false);
+    const [validated, setValidate] = useState<boolean>(false);
 
     const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const form = event.currentTarget;
-        if (form.checkValidity()) {
-            const emailData = {
-                "to_name": `${firstName} ${lastName.toUpperCase()}`,
-                "to_email": email,
-                "message": message
-            };
-
-            const sendEmailPromise = new Promise((resolve, reject) => {
-                emailjs.send(
-                        emailSendOptions.SERVICE_ID,
-                        emailSendOptions.TEMPLATE_ID,
-                        emailData,
-                        emailSendOptions.PUBLIC_KEY
-                )
-                    .then(res=>resolve(res))
-                    .catch(err=>reject(err));
-            });
-
-            toast.promise(
-                sendEmailPromise,
-                {
-                    pending: "Відправка повідомлення",
-                    success: "Повідомлення успішно надіслано",
-                    error: "Помилка відправлення"
-                },
-                successOptions
-            );
-        }
-
-        setValidated(true);
+        setValidate(true);
     };
 
     const handleChangeFirstName = (event: ChangeEvent<HTMLInputElement>) =>
@@ -69,7 +35,7 @@ const ContactsEmailForm: FC = () => {
 
     return (
         <div className="contacts__email-wrapper">
-            <img className="map-image" src={mapImage} alt="img" />
+            <img className="map-image" src={mapImage} alt="img"/>
 
             <Form
                 noValidate validated={validated}
@@ -87,7 +53,7 @@ const ContactsEmailForm: FC = () => {
                         />
                         <Form.Control.Feedback type="invalid">
                             Будь ласка, введіть ім&apos;я.
-                            <br />
+                            <br/>
                             (від 2 до 30 літер)
                         </Form.Control.Feedback>
                     </Form.Group>
@@ -101,7 +67,7 @@ const ContactsEmailForm: FC = () => {
                         />
                         <Form.Control.Feedback type="invalid">
                             Будь ласка, введіть прізвище.
-                            <br />
+                            <br/>
                             (від 2 до 30 літер)
                         </Form.Control.Feedback>
                     </Form.Group>
@@ -129,7 +95,7 @@ const ContactsEmailForm: FC = () => {
                     />
                     <Form.Control.Feedback type="invalid">
                         Будь ласка, введіть повідомлення.
-                        <br />
+                        <br/>
                         (від 10 до 1024 знаків)
                     </Form.Control.Feedback>
                 </Form.Group>
@@ -139,7 +105,7 @@ const ContactsEmailForm: FC = () => {
                         className="email-form__btn-submit"
                         type="submit"
                     >
-                        <ReactSVG src={sendIcon} /> Відправити
+                        <ReactSVG src={sendIcon}/> Відправити
                     </Button>
                 </div>
             </Form>
@@ -147,4 +113,4 @@ const ContactsEmailForm: FC = () => {
     );
 };
 
-export { ContactsEmailForm };
+export {ContactsEmailForm};
