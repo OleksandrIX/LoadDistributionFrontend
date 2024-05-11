@@ -1,6 +1,5 @@
 import {FC} from "react";
-import Image from "../../assets/media/about-image.png";
-import DepartmentImage from "../../assets/media/Department22.png";
+import {DepartmentLogo} from "assets/media/images";
 import "./HomePage.scss";
 
 
@@ -8,22 +7,11 @@ export const HomePage: FC = () => {
     return (
         <div className="home-page">
             <section className="intro">
-                <div className="intro__block intro__block_left">
-                    <p className="intro__text">
-                        Цей сайт призначений для автоматизації начального відділу у вищих військових навчальних
-                        закладах,
-                        спрощення ведення обліку дисциплін та кафедр, а також надання можливості кафедрам проводити
-                        викладання цих дисциплін.
-                    </p>
-                    <img className="intro__image" src={Image} alt="Department 22"/>
-                </div>
-
                 <div className="intro__block intro__block_right">
-                    <img className="intro__department-img" src={DepartmentImage} alt="Department 22"/>
+                    <img className="intro__image" src={DepartmentLogo} alt="Department 22"/>
                     <p className="intro__text">
-                        У майбутньому планується введення обліку викладання пар викладачами та розрахунок їх
-                        навчального
-                        навантаження.
+                        Ця інформаційна система призначений для автоматизації розподілу навчального навантаження
+                        науково-педагогічних працівників закладів вищої освіти.
                     </p>
                 </div>
             </section>

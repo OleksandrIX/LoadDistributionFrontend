@@ -1,7 +1,14 @@
+@import "app/styles/mixin";
+
 .home-page {
+    height: 100vh;
+
     .intro {
+        height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         gap: 80px;
         margin-bottom: 100px;
 
@@ -22,11 +29,6 @@
             }
         }
 
-        &__department-img {
-            height: 164px;
-            width: 164px;
-        }
-
         &__image {
             height: 300px;
             width: 500px;
@@ -39,15 +41,15 @@
     }
 }
 
-//@include md-screen {
-//    .intro {
-//        &__block {
-//            flex-direction: column;
-//        }
-//
-//        &__image {
-//            height: 300px;
-//            width: 400px;
-//        }
-//    }
-//}
+@include md-screen {
+    .intro {
+        &__block {
+            flex-direction: column;
+        }
+
+        &__image {
+            height: 300px;
+            width: 400px;
+        }
+    }
+}
