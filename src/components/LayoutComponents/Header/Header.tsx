@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from "react";
-import { NavigationList } from "../NavigationList/NavigationList";
-import { Logo } from "../Logo/Logo";
-import { HamburgerMenu } from "../HamburgerMenu/HamburgerMenu";
-import logo from "assets/media/logo.png";
+import {FC, useEffect, useState} from "react";
+import {NavigationList} from "../NavigationList/NavigationList";
+import {Logo} from "../Logo/Logo";
+import {HamburgerMenu} from "../HamburgerMenu/HamburgerMenu";
+import {Logo as LogoImage} from "assets/media/images";
 import "./Header.scss";
 
 const Header: FC = () => {
@@ -18,8 +18,14 @@ const Header: FC = () => {
 
     return (
         <header className="page__header">
-            <Logo className="logo__img" imgSrc={logo} altText="Logo">
-                <h2 className="logo__text">Н-department</h2>
+            <Logo className="logo__img" imgSrc={LogoImage} altText="Logo">
+                <p className="logo__text">
+                    Розподіл
+                    <br/>
+                    навчального
+                    <br/>
+                    навантаження
+                </p>
             </Logo>
 
             {!isMobile ? (
@@ -31,10 +37,10 @@ const Header: FC = () => {
                     />
                 </nav>
             ) : (
-                <HamburgerMenu />
+                <HamburgerMenu/>
             )}
         </header>
     );
 };
 
-export { Header };
+export {Header};

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { NavLink } from "react-router-dom";
+import {FC} from "react";
+import {NavLink} from "react-router-dom";
 import {navigationList} from "./NavigationList.data";
 
 interface NavigationListProps {
@@ -8,16 +8,12 @@ interface NavigationListProps {
     linkClassName: string;
 }
 
-const NavigationList: FC<NavigationListProps> = ({
-                                                     listClassName,
-                                                     listItemClassName,
-                                                     linkClassName
-                                                 }) => {
+const NavigationList: FC<NavigationListProps> = (props) => {
     return (
-        <ul className={listClassName}>
+        <ul className={props.listClassName}>
             {navigationList.map((navigationItem, index) => (
-                <li className={listItemClassName} key={index}>
-                    <NavLink className={linkClassName} to={navigationItem.to}>
+                <li className={props.listItemClassName} key={index}>
+                    <NavLink className={props.linkClassName} to={navigationItem.to}>
                         {navigationItem.content}
                     </NavLink>
                 </li>
@@ -26,4 +22,4 @@ const NavigationList: FC<NavigationListProps> = ({
     );
 };
 
-export { NavigationList };
+export {NavigationList};
