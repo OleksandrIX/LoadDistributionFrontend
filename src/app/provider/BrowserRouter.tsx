@@ -1,7 +1,7 @@
 import {
+    Route,
     createBrowserRouter,
-    createRoutesFromElements,
-    Route
+    createRoutesFromElements
 } from "react-router-dom";
 
 import {Layout} from "pages/LayoutPage/Layout";
