@@ -1,18 +1,18 @@
-import { FC } from "react";
-import { sections, NavigationSection } from "components/Regulations";
+import {FC} from "react";
+import {NavigationSection, sections} from "components/Regulations";
 import "./RegulationsPage.scss";
 
 const RegulationsPage: FC = () => {
     return (
         <div className="regulations">
-            <NavigationSection />
+            <NavigationSection/>
             <div className="sections">
                 {sections.map((section, index) => (
-                    <section.element key={index} id={section.id} name={section.name} />
+                    <section.element key={index} id={section.id} name={section.name}/>
                 ))}
             </div>
         </div>
     );
 };
 
-export { RegulationsPage };
+export default RegulationsPage;
