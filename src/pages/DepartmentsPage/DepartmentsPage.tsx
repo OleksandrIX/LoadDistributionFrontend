@@ -1,9 +1,18 @@
 import {FC} from "react";
 import {Outlet} from "react-router-dom";
-import {getAllDepartments} from "entities/Department";
+
+import {useAuth} from "app/provider/AuthProvider";
+import departmentService from "services/department.service";
+
 import "./DepartmentsPage.scss";
 
 const DepartmentsPage: FC = () => {
+    const {user} = useAuth();
+
+    if (!user) {
+        return <div>Forbidden</div>;
+    }
+
     return (
         <div className="departments-page">
             <h1 className="departments-page__title">Кафедри</h1>
@@ -12,8 +21,8 @@ const DepartmentsPage: FC = () => {
     );
 };
 
-const departmentsLoader = async () => {
-    return getAllDepartments();
+export const departmentsLoader = async () => {
+    return departmentService.getAllDepartments();
 };
 
-export {DepartmentsPage, departmentsLoader};
+export default DepartmentsPage;

@@ -1,8 +1,10 @@
 import React, {FC} from "react";
 import {useLoaderData} from "react-router-dom";
-import {Pagination} from "entities/Pagination";
-import {Department} from "entities/Department";
+
+import {Department} from "types/department.type";
+import {Pagination} from "types/pagination.type";
 import {DepartmentCard} from "../DepartmentCard/DepartmentCard";
+
 import "./DepartmentList.scss";
 
 
