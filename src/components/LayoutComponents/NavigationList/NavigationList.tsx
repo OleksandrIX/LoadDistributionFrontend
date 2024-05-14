@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, ReactNode} from "react";
 import {NavLink} from "react-router-dom";
 import {navigationList} from "./NavigationList.data";
 
@@ -6,6 +6,7 @@ interface NavigationListProps {
     listClassName: string;
     listItemClassName: string;
     linkClassName: string;
+    children?: ReactNode;
 }
 
 const NavigationList: FC<NavigationListProps> = (props) => {
@@ -18,6 +19,7 @@ const NavigationList: FC<NavigationListProps> = (props) => {
                     </NavLink>
                 </li>
             ))}
+            {props.children}
         </ul>
     );
 };

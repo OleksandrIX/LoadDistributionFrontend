@@ -4,9 +4,9 @@ type NavigationItem = {
 };
 
 const navigationList: NavigationItem[] = [
-    { to: "/regulations", content: "Положення" },
-    { to: "/departments", content: "Кафедри" },
-    { to: "/contacts", content: "Контакти" }
+    {to: "/regulations", content: "Положення"},
+    {to: "/departments", content: "Кафедри"},
+    {to: "/contacts", content: "Контакти"}
 ];
 
-export { navigationList };
+export {navigationList};
