@@ -42,6 +42,6 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "comma-dangle": ["error", "never"],
-        "no-unused-vars": "warn"
+        "no-unused-vars": "off"
     }
 };

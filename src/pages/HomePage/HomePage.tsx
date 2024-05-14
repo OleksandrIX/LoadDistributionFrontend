@@ -3,7 +3,7 @@ import {DepartmentLogo} from "assets/media/images";
 import "./HomePage.scss";
 
 
-export const HomePage: FC = () => {
+const HomePage: FC = () => {
     return (
         <div className="home-page">
             <section className="intro">
@@ -18,3 +18,5 @@ export const HomePage: FC = () => {
         </div>
     );
 };
+
+export default HomePage;

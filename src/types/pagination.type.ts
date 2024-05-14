@@ -1,4 +1,4 @@
-export interface Pagination<T> {
+interface Pagination<T> {
     items: T[];
     total: number;
     page: number;
@@ -14,3 +14,10 @@ interface PaginationLink {
     next: string;
     prev: string;
 }
+
+interface PaginationQuery {
+    page: number;
+    size: number;
+}
+
+export type {Pagination, PaginationQuery};

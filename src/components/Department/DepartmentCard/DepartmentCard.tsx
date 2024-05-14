@@ -1,6 +1,8 @@
 import React, {FC} from "react";
-import {Department} from "entities/Department";
 import {Card, CardBody, Text} from "@chakra-ui/react";
+
+import {Department} from "types/department.type";
+
 import "./DepartmentCard.scss";
 
 interface DepartmentCardProps {
