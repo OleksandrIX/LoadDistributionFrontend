@@ -42,14 +42,18 @@
 }
 
 @include md-screen {
-    .intro {
-        &__block {
-            flex-direction: column;
-        }
+    .home-page {
+        .intro {
+            margin-top: 50px;
 
-        &__image {
-            height: 300px;
-            width: 400px;
+            &__block {
+                flex-direction: column;
+            }
+
+            &__image {
+                height: 300px;
+                width: 400px;
+            }
         }
     }
 }
