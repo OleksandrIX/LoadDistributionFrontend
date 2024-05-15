@@ -2,8 +2,9 @@ import {Link, useNavigate} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, HStack, Input, useToast} from "@chakra-ui/react";
 
+import authService from "services/auth.service";
+
 import "./RegistrationForm.scss";
-import authService from "../../../services/auth.service";
 
 
 const RegistrationForm: FC = () => {
@@ -47,10 +48,11 @@ const RegistrationForm: FC = () => {
                     navigate("/login");
                 })
                 .catch((err) => {
-                    const status = err.response.status;
+                    const status = err.message === "Network Error" ? 503 : err.response.status;
                     const errorMessages: Record<number, string> = {
                         409: "Користувач з тим іменем чи поштою вже існує",
-                        422: "Дані не валідні"
+                        422: "Дані не валідні",
+                        503: "503 - Сервер недоступний"
                     };
 
                     const errorMessage = errorMessages[status] || "Невідома помилка";
