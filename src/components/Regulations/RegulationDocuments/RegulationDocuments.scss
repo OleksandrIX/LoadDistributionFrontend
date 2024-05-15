@@ -1,5 +1,3 @@
-@import "app/styles/mixin";
-
 .regulation-documents{
     display: flex;
     flex-direction: column;
@@ -30,11 +28,5 @@
                 color: #03035d;
             }
         }
-    }
-}
-
-@include md-screen{
-    .regulation-document{
-        flex-direction: column;
     }
 }
