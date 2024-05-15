@@ -1,5 +1,3 @@
-@import "app/styles/app";
-
 .contacts {
     &__social-media {
         display: flex;
@@ -61,12 +59,3 @@
         }
     }
 }
-
-@include xl-screen {
-    .contacts {
-        &__list{
-            flex-direction: column;
-        }
-    }
-}
-
