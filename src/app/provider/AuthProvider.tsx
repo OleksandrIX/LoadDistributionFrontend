@@ -69,6 +69,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
                     }
 
                     userService.setAuthorizationToken(accessToken);
+                    authService.setAuthorizationToken(accessToken);
                     const userData = await userService.getCurrentUser();
                     setUser(userData || null);
                 } catch (err) {

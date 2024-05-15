@@ -29,10 +29,11 @@ const LoginForm: FC = () => {
                 toast.closeAll();
             })
             .catch((err) => {
-                const status = err.response.status;
+                const status = err.message === "Network Error" ? 503 : err.response.status;
                 const errorMessages: Record<number, string> = {
                     400: "Не вірний пароль",
-                    404: "Користувача не знайдено"
+                    404: "Користувача не знайдено",
+                    503: "503 - Сервер недоступний"
                 };
 
                 const errorMessage = errorMessages[status] || "Невідома помилка";

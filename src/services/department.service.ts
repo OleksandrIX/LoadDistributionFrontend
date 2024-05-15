@@ -19,6 +19,10 @@ class DepartmentService {
         });
     }
 
+    setAuthorizationToken(token: string) {
+        this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     async getAllDepartments({page, size}: PaginationQuery = {page: 1, size: 10}): Promise<Pagination<Department>> {
         const response: AxiosResponse<Pagination<Department>> =
             await this.axiosInstance.get(`?page=${page}&size=${size}`);

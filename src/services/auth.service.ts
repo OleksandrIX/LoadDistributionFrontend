@@ -19,6 +19,10 @@ class AuthService {
         });
     }
 
+    setAuthorizationToken(token: string) {
+        this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     async registration(user: UserRegistration) {
         return this.axiosInstance.post("registration", user);
     }
