@@ -45,7 +45,6 @@ const TeacherRowData: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) =>
                     });
             })
             .catch((err) => {
-                console.log(err);
                 const status = err.message === "Network Error" ? 503 : err.response.status;
                 const errorMessages: Record<number, string> = {
                     404: "Такої кафедри не існує",
