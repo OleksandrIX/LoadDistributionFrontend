@@ -2,7 +2,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, HStack, Input, useToast} from "@chakra-ui/react";
 
-import authService from "services/auth.service";
+import authService from "entities/user/services/auth.service";
 
 import "./RegistrationForm.scss";
 

@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {Card, CardBody, Text} from "@chakra-ui/react";
 
-import {Department} from "types/department.type";
+import {Department} from "entities/department/types/department.type";
 
 import "./DepartmentCard.scss";
 

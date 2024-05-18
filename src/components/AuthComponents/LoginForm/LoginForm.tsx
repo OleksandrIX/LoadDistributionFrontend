@@ -2,8 +2,8 @@ import {Link} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, Input, useToast} from "@chakra-ui/react";
 
-import authService from "services/auth.service";
-import {useAuth} from "app/provider/AuthProvider";
+import {useAuth} from "app/provider";
+import authService from "entities/user/services/auth.service";
 
 import "./LoginForm.scss";
 
