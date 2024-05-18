@@ -1,4 +1,4 @@
-interface Department {
+export interface Department {
     id: string;
     department_name: string;
     department_code: string;
@@ -6,14 +6,12 @@ interface Department {
     updated_at: string;
 }
 
-interface CreateDepartment {
+export interface CreateDepartment {
     department_name: string;
     department_code: string;
 }
 
-interface UpdateDepartment {
+export interface UpdateDepartment {
     department_name: string;
     department_code: string;
 }
-
-export type {Department, CreateDepartment, UpdateDepartment};

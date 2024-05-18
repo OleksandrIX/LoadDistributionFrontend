@@ -1,5 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {Department, CreateDepartment, UpdateDepartment} from "types/department.type";
+import {CreateDepartment, Department, UpdateDepartment} from "entities/department/types/department.type";
+import {Teacher} from "entities/teacher/types/teacher.type";
 import {Pagination, PaginationQuery} from "types/pagination.type";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
@@ -34,12 +35,17 @@ class DepartmentService {
         return response.data;
     }
 
-    async createDepartment(departmentData: CreateDepartment): Promise<Department> {
-        const response: AxiosResponse<Department> = await this.axiosInstance.post("", departmentData);
+    async getTeachersByDepartmentId(id: string): Promise<Teacher[]> {
+        const response: AxiosResponse<Teacher[]> = await this.axiosInstance.get(`/${id}/teachers`);
         return response.data;
     }
 
-    async updateDepartment(id: string, departmentData: UpdateDepartment): Promise<Department> {
+    async createDepartment(departmentData: CreateDepartment): Promise<string> {
+        const response: AxiosResponse<string> = await this.axiosInstance.post("", departmentData);
+        return response.data;
+    }
+
+    async editDepartment(id: string, departmentData: UpdateDepartment): Promise<Department> {
         const response: AxiosResponse<Department> = await this.axiosInstance.put(`/${id}`, departmentData);
         return response.data;
     }
