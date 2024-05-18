@@ -39,6 +39,7 @@ module.exports = {
     rules: {
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "comma-dangle": ["error", "never"],
