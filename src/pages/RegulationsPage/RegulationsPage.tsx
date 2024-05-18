@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {NavigationSection, sections} from "components/Regulations";
+import {NavigationSection, sections} from "components/RegulationsComponents";
 import "./RegulationsPage.scss";
 
 const RegulationsPage: FC = () => {

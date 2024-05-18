@@ -1,8 +1,8 @@
 import {FC, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
-import {useAuth} from "app/provider/AuthProvider";
-import {LoginForm} from "components/Auth";
+import {useAuth} from "app/provider";
+import {LoginForm} from "components/AuthComponents";
 
 import "./LoginPage.scss";
 

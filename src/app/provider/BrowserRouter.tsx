@@ -10,7 +10,7 @@ import ContactsPage from "pages/ContactsPage/ContactsPage";
 import LoginPage from "pages/LoginPage/LoginPage";
 import RegistrationPage from "pages/RegistrationPage/RegistrationPage";
 import {ErrorBoundary, ForbiddenPage, NotFoundPage} from "pages/ErrorPage";
-import {DepartmentList} from "components/Department";
+import {DepartmentList} from "components/DepartmentComponents";
 
 
 const ProtectedRoutes: FC = () => {

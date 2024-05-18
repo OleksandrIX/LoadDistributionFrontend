@@ -1,21 +1,21 @@
 import {FC} from "react";
-import {DepartmentLogo} from "assets/media/images";
+
+import {SidebarProvider, useAuth} from "app/provider";
+import {CurrentUser, Intro} from "components/HomeComponents";
+
 import "./HomePage.scss";
 
 
 const HomePage: FC = () => {
+    const {user, isAdmin} = useAuth();
+
+
     return (
-        <div className="home-page">
-            <section className="intro">
-                <div className="intro__block intro__block_right">
-                    <img className="intro__image" src={DepartmentLogo} alt="Department 22"/>
-                    <p className="intro__text">
-                        Ця інформаційна система призначений для автоматизації розподілу навчального навантаження
-                        науково-педагогічних працівників закладів вищої освіти.
-                    </p>
-                </div>
-            </section>
-        </div>
+        <SidebarProvider>
+            <div className="home-page">
+                {user ? !isAdmin ? <CurrentUser/> : <h1>ADMIN</h1> : <Intro/>}
+            </div>
+        </SidebarProvider>
     );
 };
 

@@ -1,14 +1,20 @@
 import axios from "axios";
 import {createContext, FC, ReactNode, useCallback, useContext, useEffect, useMemo, useState} from "react";
 
-import {User} from "types/user.type";
-import authService from "services/auth.service";
-import userService from "services/user.service";
+import {User} from "entities/user/types/user.type";
+import {UserRole} from "types/enums";
+import {Department} from "entities/department/types/department.type";
+
+import authService from "entities/user/services/auth.service";
+import userService from "entities/user/services/user.service";
+import departmentService from "entities/department/services/department.service";
 
 
 interface AuthContextType {
     accessToken: string | null;
     user: User | null;
+    department: Department | null;
+    isAdmin: boolean | null;
     isLoading: boolean;
     setAccessToken: (newAccessToken: string) => void;
     logout: () => void;
@@ -17,6 +23,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
     accessToken: null,
     user: null,
+    department: null,
+    isAdmin: null,
     isLoading: true,
     setAccessToken: () => null,
     logout: () => null
@@ -26,6 +34,8 @@ const AuthContext = createContext<AuthContextType>({
 const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [accessToken, setAccessToken_] = useState<string | null>(localStorage.getItem("access_token"));
     const [user, setUser] = useState<User | null>(null);
+    const [department, setDepartment] = useState<Department | null>(null);
+    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const setAccessToken = (newAccessToken: string) => {
@@ -56,52 +66,61 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
         }
     }, []);
 
+    const fetchUser = useCallback(async () => {
+        try {
+            if (!accessToken) {
+                await logout();
+                return;
+            }
+
+            userService.setAuthorizationToken(accessToken);
+            authService.setAuthorizationToken(accessToken);
+            departmentService.setAuthorizationToken(accessToken);
+
+
+            const userData = await userService.getCurrentUser();
+            setUser(userData || null);
+            setIsAdmin(userData.role === UserRole.ADMIN);
+            if (userData && userData.department_id) {
+                const departmentData = await departmentService.getDepartmentById(userData.department_id);
+                setDepartment(departmentData || null);
+            }
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                const status = err.response.status;
+                if (status === 401) {
+                    refreshToken().then();
+                } else {
+                    setUser(null);
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    }, [accessToken, refreshToken]);
+
     useEffect(() => {
         if (accessToken) {
             axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
             localStorage.setItem("access_token", accessToken);
-
-            (async () => {
-                try {
-                    if (!accessToken) {
-                        await logout();
-                        return;
-                    }
-
-                    userService.setAuthorizationToken(accessToken);
-                    authService.setAuthorizationToken(accessToken);
-                    const userData = await userService.getCurrentUser();
-                    setUser(userData || null);
-                } catch (err) {
-                    if (err && axios.isAxiosError(err) && err.response) {
-                        const status = err.response.status;
-                        if (status === 401) {
-                            refreshToken().then();
-                        } else {
-                            setUser(null);
-                        }
-                    } else {
-                        console.error(err);
-                    }
-                } finally {
-                    setIsLoading(false);
-                }
-            })();
+            fetchUser().finally(() => setIsLoading(false));
         } else {
             delete axios.defaults.headers.common.Authorization;
             localStorage.removeItem("access_token");
             setIsLoading(false);
         }
-    }, [accessToken, refreshToken]);
+    }, [accessToken, fetchUser]);
 
     const contextValue = useMemo(
         () => ({
             accessToken,
             user,
+            department,
+            isAdmin,
             isLoading,
             setAccessToken,
             logout
-        }), [accessToken, user, isLoading]
+        }), [accessToken, user, department, isAdmin, isLoading]
     );
 
     return (
