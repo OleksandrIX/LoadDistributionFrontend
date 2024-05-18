@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {ContactsEmailForm, ContactsSocialMedia} from "components/Contacts";
+import {ContactsEmailForm, ContactsSocialMedia} from "components/ContactsComponents";
 import "./ContactsPage.scss";
 
 const ContactsPage: FC = () => {

@@ -1,8 +1,8 @@
 import {FC, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
-import {useAuth} from "app/provider/AuthProvider";
-import {RegistrationForm} from "components/Auth";
+import {useAuth} from "app/provider";
+import {RegistrationForm} from "components/AuthComponents";
 
 import "./RegistrationPage.scss";
 

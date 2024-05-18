@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {Outlet} from "react-router-dom";
 
-import departmentService from "services/department.service";
+import departmentService from "entities/department/services/department.service";
 
 import "./DepartmentsPage.scss";
 
