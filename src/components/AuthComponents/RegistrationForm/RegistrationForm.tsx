@@ -2,6 +2,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, HStack, Input, useToast} from "@chakra-ui/react";
 
+import {displayToast} from "utils/toast";
+import {handleAxiosError} from "utils/error.handlers";
 import authService from "entities/user/services/auth.service";
 
 import "./RegistrationForm.scss";
@@ -29,36 +31,30 @@ const RegistrationForm: FC = () => {
 
         const emailValidRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         if (!emailValidRegex.test(email)) {
-            errorToast.isActive(idErrorRegistrationToast)
-                ? errorToast.update(idSuccessRegistrationToast,
-                    {title: "Не вірний формат елекроной пошти", status: "error"})
-                : errorToast({title: "Не вірний формат елекроной пошти", status: "error"});
+            displayToast(errorToast, idErrorRegistrationToast, {
+                title: "Не вірний формат елекроной пошти",
+                status: "error"
+            });
         } else if (password !== confirmPassword) {
-            errorToast.isActive(idErrorRegistrationToast)
-                ? errorToast.update(idErrorRegistrationToast, {title: "Паролі не співпадають", status: "error"})
-                : errorToast({title: "Паролі не співпадають", status: "error"});
+            displayToast(errorToast, idErrorRegistrationToast, {
+                title: "Паролі не співпадають",
+                status: "error"
+            });
         } else {
             authService.registration({username: username, email: email, password: password})
                 .then(() => {
                     errorToast.closeAll();
-                    successToast({
+                    displayToast(successToast, idSuccessRegistrationToast, {
                         title: "Успішео зараєструвалися",
                         status: "success"
                     });
                     navigate("/login");
                 })
                 .catch((err) => {
-                    const status = err.message === "Network Error" ? 503 : err.response.status;
-                    const errorMessages: Record<number, string> = {
+                    handleAxiosError(err, errorToast, idErrorRegistrationToast, {
                         409: "Користувач з тим іменем чи поштою вже існує",
-                        422: "Дані не валідні",
-                        503: "503 - Сервер недоступний"
-                    };
-
-                    const errorMessage = errorMessages[status] || "Невідома помилка";
-                    errorToast.isActive(idErrorRegistrationToast)
-                        ? errorToast.update(idErrorRegistrationToast, {title: errorMessage, status: "error"})
-                        : errorToast({title: errorMessage, status: "error"});
+                        422: "Дані не валідні"
+                    });
                 });
         }
     };

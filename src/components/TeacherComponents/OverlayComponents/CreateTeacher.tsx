@@ -3,8 +3,9 @@ import {FC, FormEvent, useRef, useState} from "react";
 import {Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay} from "@chakra-ui/react";
 import {useToast} from "@chakra-ui/toast";
 
+import {displayToast} from "utils/toast";
+import {handleAxiosError} from "utils/error.handlers";
 import {MilitaryRank, Position} from "types/enums";
-
 import {RequestTeacher, TeacherService} from "entities/teacher";
 import TeacherForm from "../TeacherForm";
 
@@ -51,33 +52,19 @@ const CreateTeacher: FC<CreateTeacherProps> = ({departmentId, isOpen, onClose, o
                 const teacherId = await teacherService.createTeacher(teacherData);
                 onCreate(teacherId);
                 onClose();
-                createToast.isActive(idCreateTeacher)
-                    ? createToast.update(idCreateTeacher, {
-                        title: "Викладача успішно додано",
-                        description: `Викладач '${teacherData.first_name} ${teacherData.last_name}' успішно створено`,
-                        status: "success"
-                    })
-                    : createToast({
-                        title: "Викладача успішно додано",
-                        description: `Викладач '${teacherData.first_name} ${teacherData.last_name}' успішно створено`,
-                        status: "success"
-                    });
+                displayToast(createToast, idCreateTeacher, {
+                    title: "Викладача успішно додано",
+                    description: `Викладач '${teacherData.first_name} ${teacherData.last_name}' успішно створено`,
+                    status: "success"
+                });
             }
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
-                console.log(err);
-                const status = err.message === "Network Error" ? 503 : err.response.status;
-                const errorMessages: Record<number, string> = {
+                handleAxiosError(err, createToast, idCreateTeacher, {
                     404: "Такої кафедри не існує",
                     409: "Викладач з такими даними вже існує",
-                    422: "Не валідні дані",
-                    503: "503 - Сервер недоступний"
-                };
-
-                const errorMessage = errorMessages[status] || "Невідома помилка";
-                createToast.isActive(idCreateTeacher)
-                    ? createToast.update(idCreateTeacher, {title: errorMessage, status: "error"})
-                    : createToast({title: errorMessage, status: "error"});
+                    422: "Не валідні дані"
+                });
             } else {
                 console.error(err);
             }

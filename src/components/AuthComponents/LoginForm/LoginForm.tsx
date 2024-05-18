@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, Input, useToast} from "@chakra-ui/react";
 
+import {handleAxiosError} from "utils/error.handlers";
 import {useAuth} from "app/provider";
 import authService from "entities/user/services/auth.service";
 
@@ -9,13 +10,12 @@ import "./LoginForm.scss";
 
 
 const LoginForm: FC = () => {
+    const idLoginToast = "login-toast";
+    const loginToast = useToast({id: idLoginToast});
     const {setAccessToken} = useAuth();
 
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
-    const idLoginToast = "login-toast";
-    const toast = useToast({id: idLoginToast});
 
     const handleChangeUsername = (event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value);
     const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value);
@@ -26,20 +26,13 @@ const LoginForm: FC = () => {
             .then((res) => {
                 const accessToken = res.data["access_token"];
                 setAccessToken(accessToken);
-                toast.closeAll();
+                loginToast.closeAll();
             })
             .catch((err) => {
-                const status = err.message === "Network Error" ? 503 : err.response.status;
-                const errorMessages: Record<number, string> = {
+                handleAxiosError(err, loginToast, idLoginToast, {
                     400: "Не вірний пароль",
-                    404: "Користувача не знайдено",
-                    503: "503 - Сервер недоступний"
-                };
-
-                const errorMessage = errorMessages[status] || "Невідома помилка";
-                toast.isActive(idLoginToast)
-                    ? toast.update(idLoginToast, {title: errorMessage, status: "error"})
-                    : toast({title: errorMessage, status: "error"});
+                    404: "Користувача не знайдено"
+                });
             });
     };
 
