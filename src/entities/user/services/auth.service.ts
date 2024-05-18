@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from "axios";
-import {UserLogin, UserRegistration} from "types/user.type";
+import {UserLogin, UserRegistration} from "entities/user/types/user.type";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
