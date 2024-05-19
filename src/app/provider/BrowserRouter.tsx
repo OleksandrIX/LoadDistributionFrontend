@@ -23,13 +23,13 @@ const ProtectedRoutes: FC = () => {
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout/>}>
-        <Route index element={<HomePage/>}/>
-        <Route path="regulations" element={<RegulationsPage/>}/>
-        <Route path="contacts" element={<ContactsPage/>}/>
+        <Route index element={<HomePage/>} errorElement={<ErrorBoundary/>}/>
+        <Route path="regulations" element={<RegulationsPage/>} errorElement={<ErrorBoundary/>}/>
+        <Route path="contacts" element={<ContactsPage/>} errorElement={<ErrorBoundary/>}/>
         <Route path="login" element={<LoginPage/>} errorElement={<ErrorBoundary/>}/>
         <Route path="registration" element={<RegistrationPage/>}/>
-        <Route element={<ProtectedRoutes/>}>
-            <Route path="departments" element={<DepartmentsPage/>} errorElement={<ErrorBoundary/>}>
+        <Route element={<ProtectedRoutes/>} errorElement={<ErrorBoundary/>}>
+            <Route path="departments" element={<DepartmentsPage/>}>
                 <Route index element={<DepartmentList/>} loader={departmentsLoader}/>
             </Route>
         </Route>
