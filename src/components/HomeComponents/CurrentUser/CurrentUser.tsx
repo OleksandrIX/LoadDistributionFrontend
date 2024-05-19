@@ -16,7 +16,13 @@ const CurrentUser: FC = () => {
     const getSelectedComponent = () => {
         switch (selectedElement) {
             case SidebarElement.PROFILE:
-                return user && department && <Profile user={user} department={department}/>;
+                if (user && department) {
+                    return <Profile user={user} department={department}/>;
+                } else if (user) {
+                    return <Profile user={user}/>;
+                } else {
+                    return <h1>Помилка</h1>;
+                }
             case SidebarElement.EMPLOYEES:
                 return <TeacherWrapper/>;
             case SidebarElement.DISCIPLINES:

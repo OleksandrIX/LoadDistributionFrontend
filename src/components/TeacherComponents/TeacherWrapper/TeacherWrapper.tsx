@@ -1,5 +1,5 @@
 import {FC, useCallback, useEffect, useState} from "react";
-import {Button, Stack, useDisclosure} from "@chakra-ui/react";
+import {Box, Button, Heading, Stack, useDisclosure} from "@chakra-ui/react";
 
 import departmentService from "entities/department/services/department.service";
 import {TeacherService} from "entities/teacher";
@@ -48,6 +48,8 @@ const TeacherWrapper: FC = () => {
         if (department) {
             fetchTeachersByDepartmentId(department.id).then()
                 .finally(() => setIsTeacherLoading(false));
+        } else {
+            setIsTeacherLoading(false);
         }
     }, [department, fetchTeachersByDepartmentId]);
 
@@ -56,6 +58,29 @@ const TeacherWrapper: FC = () => {
             <Stack h="100%" align="center" justify="center">
                 <Loader/>
             </Stack>
+        );
+    }
+
+    if (!department) {
+        return (
+            <Box
+                h="100%"
+                mt="10%"
+                display="flex"
+                alignItems="start"
+                justifyContent="center"
+            >
+                <Heading
+                    px={5} py={1}
+                    size="md"
+                    textAlign="center"
+                    borderWidth="1px"
+                    borderColor="brand.200"
+                    borderStyle="solid"
+                    borderRadius="lg"
+                    fontStyle="italic"
+                >Вам ще не призначили кафедру</Heading>
+            </Box>
         );
     }
 

@@ -1,12 +1,12 @@
 import {FC} from "react";
-import {Box, Button, ButtonGroup, Card, CardBody, Stack, StackDivider, Text} from "@chakra-ui/react";
+import {Box, Button, ButtonGroup, Card, CardBody, Heading, Stack, StackDivider, Text} from "@chakra-ui/react";
 
 import {Department} from "entities/department/types/department.type";
 import {User} from "entities/user/types/user.type";
 
 interface ProfileProps {
     user: User;
-    department: Department;
+    department?: Department;
 }
 
 const Profile: FC<ProfileProps> = ({user, department}) => {
@@ -29,19 +29,30 @@ const Profile: FC<ProfileProps> = ({user, department}) => {
                         </ButtonGroup>
                     </Box>
 
-                    <Box>
-                        <Text fontSize="md">
-                            <b>Номер кафедри: </b>
-                            <i> {department && department.department_code}</i>
-                        </Text>
-                        <Text fontSize="md">
-                            <b>Назва кафедри: </b>
-                            <i> {department && department.department_name}</i>
-                        </Text>
-                        <ButtonGroup mt={2} spacing={4} colorScheme="brand">
-                            <Button>Редагувати</Button>
-                        </ButtonGroup>
-                    </Box>
+                    {department
+                        ? <Box>
+                            <Text fontSize="md">
+                                <b>Номер кафедри: </b>
+                                <i> {department.department_code}</i>
+                            </Text>
+                            <Text fontSize="md">
+                                <b>Назва кафедри: </b>
+                                <i> {department.department_name}</i>
+                            </Text>
+                            <ButtonGroup mt={2} spacing={4} colorScheme="brand">
+                                <Button>Редагувати</Button>
+                            </ButtonGroup>
+                        </Box>
+                        : <Box
+                            textAlign="center"
+                            borderWidth="1px"
+                            borderColor="brand.200"
+                            borderStyle="solid"
+                            borderRadius="lg"
+                        >
+                            <Heading px={5} py={1} size="xs" fontStyle="italic">Вам ще не призначили кафедру</Heading>
+                        </Box>
+                    }
                 </Stack>
             </CardBody>
         </Card>
