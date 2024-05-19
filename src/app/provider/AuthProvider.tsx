@@ -16,6 +16,7 @@ interface AuthContextType {
     department: Department | null;
     isAdmin: boolean | null;
     isLoading: boolean;
+    refreshToken: () => Promise<void>;
     setAccessToken: (newAccessToken: string) => void;
     logout: () => void;
 }
@@ -26,8 +27,9 @@ const AuthContext = createContext<AuthContextType>({
     department: null,
     isAdmin: null,
     isLoading: true,
-    setAccessToken: () => null,
-    logout: () => null
+    refreshToken: async () => {},
+    setAccessToken: () => {},
+    logout: () => {}
 });
 
 
@@ -55,7 +57,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
             const response = await authService.refreshToken();
             const newAccessToken = response.data["access_token"];
             setAccessToken_(newAccessToken);
-        } catch (err: unknown) {
+        } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
                     await logout();
@@ -118,9 +120,10 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
             department,
             isAdmin,
             isLoading,
+            refreshToken,
             setAccessToken,
             logout
-        }), [accessToken, user, department, isAdmin, isLoading]
+        }), [accessToken, user, department, isAdmin, isLoading, refreshToken]
     );
 
     return (
