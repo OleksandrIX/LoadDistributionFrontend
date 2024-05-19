@@ -88,22 +88,21 @@ const TeacherWrapper: FC = () => {
         <Stack direction="column">
             <TeacherList teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
             <Button
-                position="sticky"
-                bottom={2}
-                colorScheme="brand"
-                bg="brand.800"
                 mt={5}
+                bottom={2}
+                bg="brand.800"
+                position="sticky"
+                colorScheme="brand"
                 onClick={onOpen}
             >
                 Додати
             </Button>
-            {department &&
-                <CreateTeacher
-                    departmentId={department.id}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    onCreate={handleCreateTeacher}
-                />}
+            <CreateTeacher
+                departmentId={department.id}
+                isOpen={isOpen}
+                onClose={onClose}
+                onCreate={handleCreateTeacher}
+            />
         </Stack>
     );
 };

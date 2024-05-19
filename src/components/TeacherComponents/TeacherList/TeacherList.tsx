@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/table";
+import {Table, TableContainer, Tbody, Th, Thead, Tr, Td} from "@chakra-ui/table";
 
 import {Teacher} from "entities/teacher/types/teacher.type";
 import TeacherRowData from "./TeacherRowData";
@@ -23,8 +23,24 @@ const TeacherList: FC<TeacherListProps> = ({teachers, onEdit, onDelete}) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {teachers.map((teacher) =>
-                        <TeacherRowData key={teacher.id} teacher={teacher} onEdit={onEdit} onDelete={onDelete}/>)}
+                    {teachers.length === 0 ? (
+                        <Tr><Td colSpan={4}
+                                py={10}
+                                fontSize="1.4rem"
+                                fontStyle="italic"
+                                textAlign="center">
+                            Ще немає викладачів
+                        </Td></Tr>
+                    ) : (
+                        teachers.map((teacher) => (
+                            <TeacherRowData
+                                key={teacher.id}
+                                teacher={teacher}
+                                onEdit={onEdit}
+                                onDelete={onDelete}
+                            />
+                        ))
+                    )}
                 </Tbody>
             </Table>
         </TableContainer>
