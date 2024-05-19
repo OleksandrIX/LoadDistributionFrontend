@@ -1,6 +1,7 @@
 import {FC, useCallback, useEffect, useState} from "react";
-import {Box, Button, Heading, Stack, useDisclosure} from "@chakra-ui/react";
+import {Box, Button, Heading, Stack, useDisclosure, useToast} from "@chakra-ui/react";
 
+import {handleAxiosError} from "utils/error.handlers";
 import departmentService from "entities/department/services/department.service";
 import {TeacherService} from "entities/teacher";
 import {useAuth} from "app/provider";
@@ -9,18 +10,36 @@ import {Teacher} from "entities/teacher/types/teacher.type";
 import {Loader} from "components/UI";
 import TeacherList from "../TeacherList/TeacherList";
 import CreateTeacher from "../OverlayComponents/CreateTeacher";
+import axios from "axios";
 
 const TeacherWrapper: FC = () => {
-    const {department} = useAuth();
+    const idTeacherToast = "teacher-toast";
+    const teacherToast = useToast({id: idTeacherToast});
+    const {department, refreshToken} = useAuth();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     const [teachers, setTeachers] = useState<Teacher[]>([]);
     const [isTeacherLoading, setIsTeacherLoading] = useState<boolean>(true);
 
     const fetchTeachersByDepartmentId = useCallback(async (departmentId: string) => {
-        const teachersData: Teacher[] = await departmentService.getTeachersByDepartmentId(departmentId);
-        setTeachers(teachersData);
-    }, []);
+        try {
+            const teachersData: Teacher[] = await departmentService.getTeachersByDepartmentId(departmentId);
+            setTeachers(teachersData);
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, teacherToast, idTeacherToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    }, [teacherToast, refreshToken]);
 
     const handleCreateTeacher = (teacherId: string) => {
         const teacherService = new TeacherService();
