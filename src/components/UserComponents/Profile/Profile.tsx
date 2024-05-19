@@ -1,15 +1,11 @@
 import {FC} from "react";
 import {Box, Button, ButtonGroup, Card, CardBody, Heading, Stack, StackDivider, Text} from "@chakra-ui/react";
 
-import {Department} from "entities/department/types/department.type";
-import {User} from "entities/user/types/user.type";
+import {useAuth} from "app/provider";
 
-interface ProfileProps {
-    user: User;
-    department?: Department;
-}
+const Profile: FC = () => {
+    const {user, department, isAdmin} = useAuth();
 
-const Profile: FC<ProfileProps> = ({user, department}) => {
     return (
         <Card align="center">
             <CardBody>
@@ -43,7 +39,7 @@ const Profile: FC<ProfileProps> = ({user, department}) => {
                                 <Button>Редагувати</Button>
                             </ButtonGroup>
                         </Box>
-                        : <Box
+                        : (!isAdmin && <Box
                             textAlign="center"
                             borderWidth="1px"
                             borderColor="brand.200"
@@ -51,7 +47,7 @@ const Profile: FC<ProfileProps> = ({user, department}) => {
                             borderRadius="lg"
                         >
                             <Heading px={5} py={1} size="xs" fontStyle="italic">Вам ще не призначили кафедру</Heading>
-                        </Box>
+                        </Box>)
                     }
                 </Stack>
             </CardBody>
