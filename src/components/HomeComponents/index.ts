@@ -1,4 +1,4 @@
 import Intro from "./Intro/Intro";
-import CurrentUser from "./CurrentUser/CurrentUser";
+import HomePageWrapper from "./HomePageWrapper/HomePageWrapper";
 
-export {CurrentUser, Intro};
+export {HomePageWrapper, Intro};
