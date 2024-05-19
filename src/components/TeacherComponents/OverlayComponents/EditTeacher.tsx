@@ -2,7 +2,7 @@ import {FC, FormEvent, useRef, useState} from "react";
 import {Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/modal";
 
 import {Teacher} from "entities/teacher";
-import TeacherForm from "../TeacherForm";
+import TeacherForm from "../TeacherForm/TeacherForm";
 
 interface EditTeacherProps {
     teacher: Teacher;

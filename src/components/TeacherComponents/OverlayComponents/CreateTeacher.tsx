@@ -7,7 +7,7 @@ import {displayToast} from "utils/toast";
 import {handleAxiosError} from "utils/error.handlers";
 import {MilitaryRank, Position} from "types/enums";
 import {RequestTeacher, TeacherService} from "entities/teacher";
-import TeacherForm from "../TeacherForm";
+import TeacherForm from "../TeacherForm/TeacherForm";
 
 
 interface CreateTeacherProps {
