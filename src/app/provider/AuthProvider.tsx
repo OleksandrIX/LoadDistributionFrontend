@@ -14,7 +14,7 @@ interface AuthContextType {
     accessToken: string | null;
     user: User | null;
     department: Department | null;
-    isAdmin: boolean | null;
+    isAdmin: boolean;
     isLoading: boolean;
     refreshToken: () => Promise<void>;
     setAccessToken: (newAccessToken: string) => void;
@@ -25,11 +25,17 @@ const AuthContext = createContext<AuthContextType>({
     accessToken: null,
     user: null,
     department: null,
-    isAdmin: null,
+    isAdmin: false,
     isLoading: true,
-    refreshToken: async () => {},
-    setAccessToken: () => {},
-    logout: () => {}
+    refreshToken: async () => {
+
+    },
+    setAccessToken: () => {
+
+    },
+    logout: () => {
+
+    }
 });
 
 
@@ -37,7 +43,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [accessToken, setAccessToken_] = useState<string | null>(localStorage.getItem("access_token"));
     const [user, setUser] = useState<User | null>(null);
     const [department, setDepartment] = useState<Department | null>(null);
-    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const setAccessToken = (newAccessToken: string) => {
@@ -48,6 +54,8 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
         await authService.logout();
         setAccessToken_(null);
         setUser(null);
+        setDepartment(null);
+        setIsAdmin(false);
         localStorage.removeItem("access_token");
     };
 
