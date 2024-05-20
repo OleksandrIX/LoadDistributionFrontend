@@ -2,7 +2,7 @@ import {FC} from "react";
 import {Table, TableContainer, Tbody, Th, Thead, Tr, Td} from "@chakra-ui/table";
 
 import {Teacher} from "entities/teacher/types/teacher.type";
-import TeacherRowData from "./TeacherRowData";
+import TeacherTableRow from "./TeacherTableRow";
 
 interface TeacherTableProps {
     teachers: Teacher[];
@@ -33,7 +33,7 @@ const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
                         </Td></Tr>
                     ) : (
                         teachers.map((teacher) => (
-                            <TeacherRowData
+                            <TeacherTableRow
                                 key={teacher.id}
                                 teacher={teacher}
                                 onEdit={onEdit}

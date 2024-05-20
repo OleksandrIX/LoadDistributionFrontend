@@ -18,7 +18,7 @@ interface TeacherRowDataProps {
     onDelete: (teacherId: string) => void;
 }
 
-const TeacherRowData: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) => {
+const TeacherTableRow: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) => {
     const idEditTeacher = "edit-teacher-to  ast";
     const idDeleteTeacher = "delete-teacher-toast";
     const editToast = useToast({id: idEditTeacher});
@@ -121,4 +121,4 @@ const TeacherRowData: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) =>
     );
 };
 
-export default TeacherRowData;
+export default TeacherTableRow;
