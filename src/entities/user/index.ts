@@ -1,5 +1,5 @@
-import authService from "./services/auth.service";
-import userService from "./services/user.service";
+import AuthService from "./services/auth.service";
+import UserService from "./services/user.service";
 
 export type {User, UserLogin, UserRegistration} from "./types/user.type";
-export {authService, userService};
+export {AuthService, UserService};
