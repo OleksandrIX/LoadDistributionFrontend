@@ -7,10 +7,10 @@ import {useDisclosure} from "@chakra-ui/hooks";
 import {displayToast} from "utils/toast";
 import {handleAxiosError} from "utils/error.handlers";
 import {Teacher, TeacherService} from "entities/teacher";
-import ViewTeacher from "../OverlayComponents/ViewTeacher";
-import EditTeacher from "../OverlayComponents/EditTeacher";
-import DeleteTeacher from "../OverlayComponents/DeleteTeacher";
-import TeacherRowContextMenu from "../ContextMenu/TeacherRowContextMenu";
+import ViewTeacher from "../TeacherOverlayComponents/ViewTeacher";
+import EditTeacher from "../TeacherOverlayComponents/EditTeacher";
+import DeleteTeacher from "../TeacherOverlayComponents/DeleteTeacher";
+import TeacherRowContextMenu from "../TeacherContextMenu/TeacherRowContextMenu";
 
 interface TeacherRowDataProps {
     teacher: Teacher;

@@ -9,7 +9,7 @@ import {Teacher} from "entities/teacher/types/teacher.type";
 
 import {Loader} from "components/UI";
 import TeacherTable from "../TeacherTable/TeacherTable";
-import CreateTeacher from "../OverlayComponents/CreateTeacher";
+import CreateTeacher from "../TeacherOverlayComponents/CreateTeacher";
 import axios from "axios";
 
 const TeacherWrapper: FC = () => {

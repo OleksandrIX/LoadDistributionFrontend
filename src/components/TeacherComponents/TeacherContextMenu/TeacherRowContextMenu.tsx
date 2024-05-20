@@ -12,13 +12,13 @@ interface TeacherRowContextMenuProps {
 const TeacherRowContextMenu: FC<TeacherRowContextMenuProps> = ({children, onView, onEdit, onDelete}) => {
     return (
         <ContextMenu<HTMLTableRowElement>
-            renderMenu={() => (
+            renderMenu={() =>
                 <MenuList>
                     <MenuItem onClick={onView}>Переглянути</MenuItem>
                     <MenuItem onClick={onEdit}>Редгувати</MenuItem>
                     <MenuItem onClick={onDelete}>Видалити</MenuItem>
                 </MenuList>
-            )}
+            }
         >
             {ref => children(ref)}
         </ContextMenu>
