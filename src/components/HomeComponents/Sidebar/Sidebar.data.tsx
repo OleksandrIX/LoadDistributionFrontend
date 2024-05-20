@@ -4,6 +4,7 @@ import {SidebarElement} from "types/enums";
 import {Profile} from "components/UserComponents";
 import {TeacherWrapper} from "components/TeacherComponents";
 import {DepartmentWrapper} from "components/DepartmentComponents";
+import {CurriculumWrapper} from "components/CurriculumComponents";
 
 
 type SidebarElementData = {
@@ -30,7 +31,7 @@ const sidebarAdminElements: SidebarElementData[] = [
     {
         sidebarElementName: "Робочі навчальні плани",
         sidebarElementType: SidebarElement.CURRICULUMS,
-        children: <>Робочі навчальні плани</>
+        children: <CurriculumWrapper/>
     }
 ];
 
