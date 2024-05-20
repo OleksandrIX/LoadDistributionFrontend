@@ -4,13 +4,13 @@ import {Table, TableContainer, Tbody, Th, Thead, Tr, Td} from "@chakra-ui/table"
 import {Teacher} from "entities/teacher/types/teacher.type";
 import TeacherRowData from "./TeacherRowData";
 
-interface TeacherListProps {
+interface TeacherTableProps {
     teachers: Teacher[];
     onEdit: (teacher: Teacher) => void;
     onDelete: (teacherId: string) => void;
 }
 
-const TeacherList: FC<TeacherListProps> = ({teachers, onEdit, onDelete}) => {
+const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
     return (
         <TableContainer>
             <Table size="sm" mt={2} colorScheme="brand">
@@ -47,4 +47,4 @@ const TeacherList: FC<TeacherListProps> = ({teachers, onEdit, onDelete}) => {
     );
 };
 
-export default TeacherList;
+export default TeacherTable;
