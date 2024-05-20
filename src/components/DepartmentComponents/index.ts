@@ -1,1 +1,3 @@
-export {DepartmentList} from "./DepartmentList/DepartmentList";
+import DepartmentWrapper from "./DepartmentWrapper/DepartmentWrapper";
+
+export {DepartmentWrapper};
