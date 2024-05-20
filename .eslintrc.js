@@ -43,6 +43,7 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "comma-dangle": ["error", "never"],
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "react/jsx-key": "off"
     }
 };
