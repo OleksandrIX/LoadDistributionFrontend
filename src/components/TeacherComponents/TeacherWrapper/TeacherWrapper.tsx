@@ -2,13 +2,13 @@ import {FC, useCallback, useEffect, useState} from "react";
 import {Box, Button, Heading, Stack, useDisclosure, useToast} from "@chakra-ui/react";
 
 import {handleAxiosError} from "utils/error.handlers";
-import departmentService from "entities/department/services/department.service";
+import {DepartmentService} from "entities/department";
 import {TeacherService} from "entities/teacher";
 import {useAuth} from "app/provider";
 import {Teacher} from "entities/teacher/types/teacher.type";
 
 import {Loader} from "components/UI";
-import TeacherList from "../TeacherList/TeacherList";
+import TeacherTable from "../TeacherTable/TeacherTable";
 import CreateTeacher from "../OverlayComponents/CreateTeacher";
 import axios from "axios";
 
@@ -23,6 +23,7 @@ const TeacherWrapper: FC = () => {
 
     const fetchTeachersByDepartmentId = useCallback(async (departmentId: string) => {
         try {
+            const departmentService = new DepartmentService();
             const teachersData: Teacher[] = await departmentService.getTeachersByDepartmentId(departmentId);
             setTeachers(teachersData);
         } catch (err) {
@@ -105,7 +106,7 @@ const TeacherWrapper: FC = () => {
 
     return (
         <Stack direction="column">
-            <TeacherList teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
+            <TeacherTable teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
             <Button
                 mt={5}
                 bottom={2}
