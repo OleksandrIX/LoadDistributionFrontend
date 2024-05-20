@@ -2,9 +2,9 @@ import {Link} from "react-router-dom";
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, Input, useToast} from "@chakra-ui/react";
 
-import {handleAxiosError} from "utils/error.handlers";
 import {useAuth} from "app/provider";
-import authService from "entities/user/services/auth.service";
+import {AuthService} from "entities/user";
+import {handleAxiosError} from "utils/error.handlers";
 
 import "./LoginForm.scss";
 
@@ -22,6 +22,7 @@ const LoginForm: FC = () => {
 
     const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const authService = new AuthService();
         authService.login({username: username, password: password})
             .then((res) => {
                 const accessToken = res.data["access_token"];
