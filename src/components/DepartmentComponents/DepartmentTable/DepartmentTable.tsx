@@ -72,12 +72,14 @@ const DepartmentTable: FC<DepartmentTableProps> = ({departments}) => {
                 <Thead bgColor="brand.200">
                     {headerGroups.map((headerGroup) =>
                         <Tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => {
-                                return <Th {...column.getHeaderProps()} w={column.width} textAlign="center"
-                                           whiteSpace="break-spaces">
+                            {headerGroup.headers.map((column) =>
+                                <Th {...column.getHeaderProps()}
+                                    w={column.width}
+                                    textAlign="center"
+                                    whiteSpace="break-spaces">
                                     {column.render("Header")}
-                                </Th>;
-                            })}
+                                </Th>
+                            )}
                         </Tr>
                     )}
                 </Thead>
