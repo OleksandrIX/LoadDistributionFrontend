@@ -3,6 +3,7 @@ import {ReactNode} from "react";
 import {SidebarElement} from "types/enums";
 import {Profile} from "components/UserComponents";
 import {TeacherWrapper} from "components/TeacherComponents";
+import {DepartmentWrapper} from "components/DepartmentComponents";
 
 
 type SidebarElementData = {
@@ -24,7 +25,7 @@ const sidebarAdminElements: SidebarElementData[] = [
     {
         sidebarElementName: "Кафедри",
         sidebarElementType: SidebarElement.DEPARTMENTS,
-        children: <>Кафедри</>
+        children: <DepartmentWrapper/>
     },
     {
         sidebarElementName: "Робочі навчальні плани",
