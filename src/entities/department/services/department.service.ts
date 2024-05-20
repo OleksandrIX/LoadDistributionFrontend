@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {CreateDepartment, Department, UpdateDepartment} from "entities/department/types/department.type";
-import {Teacher} from "entities/teacher/types/teacher.type";
+import {CreateDepartment, Department, UpdateDepartment} from "entities/department";
+import {Teacher} from "entities/teacher";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
