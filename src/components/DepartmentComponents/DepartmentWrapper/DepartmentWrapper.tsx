@@ -1,13 +1,15 @@
 import axios from "axios";
-import {FC, useCallback, useEffect, useState} from "react";
-import {Box, ButtonGroup, Heading, IconButton, Stack, useToast} from "@chakra-ui/react";
-import {ArrowLeftIcon, ArrowRightIcon} from "@chakra-ui/icons";
+import {FC, useCallback, useEffect, useMemo, useState} from "react";
+import {Box, Heading, IconButton, Stack, Tooltip, useToast} from "@chakra-ui/react";
+import {AddIcon} from "@chakra-ui/icons";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
-import {Department, DepartmentService} from "entities/department";
+import {Department, DepartmentService, DepartmentTableData} from "entities/department";
 import {Loader} from "components/UI";
 import DepartmentTable from "../DepartmentTable/DepartmentTable";
+import {Column} from "react-table";
+import {Td} from "@chakra-ui/table";
 
 const DepartmentWrapper: FC = () => {
     const idDepartmentToast = "department-toast";
@@ -16,6 +18,39 @@ const DepartmentWrapper: FC = () => {
     const {refreshToken} = useAuth();
     const [departments, setDepartments] = useState<Department[]>();
     const [isDepartmentLoading, setIsDepartmentLoading] = useState<boolean>(true);
+
+    const columns: Column<DepartmentTableData>[] = useMemo(() => [
+        {
+            Header: "Номер кафедри",
+            accessor: "department_code",
+            Cell: ({value}: { value: string }) => <Td textAlign="center">{value}</Td>,
+            width: "15%"
+        },
+        {
+            Header: "Назва кафедри",
+            accessor: "department_name",
+            Cell: ({value}: { value: string }) => (
+                <Td overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                    <Tooltip label={value}>
+                        <span>{value}</span>
+                    </Tooltip>
+                </Td>
+            ),
+            width: "50%"
+        },
+        {
+            Header: "Всього НПП",
+            accessor: "total_teachers",
+            Cell: ({value}: { value: number }) => <Td textAlign="center">{value}</Td>,
+            width: "15%"
+        },
+        {
+            Header: "Навчальне навантаження",
+            accessor: "academic_workload",
+            Cell: ({value}: { value: number }) => <Td textAlign="center">{value}</Td>,
+            width: "20%"
+        }
+    ], []);
 
     const fetchDepartments = useCallback(async () => {
         try {
@@ -75,21 +110,18 @@ const DepartmentWrapper: FC = () => {
     }
 
     return (
-        <Box>
-            <DepartmentTable departments={departments}/>
-
-            <ButtonGroup w="100%" display="flex" justifyContent="center">
-                <IconButton
-                    aria-label="Попереднє"
-                    icon={<ArrowLeftIcon/>}
-                />
-
-                <IconButton
-                    aria-label="Наступне"
-                    icon={<ArrowRightIcon/>}
-                />
-            </ButtonGroup>
-        </Box>
+        <Stack spacing={2}>
+            <IconButton aria-label="Додати кафедру" icon={<AddIcon/>} colorScheme="brand"/>
+            <DepartmentTable
+                departments={departments.map((department, index) => ({
+                    department_code: department.department_code,
+                    department_name: department.department_name,
+                    total_teachers: index + 1,
+                    academic_workload: index + 1
+                }))}
+                columns={columns}
+            />
+        </Stack>
     );
 };
 
