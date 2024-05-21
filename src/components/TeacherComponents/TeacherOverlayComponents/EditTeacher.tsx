@@ -42,6 +42,7 @@ const EditTeacher: FC<EditTeacherProps> = ({teacher, isOpen, onClose, onEdit}) =
                 <ModalCloseButton/>
                 <ModalBody pb={6}>
                     <TeacherForm
+                        initialRef={initialRef}
                         teacher={updatedTeacher}
                         onChange={setUpdatedTeacher}
                         onSubmit={handleSubmitUpdatedTeacher}

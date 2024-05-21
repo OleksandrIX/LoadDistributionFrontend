@@ -85,6 +85,7 @@ const CreateTeacher: FC<CreateTeacherProps> = ({departmentId, isOpen, onClose, o
                 <DrawerHeader>Додати викладача</DrawerHeader>
                 <DrawerBody>
                     <TeacherForm
+                        initialRef={initialRef}
                         teacher={teacher}
                         onChange={setTeacher}
                         onSubmit={handleSubmitCreatedTeacher}

@@ -1,4 +1,4 @@
-import {FormEvent, useRef} from "react";
+import {FormEvent, RefObject} from "react";
 import {Stack} from "@chakra-ui/react";
 import {Input} from "@chakra-ui/input";
 import {Switch} from "@chakra-ui/switch";
@@ -11,6 +11,7 @@ import {AcademicRank, MilitaryRank, Position, ScientificDegree} from "types/enum
 import {AcademicRankSelect, MilitaryRankSelect, PositionSelect, ScientificDegreeSelect} from "components/UI";
 
 interface TeacherFormProps<T extends BaseTeacher> {
+    initialRef: RefObject<HTMLInputElement>;
     teacher: T;
     onChange: (teacher: T) => void;
     onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -18,15 +19,16 @@ interface TeacherFormProps<T extends BaseTeacher> {
     onClose: () => void;
 }
 
-const TeacherForm = <T extends BaseTeacher>({
-                                                isEdit = false,
-                                                teacher,
-                                                onChange,
-                                                onSubmit,
-                                                onClose
-                                            }: TeacherFormProps<T>) => {
-    const initialRef = useRef<HTMLInputElement>(null);
-
+const TeacherForm = <T extends BaseTeacher>(
+    {
+        initialRef,
+        isEdit = false,
+        teacher,
+        onChange,
+        onSubmit,
+        onClose
+    }: TeacherFormProps<T>
+) => {
     const handleChange = <K extends keyof T>(field: K, value: T[K]) => {
         onChange({...teacher, [field]: value});
     };
