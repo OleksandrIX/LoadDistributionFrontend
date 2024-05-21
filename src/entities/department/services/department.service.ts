@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {CreateDepartment, Department, UpdateDepartment} from "entities/department";
+import {Department, RequestDepartment} from "entities/department";
 import {Teacher} from "entities/teacher";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
@@ -38,12 +38,12 @@ class DepartmentService {
         return response.data;
     }
 
-    async createDepartment(departmentData: CreateDepartment): Promise<string> {
+    async createDepartment(departmentData: RequestDepartment): Promise<string> {
         const response: AxiosResponse<string> = await this.axiosInstance.post("", departmentData);
         return response.data;
     }
 
-    async editDepartment(id: string, departmentData: UpdateDepartment): Promise<Department> {
+    async editDepartment(id: string, departmentData: RequestDepartment): Promise<Department> {
         const response: AxiosResponse<Department> = await this.axiosInstance.put(`/${id}`, departmentData);
         return response.data;
     }

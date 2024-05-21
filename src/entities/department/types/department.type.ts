@@ -6,12 +6,15 @@ export interface Department {
     updated_at: string;
 }
 
-export interface CreateDepartment {
-    department_name: string;
+export interface DepartmentTableData {
     department_code: string;
+    department_name: string;
+    total_teachers: number;
+    academic_workload: number;
 }
 
-export interface UpdateDepartment {
+
+export interface RequestDepartment {
     department_name: string;
     department_code: string;
 }
