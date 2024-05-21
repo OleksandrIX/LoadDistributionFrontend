@@ -1,32 +1,20 @@
 import axios from "axios";
 import {FC, useCallback, useEffect, useState} from "react";
-import {useToast} from "@chakra-ui/toast";
-import {Box, Heading, Select, Stack, Tooltip} from "@chakra-ui/react";
-import {Table, TableContainer, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/table";
+import {Box, Heading, Select, Stack, useToast} from "@chakra-ui/react";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
-import {CurriculumFile, CurriculumService} from "entities/curriculum";
 import {Loader} from "components/UI";
-
-const formatFileSize = (size: number): string => {
-    if (size < 1024) return `${size} B`;
-    const units = ["KiB", "MiB"];
-    let unitIndex = -1;
-    let formattedSize = size;
-    do {
-        formattedSize /= 1024;
-        unitIndex++;
-    } while (formattedSize >= 1024 && unitIndex < units.length - 1);
-    return `${formattedSize.toFixed(1)} ${units[unitIndex]}`;
-};
+import {CurriculumFile, CurriculumService} from "entities/curriculum";
+import CurriculumTable from "../CurriculumTable/CurriculumTable";
+import UploadCurriculum from "./UploadCurriculum";
 
 const CurriculumWrapper: FC = () => {
     const idCurriculumToast = "curriculum-toast";
     const curriculumToast = useToast({id: idCurriculumToast});
 
     const {refreshToken} = useAuth();
-    const [curriculums, setCurriculums] = useState<CurriculumFile[]>();
+    const [curriculums, setCurriculums] = useState<CurriculumFile[]>([]);
     const [isCurriculumLoading, setIsCurriculumLoading] = useState<boolean>(true);
 
     const fetchCurriculums = useCallback(async () => {
@@ -53,9 +41,28 @@ const CurriculumWrapper: FC = () => {
         }
     }, [curriculumToast, refreshToken]);
 
+    const handleUploadCurriculum = (uploadedCurriculum: CurriculumFile) => {
+        setCurriculums(prevCurriculums => {
+            const existingIndex = prevCurriculums.findIndex(curriculum =>
+                curriculum.filename === uploadedCurriculum.filename);
+            if (existingIndex !== -1) {
+                const updatedCurriculums = [...prevCurriculums];
+                updatedCurriculums[existingIndex] = uploadedCurriculum;
+                return updatedCurriculums;
+            } else {
+                return [...prevCurriculums, uploadedCurriculum];
+            }
+        });
+    };
+
+    const handleDeleteCurriculum = (filename: string) => {
+        const updatedCurriculums = curriculums.filter(curriculum => curriculum.filename !== filename);
+        setCurriculums(updatedCurriculums);
+    };
+
     useEffect(() => {
-        !curriculums && fetchCurriculums().then();
-    }, [curriculums, fetchCurriculums]);
+        isCurriculumLoading && fetchCurriculums().then();
+    }, [isCurriculumLoading, fetchCurriculums]);
 
     if (isCurriculumLoading) {
         return (
@@ -65,56 +72,56 @@ const CurriculumWrapper: FC = () => {
         );
     }
 
-    if (!curriculums) {
-        return <Box
-            h="100%"
-            mt="10%"
-            display="flex"
-            alignItems="start"
-            justifyContent="center"
-        >
-            <Heading
-                px={10} py={1}
-                size="md"
-                textAlign="center"
-                borderWidth="1px"
-                borderColor="brand.200"
-                borderStyle="solid"
-                borderRadius="lg"
-                fontStyle="italic"
-            >Робочих навчальних планів немає</Heading>
-        </Box>;
-    }
-
     return (
-        <TableContainer>
-            <Table variant="striped" colorScheme="brand" layout="fixed">
-                <Thead bgColor="brand.200">
-                    <Tr>
-                        <Th>Filename</Th>
-                        <Th isNumeric>Size (bytes)</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {curriculums.map((curriculum, index) => (
-                        <Tr key={index}>
-                            <Td maxW={200} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-                                <Tooltip label={curriculum.filename}>
-                                    <span>{curriculum.filename}</span>
-                                </Tooltip>
-                            </Td>
-                            <Td isNumeric>{formatFileSize(curriculum.size)}</Td>
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+        <Stack spacing={4}>
+            <Stack>
+                <UploadCurriculum
+                    idCurriculumToast={idCurriculumToast}
+                    curriculumToast={curriculumToast}
+                    onUpload={handleUploadCurriculum}
+                />
 
-            <Select>
-                {curriculums.map((curriculum) =>
-                    <option key={curriculum.filename} value={curriculum.filename}>{curriculum.filename}</option>
-                )}
-            </Select>
-        </TableContainer>
+                {
+                    curriculums.length > 0
+                        ? <CurriculumTable
+                            curriculums={curriculums}
+                            onDelete={handleDeleteCurriculum}
+                        />
+                        : <Box
+                            h="100%"
+                            mt="10%"
+                            display="flex"
+                            alignItems="start"
+                            justifyContent="center"
+                        >
+                            <Heading
+                                px={10} py={1}
+                                size="md"
+                                textAlign="center"
+                                borderWidth="1px"
+                                borderColor="brand.200"
+                                borderStyle="solid"
+                                borderRadius="lg"
+                                fontStyle="italic"
+                            >Робочих навчальних планів немає</Heading>
+                        </Box>
+                }
+            </Stack>
+
+            <Stack>
+                {
+                    curriculums.length > 0 && (
+                        <Select>
+                            {curriculums.map((curriculum) =>
+                                <option key={curriculum.filename} value={curriculum.filename}>
+                                    {curriculum.filename}
+                                </option>
+                            )}
+                        </Select>
+                    )
+                }
+            </Stack>
+        </Stack>
     );
 };
 
