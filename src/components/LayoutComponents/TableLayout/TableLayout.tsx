@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Table, TableContainer, Thead, Tbody, Tr, Th} from "@chakra-ui/table";
+import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/table";
 import {Column, Row, usePagination, useTable} from "react-table";
 import TablePaginationLayout from "./TablePaginationLayout";
 
@@ -8,7 +8,7 @@ interface TableLayoutProps<T extends object> {
     defaultPageSize?: number;
     data: T[];
     columns: Column<T>[];
-    RowComponent: FC<{ row: Row<T> }>
+    RowComponent: FC<{ row: Row<T> }>;
 }
 
 const TableLayout = <T extends object>(
