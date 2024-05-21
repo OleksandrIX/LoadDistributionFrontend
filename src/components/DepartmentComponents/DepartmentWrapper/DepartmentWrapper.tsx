@@ -78,12 +78,7 @@ const DepartmentWrapper: FC = () => {
         <Stack spacing={2}>
             <IconButton aria-label="Додати кафедру" icon={<AddIcon/>} colorScheme="brand"/>
             <DepartmentTable
-                departments={departments.map((department, index) => ({
-                    department_code: department.department_code,
-                    department_name: department.department_name,
-                    total_teachers: index + 1,
-                    academic_workload: index + 1
-                }))}
+                departments={departments}
             />
         </Stack>
     );

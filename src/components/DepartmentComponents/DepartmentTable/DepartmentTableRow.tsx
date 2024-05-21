@@ -2,11 +2,11 @@ import {FC, Fragment} from "react";
 import {Tr} from "@chakra-ui/table";
 import {Row} from "react-table";
 
-import {DepartmentTableData} from "entities/department";
+import {Department} from "entities/department";
 import DepartmentContextMenu from "../DepartmentContextMenu/DepartmentContextMenu";
 
 interface DepartmentTableRowProps {
-    row: Row<DepartmentTableData>
+    row: Row<Department>
 }
 
 const DepartmentTableRow: FC<DepartmentTableRowProps> = ({row}) => {
