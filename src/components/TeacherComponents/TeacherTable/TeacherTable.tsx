@@ -1,6 +1,6 @@
 import {FC, useMemo} from "react";
 import {Column, Row} from "react-table";
-import {Box, Td, Tooltip} from "@chakra-ui/react";
+import {Box, Heading, Td, Tooltip} from "@chakra-ui/react";
 import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
 
 import {Position} from "types/enums";
@@ -79,20 +79,43 @@ const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
         }
     ], []);
 
-    return (
-        <TableLayout
-            data={teachers}
-            columns={columns}
-            RowComponent={({row}: { row: Row<Teacher> }) => (
-                <TeacherTableRow
-                    row={row}
-                    teacher={row.original}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                />
-            )}
-        />
-    );
+    if (teachers.length > 0) {
+        return (
+            <TableLayout
+                data={teachers}
+                columns={columns}
+                RowComponent={({row}: { row: Row<Teacher> }) => (
+                    <TeacherTableRow
+                        row={row}
+                        teacher={row.original}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
+                )}
+            />
+        );
+    } else {
+        return (
+            <Box
+                h="100%"
+                mt="10%"
+                display="flex"
+                alignItems="start"
+                justifyContent="center"
+            >
+                <Heading
+                    px={10} py={1}
+                    size="md"
+                    textAlign="center"
+                    borderWidth="1px"
+                    borderColor="brand.200"
+                    borderStyle="solid"
+                    borderRadius="lg"
+                    fontStyle="italic"
+                >Немає жодного викладача</Heading>
+            </Box>
+        );
+    }
 };
 
 export default TeacherTable;

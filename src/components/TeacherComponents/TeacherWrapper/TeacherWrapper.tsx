@@ -112,7 +112,13 @@ const TeacherWrapper: FC = () => {
             >
                 Додати
             </Button>
-            <TeacherTable teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
+
+            <TeacherTable
+                teachers={teachers}
+                onEdit={handleEditTeacher}
+                onDelete={handleDeleteTeacher}
+            />
+
             <CreateTeacher
                 departmentId={department.id}
                 isOpen={isOpen}
