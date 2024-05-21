@@ -67,8 +67,8 @@ const TeacherWrapper: FC = () => {
     };
 
     useEffect(() => {
-        department && teachers.length === 0 && fetchTeachersByDepartmentId(department.id).then();
-    }, [department, teachers, fetchTeachersByDepartmentId]);
+        department && isTeacherLoading && fetchTeachersByDepartmentId(department.id).then();
+    }, [department, isTeacherLoading, fetchTeachersByDepartmentId]);
 
     if (isTeacherLoading) {
         return (
@@ -113,11 +113,30 @@ const TeacherWrapper: FC = () => {
                 Додати
             </Button>
 
-            <TeacherTable
-                teachers={teachers}
-                onEdit={handleEditTeacher}
-                onDelete={handleDeleteTeacher}
-            />
+            {teachers.length > 0
+                ? <TeacherTable
+                    teachers={teachers}
+                    onEdit={handleEditTeacher}
+                    onDelete={handleDeleteTeacher}
+                />
+                : <Box
+                    h="100%"
+                    mt="10%"
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="center"
+                >
+                    <Heading
+                        px={10} py={1}
+                        size="md"
+                        textAlign="center"
+                        borderWidth="1px"
+                        borderColor="brand.200"
+                        borderStyle="solid"
+                        borderRadius="lg"
+                        fontStyle="italic"
+                    >Викладачів немає</Heading>
+                </Box>}
 
             <CreateTeacher
                 departmentId={department.id}

@@ -19,7 +19,6 @@ const DepartmentWrapper: FC = () => {
 
     const fetchDepartments = useCallback(async () => {
         try {
-            setIsDepartmentLoading(true);
             const departmentService = new DepartmentService();
             const departmentsData = await departmentService.getAllDepartments();
             setDepartments(departmentsData);
@@ -42,8 +41,8 @@ const DepartmentWrapper: FC = () => {
     }, [departmentToast, refreshToken]);
 
     useEffect(() => {
-        departments.length === 0 && fetchDepartments().then();
-    }, [departments, fetchDepartments]);
+        isDepartmentLoading && fetchDepartments().then();
+    }, [isDepartmentLoading, fetchDepartments]);
 
     if (isDepartmentLoading) {
         return (
