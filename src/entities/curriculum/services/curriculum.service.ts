@@ -26,6 +26,33 @@ class CurriculumService {
         const response: AxiosResponse<CurriculumFile[]> = await this.axiosInstance.get("");
         return response.data;
     }
+
+    async uploadCurriculum(formData: FormData): Promise<CurriculumFile> {
+        const response: AxiosResponse<CurriculumFile> = await this.axiosInstance.post(
+            "/upload",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            }
+        );
+        return response.data;
+    }
+
+    async downloadCurriculum(filename: string): Promise<Blob> {
+        const response: AxiosResponse<Blob> = await this.axiosInstance.get(
+            `/download?curriculum_filename=${filename}`,
+            {
+                responseType: "blob"
+            }
+        );
+        return response.data;
+    }
+
+    async deleteCurriculum(filename: string): Promise<AxiosResponse> {
+        return this.axiosInstance.delete(`?curriculum_filename=${filename}`);
+    }
 }
 
 export default CurriculumService;
