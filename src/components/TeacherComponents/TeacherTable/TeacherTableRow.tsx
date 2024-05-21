@@ -1,8 +1,6 @@
-import {FC} from "react";
-import {Box, useToast} from "@chakra-ui/react";
-import {Td, Tr} from "@chakra-ui/table";
-import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
-import {useDisclosure} from "@chakra-ui/hooks";
+import {FC, Fragment} from "react";
+import {Row} from "react-table";
+import {Tr, useDisclosure, useToast} from "@chakra-ui/react";
 
 import {displayToast} from "utils/toast";
 import {handleAxiosError} from "utils/error.handlers";
@@ -13,12 +11,13 @@ import DeleteTeacher from "../TeacherOverlayComponents/DeleteTeacher";
 import TeacherRowContextMenu from "../TeacherContextMenu/TeacherRowContextMenu";
 
 interface TeacherRowDataProps {
+    row: Row<Teacher>
     teacher: Teacher;
     onEdit: (teacher: Teacher) => void;
     onDelete: (teacherId: string) => void;
 }
 
-const TeacherTableRow: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) => {
+const TeacherTableRow: FC<TeacherRowDataProps> = ({row, teacher, onEdit, onDelete}) => {
     const idEditTeacher = "edit-teacher-to  ast";
     const idDeleteTeacher = "delete-teacher-toast";
     const editToast = useToast({id: idEditTeacher});
@@ -76,28 +75,11 @@ const TeacherTableRow: FC<TeacherRowDataProps> = ({teacher, onEdit, onDelete}) =
         >
             {(ref) => (
                 <Tr ref={ref}>
-                    <Td>{teacher.last_name} {teacher.first_name} {teacher.middle_name}</Td>
-                    <Td isNumeric>{teacher.teacher_rate}</Td>
-                    <Td>{teacher.position}</Td>
-                    <Td align="center" textAlign="revert-layer">
-                        {teacher.is_civilian
-                            ? <Box w="fit-content"
-                                   p={1}
-                                   borderRadius="lg"
-                                   borderWidth={1}
-                                   borderStyle="solid"
-                                   borderColor="green.500">
-                                <CheckIcon color="green.500"/>
-                            </Box>
-                            : <Box w="fit-content"
-                                   p={1}
-                                   borderRadius="lg"
-                                   borderWidth={1}
-                                   borderStyle="solid"
-                                   borderColor="red.500">
-                                <CloseIcon color="red.500"/>
-                            </Box>}
-                    </Td>
+                    {row.cells.map((cell) =>
+                        <Fragment key={cell.getCellProps().key}>
+                            {cell.render("Cell")}
+                        </Fragment>
+                    )}
 
                     <ViewTeacher
                         teacher={teacher}
