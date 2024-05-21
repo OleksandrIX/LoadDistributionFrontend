@@ -14,7 +14,7 @@ const DepartmentWrapper: FC = () => {
     const departmentToast = useToast({id: idDepartmentToast});
 
     const {refreshToken} = useAuth();
-    const [departments, setDepartments] = useState<Department[]>();
+    const [departments, setDepartments] = useState<Department[]>([]);
     const [isDepartmentLoading, setIsDepartmentLoading] = useState<boolean>(true);
 
     const fetchDepartments = useCallback(async () => {
@@ -42,7 +42,7 @@ const DepartmentWrapper: FC = () => {
     }, [departmentToast, refreshToken]);
 
     useEffect(() => {
-        !departments && fetchDepartments().then();
+        departments.length === 0 && fetchDepartments().then();
     }, [departments, fetchDepartments]);
 
     if (isDepartmentLoading) {
@@ -53,33 +53,30 @@ const DepartmentWrapper: FC = () => {
         );
     }
 
-    if (!departments) {
-        return <Box
-            h="100%"
-            mt="10%"
-            display="flex"
-            alignItems="start"
-            justifyContent="center"
-        >
-            <Heading
-                px={10} py={1}
-                size="md"
-                textAlign="center"
-                borderWidth="1px"
-                borderColor="brand.200"
-                borderStyle="solid"
-                borderRadius="lg"
-                fontStyle="italic"
-            >Кафедр немає</Heading>
-        </Box>;
-    }
-
     return (
         <Stack spacing={2}>
             <IconButton aria-label="Додати кафедру" icon={<AddIcon/>} colorScheme="brand"/>
-            <DepartmentTable
-                departments={departments}
-            />
+
+            {departments.length > 0
+                ? <DepartmentTable departments={departments}/>
+                : <Box
+                    h="100%"
+                    mt="10%"
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="center"
+                >
+                    <Heading
+                        px={10} py={1}
+                        size="md"
+                        textAlign="center"
+                        borderWidth="1px"
+                        borderColor="brand.200"
+                        borderStyle="solid"
+                        borderRadius="lg"
+                        fontStyle="italic"
+                    >Кафедр немає</Heading>
+                </Box>}
         </Stack>
     );
 };
