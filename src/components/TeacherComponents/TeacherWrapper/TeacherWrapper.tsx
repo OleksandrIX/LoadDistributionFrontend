@@ -39,6 +39,8 @@ const TeacherWrapper: FC = () => {
             } else {
                 console.error(err);
             }
+        } finally {
+            setIsTeacherLoading(false);
         }
     }, [teacherToast, refreshToken]);
 
@@ -65,13 +67,8 @@ const TeacherWrapper: FC = () => {
     };
 
     useEffect(() => {
-        if (department) {
-            fetchTeachersByDepartmentId(department.id).then()
-                .finally(() => setIsTeacherLoading(false));
-        } else {
-            setIsTeacherLoading(false);
-        }
-    }, [department, fetchTeachersByDepartmentId]);
+        department && teachers.length === 0 && fetchTeachersByDepartmentId(department.id).then();
+    }, [department, teachers, fetchTeachersByDepartmentId]);
 
     if (isTeacherLoading) {
         return (
@@ -106,17 +103,16 @@ const TeacherWrapper: FC = () => {
 
     return (
         <Stack direction="column">
-            <TeacherTable teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
             <Button
-                mt={5}
-                bottom={2}
-                bg="brand.800"
+                mb={5}
+                top={2}
                 position="sticky"
                 colorScheme="brand"
                 onClick={onOpen}
             >
                 Додати
             </Button>
+            <TeacherTable teachers={teachers} onEdit={handleEditTeacher} onDelete={handleDeleteTeacher}/>
             <CreateTeacher
                 departmentId={department.id}
                 isOpen={isOpen}
