@@ -1,6 +1,6 @@
 import {FC, Fragment, useMemo} from "react";
 import {Column, Row} from "react-table";
-import {Box, Td, Tooltip, Tr} from "@chakra-ui/react";
+import {Td, Tooltip, Tr} from "@chakra-ui/react";
 
 import {EducationComponent} from "entities/discipline";
 import {TableLayout} from "components/LayoutComponents";
@@ -45,22 +45,20 @@ const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
 
 
     return (
-        <Box>
-            <TableLayout
-                headerFontSize="sm"
-                data={disciplines}
-                columns={columns}
-                RowComponent={({row}: { row: Row<EducationComponent> }) => (
-                    <Tr {...row.getRowProps()}>
-                        {row.cells.map((cell) =>
-                            <Fragment key={cell.getCellProps().key}>
-                                {cell.render("Cell")}
-                            </Fragment>
-                        )}
-                    </Tr>
-                )}
-            />
-        </Box>
+        <TableLayout
+            headerFontSize="sm"
+            data={disciplines}
+            columns={columns}
+            RowComponent={({row}: { row: Row<EducationComponent> }) => (
+                <Tr {...row.getRowProps()}>
+                    {row.cells.map((cell) =>
+                        <Fragment key={cell.getCellProps().key}>
+                            {cell.render("Cell")}
+                        </Fragment>
+                    )}
+                </Tr>
+            )}
+        />
     );
 };
 
