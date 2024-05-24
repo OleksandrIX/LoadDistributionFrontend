@@ -1,6 +1,10 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {Department, DepartmentWithTeachers, RequestDepartment} from "entities/department";
-import {Teacher} from "entities/teacher";
+import {
+    Department,
+    DepartmentWithTeachers,
+    DepartmentWithEducationComponents,
+    RequestDepartment
+} from "entities/department";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
@@ -38,8 +42,22 @@ class DepartmentService {
         return response.data;
     }
 
-    async getTeachersByDepartmentId(id: string): Promise<Teacher[]> {
-        const response: AxiosResponse<Teacher[]> = await this.axiosInstance.get(`/${id}/teachers`);
+    async getDepartmentByIdWithTeachers(id: string): Promise<DepartmentWithTeachers> {
+        const response: AxiosResponse<DepartmentWithTeachers> = await this.axiosInstance.get(`/${id}/teachers`);
+        return response.data;
+    }
+
+    async getAllDepartmentsWithEducationComponents(): Promise<DepartmentWithEducationComponents[]> {
+        const response: AxiosResponse<DepartmentWithEducationComponents[]> = await this.axiosInstance.get(
+            "/education-components"
+        );
+        return response.data;
+    }
+
+    async getDepartmentByIdWithEducationComponents(id: string): Promise<DepartmentWithEducationComponents> {
+        const response: AxiosResponse<DepartmentWithEducationComponents> = await this.axiosInstance.get(
+            `/${id}/education-components`
+        );
         return response.data;
     }
 

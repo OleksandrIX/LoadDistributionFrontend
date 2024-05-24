@@ -5,6 +5,7 @@ import {Profile} from "components/UserComponents";
 import {TeacherWrapper} from "components/TeacherComponents";
 import {DepartmentWrapper} from "components/DepartmentComponents";
 import {CurriculumWrapper} from "components/CurriculumComponents";
+import {DisciplineWrapper} from "components/DisciplineComponents";
 
 
 type SidebarElementData = {
@@ -22,7 +23,7 @@ const defaultSidebarElements: SidebarElementData[] = [
     {
         sidebarElementName: "Дисципліни",
         sidebarElementType: SidebarElement.DISCIPLINES,
-        children: <>Дисципліни</>
+        children: <DisciplineWrapper/>
     }
 ];
 
@@ -32,6 +33,11 @@ const sidebarAdminElements: SidebarElementData[] = [
         sidebarElementName: "Кафедри",
         sidebarElementType: SidebarElement.DEPARTMENTS,
         children: <DepartmentWrapper/>
+    },
+    {
+        sidebarElementName: "Навчальні групи",
+        sidebarElementType: SidebarElement.GROUPS,
+        children: <>Начальні групи</>
     },
     {
         sidebarElementName: "Робочі навчальні плани",

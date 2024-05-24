@@ -4,12 +4,13 @@ enum UserRole {
 }
 
 enum SidebarElement {
-    CURRICULUMS = "curriculums",
-    DEPARTMENTS = "departments",
+    PROFILE = "profile",
     DISCIPLINES = "disciplines",
+    DEPARTMENTS = "departments",
+    CURRICULUMS = "curriculums",
+    GROUPS = "groups",
     EMPLOYEES = "employees",
     PLANS = "plans",
-    PROFILE = "profile",
     WORKLOAD = "workload"
 }
 

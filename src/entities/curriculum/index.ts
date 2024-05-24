@@ -5,10 +5,6 @@ export type {
     ParsedCurriculum,
     SaveCurriculumRequest,
     SaveCurriculumResponse,
-    CurriculumSpreadsheetBlock,
-    EducationComponent,
-    Semester,
-    AcademicHours,
-    AcademicTask
+    CurriculumSpreadsheetBlock
 } from "./types/curriculum.type";
 export {CurriculumService};

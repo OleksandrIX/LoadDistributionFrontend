@@ -20,7 +20,6 @@ const CurriculumWrapper: FC = () => {
 
     const fetchCurriculums = useCallback(async () => {
         try {
-            setIsCurriculumLoading(true);
             const curriculumService = new CurriculumService();
             const curriculumsData = await curriculumService.getAllCurriculums();
             setCurriculums(curriculumsData);

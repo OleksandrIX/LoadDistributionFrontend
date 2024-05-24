@@ -3,7 +3,8 @@ import {Column, Row} from "react-table";
 import {Box, Stack, Td, Text, Tooltip, Tr} from "@chakra-ui/react";
 
 import {ReportingType} from "types/enums";
-import {AcademicHours, AcademicTask, CurriculumSpreadsheetBlock, EducationComponent} from "entities/curriculum";
+import {CurriculumSpreadsheetBlock} from "entities/curriculum";
+import {EducationComponent, AcademicHours, AcademicTask} from "entities/discipline";
 import {TableLayout} from "components/LayoutComponents";
 
 interface CurriculumSpreadsheetTableBlockProps {

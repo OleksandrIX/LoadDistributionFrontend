@@ -1,4 +1,5 @@
 import {Teacher} from "entities/teacher";
+import {EducationComponent} from "entities/discipline";
 
 interface DepartmentBase {
     department_name: string;
@@ -13,6 +14,10 @@ export interface Department extends DepartmentBase {
 
 export interface DepartmentWithTeachers extends Department {
     teachers: Teacher[];
+}
+
+export interface DepartmentWithEducationComponents extends Department {
+    education_components: EducationComponent[];
 }
 
 export interface RequestDepartment extends DepartmentBase {

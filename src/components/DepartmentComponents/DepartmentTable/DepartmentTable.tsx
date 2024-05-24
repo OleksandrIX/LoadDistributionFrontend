@@ -4,8 +4,8 @@ import {Td, Tooltip} from "@chakra-ui/react";
 
 import {DepartmentWithTeachers} from "entities/department";
 import {TableLayout} from "components/LayoutComponents";
+import {Teacher} from "entities/teacher";
 import DepartmentTableRow from "./DepartmentTableRow";
-import {Teacher} from "../../../entities/teacher";
 
 interface DepartmentTableProps {
     departments: DepartmentWithTeachers[];
