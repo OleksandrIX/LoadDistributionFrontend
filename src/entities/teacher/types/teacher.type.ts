@@ -5,10 +5,10 @@ export interface BaseTeacher {
     last_name: string;
     middle_name: string;
     position: Position;
-    military_rank: MilitaryRank | undefined;
-    academic_rank: AcademicRank | undefined;
-    scientific_degree: ScientificDegree | undefined;
-    years_of_service: number | undefined;
+    military_rank: MilitaryRank | null;
+    academic_rank: AcademicRank | null;
+    scientific_degree: ScientificDegree | null;
+    years_of_service: number | null;
     teacher_rate: number;
     is_civilian: boolean;
     department_id: string;

@@ -30,7 +30,7 @@ const TeacherForm = <T extends BaseTeacher>(
     }: TeacherFormProps<T>
 ) => {
     const handleChange = <K extends keyof T>(field: K, value: T[K]) => {
-        onChange({...teacher, [field]: value});
+        onChange({...teacher, [field]: value === "null" ? null : value});
     };
 
     const handleChangeIsCivilian = () => {
@@ -39,8 +39,8 @@ const TeacherForm = <T extends BaseTeacher>(
             is_civilian: !teacher.is_civilian
         } as T;
         if (updatedTeacher.is_civilian) {
-            updatedTeacher.military_rank = undefined;
-            updatedTeacher.years_of_service = undefined;
+            updatedTeacher.military_rank = null;
+            updatedTeacher.years_of_service = null;
         } else {
             updatedTeacher.military_rank = MilitaryRank.MAJOR;
             updatedTeacher.years_of_service = 10;
@@ -148,7 +148,7 @@ const TeacherForm = <T extends BaseTeacher>(
                 <FormControl isDisabled={teacher.is_civilian}>
                     <FormLabel>Вислуга років</FormLabel>
                     <NumberInput
-                        value={teacher.years_of_service}
+                        value={teacher.years_of_service !== null ? teacher.years_of_service : undefined}
                         onChange={(_, valueAsNumber) => handleChange("years_of_service", valueAsNumber)}
                         min={1}
                         max={50}

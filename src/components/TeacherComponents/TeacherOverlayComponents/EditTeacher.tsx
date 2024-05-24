@@ -18,11 +18,11 @@ const EditTeacher: FC<EditTeacherProps> = ({teacher, isOpen, onClose, onEdit}) =
     const handleSubmitUpdatedTeacher = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const teacherData: Teacher = {
-            ...teacher,
-            "military_rank": updatedTeacher.military_rank ? updatedTeacher.military_rank : undefined,
-            "academic_rank": updatedTeacher.academic_rank ? updatedTeacher.academic_rank : undefined,
-            "scientific_degree": updatedTeacher.scientific_degree ? updatedTeacher.scientific_degree : undefined,
-            "years_of_service": updatedTeacher.years_of_service ? updatedTeacher.years_of_service : undefined
+            ...updatedTeacher,
+            "military_rank": updatedTeacher.military_rank ? updatedTeacher.military_rank : null,
+            "academic_rank": updatedTeacher.academic_rank ? updatedTeacher.academic_rank : null,
+            "scientific_degree": updatedTeacher.scientific_degree ? updatedTeacher.scientific_degree : null,
+            "years_of_service": updatedTeacher.years_of_service ? updatedTeacher.years_of_service : null
         };
         onEdit(teacherData);
     };
@@ -42,6 +42,7 @@ const EditTeacher: FC<EditTeacherProps> = ({teacher, isOpen, onClose, onEdit}) =
                 <ModalCloseButton/>
                 <ModalBody pb={6}>
                     <TeacherForm
+                        isEdit={true}
                         initialRef={initialRef}
                         teacher={updatedTeacher}
                         onChange={setUpdatedTeacher}
