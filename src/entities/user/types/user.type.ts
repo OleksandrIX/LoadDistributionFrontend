@@ -1,13 +1,11 @@
 import {UserRole} from "types/enums";
+import {IdType, TimestampType} from "types/base.model.type";
 
-export interface User {
-    id: string;
+export interface User extends IdType, TimestampType {
     username: string;
     email: string;
     role: UserRole;
     department_id: string;
-    created_at: Date;
-    updated_at: Date;
 }
 
 export interface UserLogin {

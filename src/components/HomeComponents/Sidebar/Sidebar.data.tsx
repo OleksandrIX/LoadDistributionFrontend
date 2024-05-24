@@ -6,6 +6,7 @@ import {TeacherWrapper} from "components/TeacherComponents";
 import {DepartmentWrapper} from "components/DepartmentComponents";
 import {CurriculumWrapper} from "components/CurriculumComponents";
 import {DisciplineWrapper} from "components/DisciplineComponents";
+import {StudyGroupWrapper} from "components/StudyGroupComponents";
 
 
 type SidebarElementData = {
@@ -37,7 +38,7 @@ const sidebarAdminElements: SidebarElementData[] = [
     {
         sidebarElementName: "Навчальні групи",
         sidebarElementType: SidebarElement.GROUPS,
-        children: <>Начальні групи</>
+        children: <StudyGroupWrapper/>
     },
     {
         sidebarElementName: "Робочі навчальні плани",

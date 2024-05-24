@@ -1,4 +1,6 @@
 import {Position, MilitaryRank, AcademicRank, ScientificDegree} from "types/enums";
+import {IdType, TimestampType} from "types/base.model.type";
+
 
 export interface BaseTeacher {
     first_name: string;
@@ -14,11 +16,10 @@ export interface BaseTeacher {
     department_id: string;
 }
 
-export interface Teacher extends BaseTeacher {
-    id: string;
-    created_at: string;
-    updated_at: string;
+export interface Teacher extends BaseTeacher, IdType, TimestampType {
+
 }
 
 export interface RequestTeacher extends BaseTeacher {
+
 }
