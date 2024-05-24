@@ -1,6 +1,6 @@
 import axios from "axios";
 import {FC, useCallback, useEffect, useState} from "react";
-import {Box, Heading, Select, Stack, useToast} from "@chakra-ui/react";
+import {Box, Heading, Stack, useToast} from "@chakra-ui/react";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
@@ -8,6 +8,7 @@ import {Loader} from "components/UI";
 import {CurriculumFile, CurriculumService} from "entities/curriculum";
 import CurriculumTable from "../CurriculumTable/CurriculumTable";
 import UploadCurriculum from "./UploadCurriculum";
+import ParsedCurriculumBlock from "./ParsedCurriculumBlock";
 
 const CurriculumWrapper: FC = () => {
     const idCurriculumToast = "curriculum-toast";
@@ -74,7 +75,7 @@ const CurriculumWrapper: FC = () => {
 
     return (
         <Stack spacing={4}>
-            <Stack>
+            <Stack spacing={4}>
                 <UploadCurriculum
                     idCurriculumToast={idCurriculumToast}
                     curriculumToast={curriculumToast}
@@ -109,17 +110,7 @@ const CurriculumWrapper: FC = () => {
             </Stack>
 
             <Stack>
-                {
-                    curriculums.length > 0 && (
-                        <Select>
-                            {curriculums.map((curriculum) =>
-                                <option key={curriculum.filename} value={curriculum.filename}>
-                                    {curriculum.filename}
-                                </option>
-                            )}
-                        </Select>
-                    )
-                }
+                {curriculums.length > 0 && <ParsedCurriculumBlock curriculums={curriculums}/>}
             </Stack>
         </Stack>
     );
