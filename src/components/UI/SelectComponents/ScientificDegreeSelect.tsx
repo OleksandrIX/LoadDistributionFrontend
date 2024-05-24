@@ -4,14 +4,14 @@ import {Select} from "@chakra-ui/react";
 import {ScientificDegree} from "types/enums";
 
 interface ScientificDegreeSelectProps {
-    value: ScientificDegree | undefined;
+    value: ScientificDegree | null;
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const ScientificDegreeSelect: FC<ScientificDegreeSelectProps> = ({value, onChange}) => {
     return (
-        <Select onChange={onChange} defaultValue={value}>
-            <option value={undefined}>Немає</option>
+        <Select defaultValue={value !== null ? value : undefined} onChange={onChange}>
+            <option value="null">Немає</option>
             {Object.values(ScientificDegree).map((label) => (
                 <option key={label} value={label}>{label}</option>
             ))}

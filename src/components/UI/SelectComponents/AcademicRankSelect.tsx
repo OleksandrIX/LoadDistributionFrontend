@@ -4,14 +4,14 @@ import {Select} from "@chakra-ui/react";
 import {AcademicRank} from "types/enums";
 
 interface AcademicRankSelectProps {
-    value: AcademicRank | undefined;
+    value: AcademicRank | null;
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const AcademicRankSelect: FC<AcademicRankSelectProps> = ({value, onChange}) => {
     return (
-        <Select onChange={onChange} defaultValue={value}>
-            <option value={undefined}>Немає</option>
+        <Select defaultValue={value !== null ? value : undefined} onChange={onChange}>
+            <option value="null">Немає</option>
             {Object.values(AcademicRank).map((label) => (
                 <option key={label} value={label}>{label}</option>
             ))}

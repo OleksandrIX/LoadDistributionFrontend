@@ -28,8 +28,8 @@ const CreateTeacher: FC<CreateTeacherProps> = ({departmentId, isOpen, onClose, o
         middle_name: "",
         position: Position.LECTURER,
         military_rank: MilitaryRank.MAJOR,
-        academic_rank: undefined,
-        scientific_degree: undefined,
+        academic_rank: null,
+        scientific_degree: null,
         years_of_service: 10,
         teacher_rate: 1.00,
         is_civilian: false,
@@ -44,10 +44,10 @@ const CreateTeacher: FC<CreateTeacherProps> = ({departmentId, isOpen, onClose, o
                 const teacherService = new TeacherService();
                 const teacherData: RequestTeacher = {
                     ...teacher,
-                    "military_rank": teacher.military_rank ? teacher.military_rank : undefined,
-                    "academic_rank": teacher.academic_rank ? teacher.academic_rank : undefined,
-                    "scientific_degree": teacher.scientific_degree ? teacher.scientific_degree : undefined,
-                    "years_of_service": teacher.years_of_service ? teacher.years_of_service : undefined
+                    "military_rank": teacher.military_rank ? teacher.military_rank : null,
+                    "academic_rank": teacher.academic_rank ? teacher.academic_rank : null,
+                    "scientific_degree": teacher.scientific_degree ? teacher.scientific_degree : null,
+                    "years_of_service": teacher.years_of_service ? teacher.years_of_service : null
                 };
                 const teacherId = await teacherService.createTeacher(teacherData);
                 onCreate(teacherId);

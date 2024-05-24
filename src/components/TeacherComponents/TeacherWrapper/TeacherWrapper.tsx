@@ -1,8 +1,9 @@
+import axios from "axios";
 import {FC, useCallback, useEffect, useState} from "react";
 import {Box, Button, Heading, Stack, useDisclosure, useToast} from "@chakra-ui/react";
 
 import {handleAxiosError} from "utils/error.handlers";
-import {DepartmentService} from "entities/department";
+import {DepartmentService, DepartmentWithTeachers} from "entities/department";
 import {TeacherService} from "entities/teacher";
 import {useAuth} from "app/provider";
 import {Teacher} from "entities/teacher/types/teacher.type";
@@ -10,7 +11,6 @@ import {Teacher} from "entities/teacher/types/teacher.type";
 import {Loader} from "components/UI";
 import TeacherTable from "../TeacherTable/TeacherTable";
 import CreateTeacher from "../TeacherOverlayComponents/CreateTeacher";
-import axios from "axios";
 
 const TeacherWrapper: FC = () => {
     const idTeacherToast = "teacher-toast";
@@ -24,8 +24,8 @@ const TeacherWrapper: FC = () => {
     const fetchTeachersByDepartmentId = useCallback(async (departmentId: string) => {
         try {
             const departmentService = new DepartmentService();
-            const teachersData: Teacher[] = await departmentService.getTeachersByDepartmentId(departmentId);
-            setTeachers(teachersData);
+            const department: DepartmentWithTeachers = await departmentService.getDepartmentByIdWithTeachers(departmentId);
+            setTeachers(department.teachers);
         } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {

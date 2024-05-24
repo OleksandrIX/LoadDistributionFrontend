@@ -5,7 +5,7 @@ import {AddIcon} from "@chakra-ui/icons";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
-import {Department, DepartmentService} from "entities/department";
+import {DepartmentService, DepartmentWithTeachers} from "entities/department";
 import {Loader} from "components/UI";
 import DepartmentTable from "../DepartmentTable/DepartmentTable";
 
@@ -14,13 +14,13 @@ const DepartmentWrapper: FC = () => {
     const departmentToast = useToast({id: idDepartmentToast});
 
     const {refreshToken} = useAuth();
-    const [departments, setDepartments] = useState<Department[]>([]);
+    const [departments, setDepartments] = useState<DepartmentWithTeachers[]>([]);
     const [isDepartmentLoading, setIsDepartmentLoading] = useState<boolean>(true);
 
     const fetchDepartments = useCallback(async () => {
         try {
             const departmentService = new DepartmentService();
-            const departmentsData = await departmentService.getAllDepartments();
+            const departmentsData = await departmentService.getAllDepartmentsWithTeachers();
             setDepartments(departmentsData);
         } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {

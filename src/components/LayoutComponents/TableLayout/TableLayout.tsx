@@ -1,6 +1,8 @@
 import {FC} from "react";
 import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/table";
-import {Column, Row, usePagination, useTable} from "react-table";
+import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
+
+import {Column, Row, usePagination, useSortBy, useTable} from "react-table";
 import TablePaginationLayout from "./TablePaginationLayout";
 
 interface TableLayoutProps<T extends object> {
@@ -39,6 +41,7 @@ const TableLayout = <T extends object>(
             columns, data,
             initialState: {pageIndex: defaultPageIndex, pageSize: defaultPageSize}
         },
+        useSortBy,
         usePagination
     );
 
@@ -49,14 +52,20 @@ const TableLayout = <T extends object>(
                     {headerGroups.map((headerGroup) =>
                         <Tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) =>
-                                <Th {...column.getHeaderProps()}
+                                <Th {...column.getHeaderProps(column.getSortByToggleProps())}
                                     w={column.width}
                                     p={0}
+                                    py={1}
                                     border="1px solid white"
                                     fontSize={headerFontSize}
                                     textAlign="center"
                                     whiteSpace="break-spaces">
                                     {column.render("Header")}
+                                    {column.isSorted
+                                        ? column.isSortedDesc
+                                            ? <ChevronDownIcon ml={1} w={4} h={4}/>
+                                            : <ChevronUpIcon ml={1} w={4} h={4}/>
+                                        : ""}
                                 </Th>
                             )}
                         </Tr>

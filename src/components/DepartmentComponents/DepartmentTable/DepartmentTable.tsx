@@ -2,16 +2,17 @@ import {FC, useMemo} from "react";
 import {Column} from "react-table";
 import {Td, Tooltip} from "@chakra-ui/react";
 
-import {Department} from "entities/department";
+import {DepartmentWithTeachers} from "entities/department";
 import {TableLayout} from "components/LayoutComponents";
+import {Teacher} from "entities/teacher";
 import DepartmentTableRow from "./DepartmentTableRow";
 
 interface DepartmentTableProps {
-    departments: Department[];
+    departments: DepartmentWithTeachers[];
 }
 
 const DepartmentTable: FC<DepartmentTableProps> = ({departments}) => {
-    const columns: Column<Department>[] = useMemo(() => [
+    const columns: Column<DepartmentWithTeachers>[] = useMemo(() => [
         {
             Header: "Номер кафедри",
             accessor: "department_code",
@@ -32,7 +33,8 @@ const DepartmentTable: FC<DepartmentTableProps> = ({departments}) => {
         },
         {
             Header: "Всього НПП",
-            Cell: () => <Td textAlign="center">1</Td>,
+            accessor: "teachers",
+            Cell: ({value}: { value: Teacher[] }) => <Td textAlign="center">{value.length}</Td>,
             width: "15%"
         },
         {
