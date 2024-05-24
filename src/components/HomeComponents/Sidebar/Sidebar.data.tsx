@@ -18,6 +18,11 @@ const defaultSidebarElements: SidebarElementData[] = [
         sidebarElementName: "Профіль",
         sidebarElementType: SidebarElement.PROFILE,
         children: <Profile/>
+    },
+    {
+        sidebarElementName: "Дисципліни",
+        sidebarElementType: SidebarElement.DISCIPLINES,
+        children: <>Дисципліни</>
     }
 ];
 
@@ -41,11 +46,6 @@ const sidebarUserElements: SidebarElementData[] = [
         sidebarElementName: "Науково-педагогічні працівники",
         sidebarElementType: SidebarElement.EMPLOYEES,
         children: <TeacherWrapper/>
-    },
-    {
-        sidebarElementName: "Дисципліни",
-        sidebarElementType: SidebarElement.DISCIPLINES,
-        children: <>Дисципліни</>
     },
     {
         sidebarElementName: "Індивідуальні плани викладачів",

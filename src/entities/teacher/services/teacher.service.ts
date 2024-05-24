@@ -23,6 +23,11 @@ class TeacherService {
         this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
+    async getAllTeachers(): Promise<Teacher[]> {
+        const response: AxiosResponse<Teacher[]> = await this.axiosInstance.get("");
+        return response.data;
+    }
+
     async getTeacherById(id: string): Promise<Teacher> {
         const response: AxiosResponse<Teacher> = await this.axiosInstance.get(`/${id}`);
         return response.data;
