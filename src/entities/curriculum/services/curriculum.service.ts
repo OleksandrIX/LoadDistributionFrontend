@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {CurriculumFile} from "entities/curriculum";
+import {CurriculumFile, ParsedCurriculum} from "entities/curriculum";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
@@ -27,6 +27,10 @@ class CurriculumService {
         return response.data;
     }
 
+    async deleteCurriculum(filename: string): Promise<AxiosResponse> {
+        return this.axiosInstance.delete(`?curriculum_filename=${filename}`);
+    }
+
     async uploadCurriculum(formData: FormData): Promise<CurriculumFile> {
         const response: AxiosResponse<CurriculumFile> = await this.axiosInstance.post(
             "/upload",
@@ -50,8 +54,11 @@ class CurriculumService {
         return response.data;
     }
 
-    async deleteCurriculum(filename: string): Promise<AxiosResponse> {
-        return this.axiosInstance.delete(`?curriculum_filename=${filename}`);
+    async parseCurriculum(filename: string): Promise<ParsedCurriculum> {
+        const response: AxiosResponse<ParsedCurriculum> = await this.axiosInstance.post(
+            `/parse?curriculum_filename=${filename}`
+        );
+        return response.data;
     }
 }
 
