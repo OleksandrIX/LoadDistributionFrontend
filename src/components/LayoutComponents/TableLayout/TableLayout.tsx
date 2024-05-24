@@ -4,6 +4,7 @@ import {Column, Row, usePagination, useTable} from "react-table";
 import TablePaginationLayout from "./TablePaginationLayout";
 
 interface TableLayoutProps<T extends object> {
+    headerFontSize?: string;
     defaultPageIndex?: number;
     defaultPageSize?: number;
     data: T[];
@@ -13,6 +14,7 @@ interface TableLayoutProps<T extends object> {
 
 const TableLayout = <T extends object>(
     {
+        headerFontSize = "xs",
         defaultPageIndex = 0,
         defaultPageSize = 10,
         columns,
@@ -49,6 +51,9 @@ const TableLayout = <T extends object>(
                             {headerGroup.headers.map((column) =>
                                 <Th {...column.getHeaderProps()}
                                     w={column.width}
+                                    p={0}
+                                    border="1px solid white"
+                                    fontSize={headerFontSize}
                                     textAlign="center"
                                     whiteSpace="break-spaces">
                                     {column.render("Header")}
