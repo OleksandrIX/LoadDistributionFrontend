@@ -34,12 +34,14 @@ const ParsedCurriculumBlock: FC<ParsedCurriculumBlockProps> = ({curriculums}) =>
                 setParsedCurriculum(data);
                 resolve();
             } catch (err) {
-                console.log(err);
                 if (err && axios.isAxiosError(err) && err.response) {
                     if (err.response.status === 401) {
                         await refreshToken();
                     } else {
-                        handleAxiosError(err, parsedCurriculumToast, idParsedCurriculum, {});
+                        handleAxiosError(err, parsedCurriculumToast, idParsedCurriculum, {
+                            401: "Ви не авторизовані",
+                            403: "Відмовлено у доступі"
+                        });
                     }
                 } else {
                     console.error(err);

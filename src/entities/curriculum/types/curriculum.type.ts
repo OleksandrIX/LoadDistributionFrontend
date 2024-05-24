@@ -14,6 +14,14 @@ export interface ParsedCurriculum {
     curriculum_errors: string[][];
 }
 
+export interface SaveCurriculumRequest {
+    curriculum_spreadsheet_blocks: CurriculumSpreadsheetBlock[];
+}
+
+export interface SaveCurriculumResponse {
+    education_components: string[];
+}
+
 
 export interface CurriculumSpreadsheetBlock {
     course_study: number;

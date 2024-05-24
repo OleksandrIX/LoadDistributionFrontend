@@ -3,6 +3,8 @@ import CurriculumService from "./services/curriculum.service";
 export type {
     CurriculumFile,
     ParsedCurriculum,
+    SaveCurriculumRequest,
+    SaveCurriculumResponse,
     CurriculumSpreadsheetBlock,
     EducationComponent,
     Semester,

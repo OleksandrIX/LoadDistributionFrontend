@@ -26,7 +26,7 @@ const CurriculumSpreadsheetTable: FC<CurriculumSpreadsheetTableProps> = ({curric
     return (
         <Box>
             <Text textAlign="center">Сторінка {currentPage + 1} з {curriculumSpreadsheetBlocks.length}</Text>
-            <Stack direction="row" alignItems="center" spacing={4}>
+            <Stack direction="row" alignItems="center">
                 <IconButton
                     colorScheme="brand"
                     aria-label="Попередня сторінка"

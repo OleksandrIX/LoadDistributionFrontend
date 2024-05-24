@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {CurriculumFile, ParsedCurriculum} from "entities/curriculum";
+import {CurriculumFile, ParsedCurriculum, SaveCurriculumRequest, SaveCurriculumResponse} from "entities/curriculum";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
@@ -58,6 +58,11 @@ class CurriculumService {
         const response: AxiosResponse<ParsedCurriculum> = await this.axiosInstance.post(
             `/parse?curriculum_filename=${filename}`
         );
+        return response.data;
+    }
+
+    async saveCurriculumData(curriculumData: SaveCurriculumRequest): Promise<SaveCurriculumResponse> {
+        const response: AxiosResponse<SaveCurriculumResponse> = await this.axiosInstance.post("/save", curriculumData);
         return response.data;
     }
 }

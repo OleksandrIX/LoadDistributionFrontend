@@ -1,10 +1,13 @@
 import {FC} from "react";
+import {Button, Stack, StackDivider, useToast} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton} from "@chakra-ui/modal";
 
-import {ParsedCurriculum} from "entities/curriculum";
+import {useAuth} from "app/provider";
+import {ParsedCurriculum, CurriculumService} from "entities/curriculum";
 import CurriculumError from "./CurriculumError";
 import CurriculumSpreadsheetTable from "./CurriculumSpreadsheetTable";
-import {Stack, StackDivider} from "@chakra-ui/react";
+import axios from "axios";
+import {handleAxiosError} from "../../../../utils/error.handlers";
 
 interface ViewParsedCurriculumProps {
     isOpen: boolean;
@@ -13,6 +16,53 @@ interface ViewParsedCurriculumProps {
 }
 
 const ViewParsedCurriculum: FC<ViewParsedCurriculumProps> = ({isOpen, onClose, parsedCurriculum}) => {
+    const idSavedCurriculumToast = "curriculum-toast";
+    const savedCurriculumPromiseToast = useToast();
+    const savedCurriculumToast = useToast({id: idSavedCurriculumToast});
+
+    const {refreshToken} = useAuth();
+
+    const handleSaveCurriculumData = () => {
+        const savedCurriculumPromise = new Promise<void>(async (resolve, reject) => {
+            try {
+                const curriculumService = new CurriculumService();
+                await curriculumService.saveCurriculumData(
+                    {curriculum_spreadsheet_blocks: parsedCurriculum.curriculum_spreadsheet_blocks}
+                );
+                onClose();
+                resolve();
+            } catch (err) {
+                if (err && axios.isAxiosError(err) && err.response) {
+                    if (err.response.status === 401) {
+                        await refreshToken();
+                    } else {
+                        handleAxiosError(err, savedCurriculumToast, idSavedCurriculumToast, {
+                            401: "Ви не авторизовані",
+                            403: "Відмовлено у доступі"
+                        });
+                    }
+                } else {
+                    console.error(err);
+                }
+                reject();
+            }
+        });
+
+        savedCurriculumPromiseToast.promise(savedCurriculumPromise, {
+            success: {
+                title: "Дані успішно збереженно",
+                description: `Дані з файлу ${parsedCurriculum.curriculum_file.filename} успішно збереженно`
+            },
+            error: {
+                title: "Помилка при збереженні даних",
+                description: `Помилка при збереженні даних файлу ${parsedCurriculum.curriculum_file.filename}`
+            },
+            loading: {
+                title: "Дані зберігаються"
+            }
+        });
+    };
+
     return (
         <Modal
             isOpen={isOpen}
@@ -31,6 +81,7 @@ const ViewParsedCurriculum: FC<ViewParsedCurriculumProps> = ({isOpen, onClose, p
                     <CurriculumSpreadsheetTable
                         curriculumSpreadsheetBlocks={parsedCurriculum.curriculum_spreadsheet_blocks}
                     />
+                    <Button colorScheme="brand" onClick={handleSaveCurriculumData}>Зберегти</Button>
                 </Stack>
             </ModalContent>
         </Modal>
