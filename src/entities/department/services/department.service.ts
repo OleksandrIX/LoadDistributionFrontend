@@ -1,7 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {CreateDepartment, Department, UpdateDepartment} from "entities/department/types/department.type";
-import {Teacher} from "entities/teacher/types/teacher.type";
-import {Pagination, PaginationQuery} from "types/pagination.type";
+import {Department, RequestDepartment} from "entities/department";
+import {Teacher} from "entities/teacher";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
@@ -24,9 +23,8 @@ class DepartmentService {
         this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
-    async getAllDepartments({page, size}: PaginationQuery = {page: 1, size: 10}): Promise<Pagination<Department>> {
-        const response: AxiosResponse<Pagination<Department>> =
-            await this.axiosInstance.get(`?page=${page}&size=${size}`);
+    async getAllDepartments(): Promise<Department[]> {
+        const response: AxiosResponse<Department[]> = await this.axiosInstance.get("");
         return response.data;
     }
 
@@ -40,12 +38,12 @@ class DepartmentService {
         return response.data;
     }
 
-    async createDepartment(departmentData: CreateDepartment): Promise<string> {
+    async createDepartment(departmentData: RequestDepartment): Promise<string> {
         const response: AxiosResponse<string> = await this.axiosInstance.post("", departmentData);
         return response.data;
     }
 
-    async editDepartment(id: string, departmentData: UpdateDepartment): Promise<Department> {
+    async editDepartment(id: string, departmentData: RequestDepartment): Promise<Department> {
         const response: AxiosResponse<Department> = await this.axiosInstance.put(`/${id}`, departmentData);
         return response.data;
     }
@@ -55,4 +53,4 @@ class DepartmentService {
     }
 }
 
-export default new DepartmentService();
+export default DepartmentService;

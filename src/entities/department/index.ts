@@ -1,4 +1,4 @@
-import departmentService from "./services/department.service";
+import DepartmentService from "./services/department.service";
 
-export type {Department, CreateDepartment, UpdateDepartment} from "./types/department.type";
-export {departmentService};
+export type {Department, RequestDepartment} from "./types/department.type";
+export {DepartmentService};

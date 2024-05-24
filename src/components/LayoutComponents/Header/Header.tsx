@@ -10,7 +10,7 @@ import "./Header.scss";
 
 const Header: FC = () => {
     const navigate = useNavigate();
-    const {user, isAdmin, logout} = useAuth();
+    const {user, logout} = useAuth();
 
     const logoutButtonHandler = () => {
         logout();
@@ -35,7 +35,6 @@ const Header: FC = () => {
                     listItemClassName="nav-list__element"
                     linkClassName="nav-list__link"
                 >
-                    {isAdmin && <NavLink className="nav-list__link" to="/departments">Кафедри</NavLink>}
                     <li className="nav-list__element">{navigationLink}</li>
                 </NavigationList>
             </nav>

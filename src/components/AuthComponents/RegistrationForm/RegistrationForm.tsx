@@ -3,8 +3,8 @@ import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, FormControl, FormLabel, HStack, Input, useToast} from "@chakra-ui/react";
 
 import {displayToast} from "utils/toast";
+import {AuthService} from "entities/user";
 import {handleAxiosError} from "utils/error.handlers";
-import authService from "entities/user/services/auth.service";
 
 import "./RegistrationForm.scss";
 
@@ -41,6 +41,7 @@ const RegistrationForm: FC = () => {
                 status: "error"
             });
         } else {
+            const authService = new AuthService();
             authService.registration({username: username, email: email, password: password})
                 .then(() => {
                     errorToast.closeAll();

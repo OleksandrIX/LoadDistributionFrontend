@@ -1,21 +1,18 @@
 import axios from "axios";
 import {createContext, FC, ReactNode, useCallback, useContext, useEffect, useMemo, useState} from "react";
 
-import {User} from "entities/user/types/user.type";
 import {UserRole} from "types/enums";
-import {Department} from "entities/department/types/department.type";
-
-import authService from "entities/user/services/auth.service";
-import userService from "entities/user/services/user.service";
-import departmentService from "entities/department/services/department.service";
+import {User, AuthService, UserService} from "entities/user";
+import {Department, DepartmentService} from "entities/department";
 
 
 interface AuthContextType {
     accessToken: string | null;
     user: User | null;
     department: Department | null;
-    isAdmin: boolean | null;
+    isAdmin: boolean;
     isLoading: boolean;
+    refreshToken: () => Promise<void>;
     setAccessToken: (newAccessToken: string) => void;
     logout: () => void;
 }
@@ -24,10 +21,17 @@ const AuthContext = createContext<AuthContextType>({
     accessToken: null,
     user: null,
     department: null,
-    isAdmin: null,
+    isAdmin: false,
     isLoading: true,
-    setAccessToken: () => null,
-    logout: () => null
+    refreshToken: async () => {
+
+    },
+    setAccessToken: () => {
+
+    },
+    logout: () => {
+
+    }
 });
 
 
@@ -35,7 +39,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [accessToken, setAccessToken_] = useState<string | null>(localStorage.getItem("access_token"));
     const [user, setUser] = useState<User | null>(null);
     const [department, setDepartment] = useState<Department | null>(null);
-    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const setAccessToken = (newAccessToken: string) => {
@@ -43,19 +47,23 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
     };
 
     const logout = async () => {
+        const authService = new AuthService();
         await authService.logout();
         setAccessToken_(null);
         setUser(null);
+        setDepartment(null);
+        setIsAdmin(false);
         localStorage.removeItem("access_token");
     };
 
 
     const refreshToken = useCallback(async () => {
         try {
+            const authService = new AuthService();
             const response = await authService.refreshToken();
             const newAccessToken = response.data["access_token"];
             setAccessToken_(newAccessToken);
-        } catch (err: unknown) {
+        } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
                     await logout();
@@ -73,10 +81,8 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
                 return;
             }
 
-            userService.setAuthorizationToken(accessToken);
-            authService.setAuthorizationToken(accessToken);
-            departmentService.setAuthorizationToken(accessToken);
-
+            const departmentService = new DepartmentService();
+            const userService = new UserService();
 
             const userData = await userService.getCurrentUser();
             setUser(userData || null);
@@ -118,9 +124,10 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
             department,
             isAdmin,
             isLoading,
+            refreshToken,
             setAccessToken,
             logout
-        }), [accessToken, user, department, isAdmin, isLoading]
+        }), [accessToken, user, department, isAdmin, isLoading, refreshToken]
     );
 
     return (
