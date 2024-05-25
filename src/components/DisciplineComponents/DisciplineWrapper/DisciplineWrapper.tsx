@@ -5,8 +5,8 @@ import {Box, Heading, Stack, useToast} from "@chakra-ui/react";
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
 import {Loader} from "components/UI";
-import {DepartmentService, DepartmentWithEducationComponents} from "entities/department";
-import {ResponseEducationComponent} from "entities/discipline";
+import {DepartmentService, DepartmentWithRelationships} from "entities/department";
+import {ResponseEducationComponentWithRelationships} from "entities/discipline";
 import DisciplineAdminWrapper from "./DisciplineAdminWrapper/DisciplineAdminWrapper";
 import DisciplineUserWrapper from "./DisciplineUserWrapper/DisciplineUserWrapper";
 
@@ -15,8 +15,8 @@ const DisciplineWrapper: FC = () => {
     const educationComponentToast = useToast({id: idEducationComponentToast});
 
     const {isAdmin, department, refreshToken} = useAuth();
-    const [departmentsWithDisciplines, setDepartmentsWithDisciplines] = useState<DepartmentWithEducationComponents[]>([]);
-    const [disciplines, setDisciplines] = useState<ResponseEducationComponent[]>([]);
+    const [departmentsWithDisciplines, setDepartmentsWithDisciplines] = useState<DepartmentWithRelationships[]>([]);
+    const [disciplines, setDisciplines] = useState<ResponseEducationComponentWithRelationships[]>([]);
     const [isLoadingEducationComponent, setIsLoadingEducationComponent] = useState<boolean>(true);
 
     const fetchDisciplines = useCallback(async () => {
@@ -26,7 +26,6 @@ const DisciplineWrapper: FC = () => {
                 const departmentsWithEducationComponents = await departmentService
                     .getAllDepartmentsWithEducationComponents();
                 setDepartmentsWithDisciplines(departmentsWithEducationComponents);
-                console.log(departmentsWithEducationComponents);
             } else {
                 if (department) {
                     const departmentWithEducationComponents = await departmentService

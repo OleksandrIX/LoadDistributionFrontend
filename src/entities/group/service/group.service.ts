@@ -1,15 +1,15 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {ResponseEducationComponent} from "entities/discipline";
+import {ResponseStudyGroup} from "../types/group.type";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
-class EducationComponentService {
+class StudyGroupService {
     private axiosInstance: AxiosInstance;
 
     constructor() {
         const defaultHeaders = axios.defaults.headers;
         this.axiosInstance = axios.create({
-            baseURL: `${host}/api/v1/education-components`,
+            baseURL: `${host}/api/v1/study-groups`,
             withCredentials: true,
             headers: {
                 ...defaultHeaders,
@@ -22,15 +22,10 @@ class EducationComponentService {
         this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
-    async getAllEducationComponents(): Promise<ResponseEducationComponent[]> {
-        const response: AxiosResponse<ResponseEducationComponent[]> = await this.axiosInstance.get("");
-        return response.data;
-    }
-
-    async getEducationComponentById(id: string): Promise<ResponseEducationComponent> {
-        const response: AxiosResponse<ResponseEducationComponent> = await this.axiosInstance.get(`/${id}`);
+    async getAllStudyGroups(): Promise<ResponseStudyGroup[]> {
+        const response: AxiosResponse<ResponseStudyGroup[]> = await this.axiosInstance.get("");
         return response.data;
     }
 }
 
-export default EducationComponentService;
+export default StudyGroupService;

@@ -2,7 +2,7 @@ import axios, {AxiosInstance, AxiosResponse} from "axios";
 import {
     Department,
     DepartmentWithTeachers,
-    DepartmentWithEducationComponents,
+    DepartmentWithRelationships,
     RequestDepartment
 } from "entities/department";
 
@@ -47,15 +47,15 @@ class DepartmentService {
         return response.data;
     }
 
-    async getAllDepartmentsWithEducationComponents(): Promise<DepartmentWithEducationComponents[]> {
-        const response: AxiosResponse<DepartmentWithEducationComponents[]> = await this.axiosInstance.get(
+    async getAllDepartmentsWithEducationComponents(): Promise<DepartmentWithRelationships[]> {
+        const response: AxiosResponse<DepartmentWithRelationships[]> = await this.axiosInstance.get(
             "/education-components"
         );
         return response.data;
     }
 
-    async getDepartmentByIdWithEducationComponents(id: string): Promise<DepartmentWithEducationComponents> {
-        const response: AxiosResponse<DepartmentWithEducationComponents> = await this.axiosInstance.get(
+    async getDepartmentByIdWithEducationComponents(id: string): Promise<DepartmentWithRelationships> {
+        const response: AxiosResponse<DepartmentWithRelationships> = await this.axiosInstance.get(
             `/${id}/education-components`
         );
         return response.data;

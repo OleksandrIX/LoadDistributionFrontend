@@ -1,6 +1,9 @@
 import {IdType, TimestampType} from "types/base.model.type";
-import {RequestSemester} from "./semester.type";
 import {EducationDegree} from "types/enums";
+import {ResponseStudyGroup} from "entities/group";
+import {ResponseSpecialization} from "entities/specialization";
+import {RequestSemester, ResponseSemester} from "./semester.type";
+import {ResponseAcademicWorkload} from "./workload.type";
 
 
 interface EducationComponentBase {
@@ -25,4 +28,11 @@ export interface ResponseEducationComponent extends IdType, TimestampType, Educa
     education_degree: EducationDegree;
     department_id: string;
     specialization_id: string;
+}
+
+export interface ResponseEducationComponentWithRelationships extends IdType, TimestampType, EducationComponentBase {
+    specialization: ResponseSpecialization;
+    semesters: ResponseSemester[];
+    academic_workloads: ResponseAcademicWorkload[];
+    study_groups: ResponseStudyGroup[];
 }

@@ -1,17 +1,17 @@
 import {FC, Fragment, useMemo} from "react";
-
-import {StudyGroup} from "entities/studyGroups";
-import {TableLayout} from "../../LayoutComponents";
 import {Column, Row} from "react-table";
 import {Td, Tr} from "@chakra-ui/react";
-import {EducationDegree} from "../../../types/enums";
+
+import {EducationDegree} from "types/enums";
+import {ResponseStudyGroup} from "entities/group";
+import {TableLayout} from "components/LayoutComponents";
 
 interface StudyGroupTableProps {
-    studyGroups: StudyGroup[];
+    studyGroups: ResponseStudyGroup[];
 }
 
 const StudyGroupTable: FC<StudyGroupTableProps> = ({studyGroups}) => {
-    const columns: Column<StudyGroup>[] = useMemo(() => [
+    const columns: Column<ResponseStudyGroup>[] = useMemo(() => [
         {
             Header: "Код групи",
             accessor: "group_code",
@@ -38,7 +38,7 @@ const StudyGroupTable: FC<StudyGroupTableProps> = ({studyGroups}) => {
         <TableLayout
             data={studyGroups}
             columns={columns}
-            RowComponent={({row}: { row: Row<StudyGroup> }) => (
+            RowComponent={({row}: { row: Row<ResponseStudyGroup> }) => (
                 <Tr {...row.getRowProps()}>
                     {row.cells.map((cell) =>
                         <Fragment key={cell.getCellProps().key}>

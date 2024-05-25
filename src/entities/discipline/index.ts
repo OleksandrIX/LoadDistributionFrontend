@@ -1,9 +1,10 @@
-import EducationComponentService from "./service/educationComponent.service";
+import DisciplineService from "./service/discipline.service";
 
 export type {
     ParsedEducationComponent,
     RequestEducationComponent,
-    ResponseEducationComponent
+    ResponseEducationComponent,
+    ResponseEducationComponentWithRelationships
 } from "./types/discipline.type";
 
 export type {
@@ -23,4 +24,4 @@ export type {
     ResponseAcademicWorkload
 } from "./types/workload.type";
 
-export {EducationComponentService};
+export {DisciplineService};

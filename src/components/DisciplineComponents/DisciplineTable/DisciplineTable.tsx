@@ -2,15 +2,17 @@ import {FC, Fragment, useMemo} from "react";
 import {Column, Row} from "react-table";
 import {Td, Tooltip, Tr} from "@chakra-ui/react";
 
-import {ResponseEducationComponent} from "entities/discipline";
+import {ResponseEducationComponentWithRelationships} from "entities/discipline";
 import {TableLayout} from "components/LayoutComponents";
+import {ResponseStudyGroup} from "../../../entities/group";
+import {ResponseSpecialization} from "../../../entities/specialization";
 
 interface DisciplineTableProps {
-    disciplines: ResponseEducationComponent[];
+    disciplines: ResponseEducationComponentWithRelationships[];
 }
 
 const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
-    const columns: Column<ResponseEducationComponent>[] = useMemo(() => [
+    const columns: Column<ResponseEducationComponentWithRelationships>[] = useMemo(() => [
         {
             Header: "Код ОК",
             accessor: "education_component_code",
@@ -40,6 +42,42 @@ const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
             Header: "Години",
             accessor: "hours",
             Cell: ({value}: { value: number }) => <Td isNumeric>{value}</Td>
+        },
+        {
+            Header: "Спеціалізація",
+            accessor: "specialization",
+            Cell: ({value}: { value: ResponseSpecialization }) => (
+                <Td
+                    fontSize="xs"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                >
+                    <Tooltip label={value.specialization_name}>
+                        <span>{value.specialization_name}</span>
+                    </Tooltip>
+                </Td>
+            )
+        },
+        {
+            Header: "Кількість груп",
+            accessor: "study_groups",
+            Cell: ({value}: { value: ResponseStudyGroup[] }) => (
+                <Td textAlign="center"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap">
+                    <Tooltip label={value.map((group) =>
+                        <p key={group.id}>{group.group_code} група - {group.number_listeners} слухачів</p>
+                    )}>
+                        <p>
+                            {value.length} групи,
+                            <span> </span>
+                            {value.reduce((acc, group) => acc + group.number_listeners, 0)} слухачів
+                        </p>
+                    </Tooltip>
+                </Td>
+            )
         }
     ], []);
 
@@ -49,7 +87,7 @@ const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
             headerFontSize="sm"
             data={disciplines}
             columns={columns}
-            RowComponent={({row}: { row: Row<ResponseEducationComponent> }) => (
+            RowComponent={({row}: { row: Row<ResponseEducationComponentWithRelationships> }) => (
                 <Tr {...row.getRowProps()}>
                     {row.cells.map((cell) =>
                         <Fragment key={cell.getCellProps().key}>

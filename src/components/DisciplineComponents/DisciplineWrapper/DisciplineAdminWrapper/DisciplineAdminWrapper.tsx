@@ -2,16 +2,16 @@ import {FC, useState} from "react";
 import {Button, Heading, SimpleGrid, Stack, Tooltip, useDisclosure} from "@chakra-ui/react";
 import {Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/modal";
 
-import {DepartmentWithEducationComponents} from "entities/department";
+import {DepartmentWithRelationships} from "entities/department";
 import DisciplineTable from "../../DisciplineTable/DisciplineTable";
 
 interface DisciplineAdminWrapperProps {
-    departmentsWithDisciplines: DepartmentWithEducationComponents[];
+    departmentsWithDisciplines: DepartmentWithRelationships[];
 }
 
 const DisciplineAdminWrapper: FC<DisciplineAdminWrapperProps> = ({departmentsWithDisciplines}) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
-    const [selectedDepartment, setSelectedDepartment] = useState<DepartmentWithEducationComponents>(departmentsWithDisciplines[0]);
+    const [selectedDepartment, setSelectedDepartment] = useState<DepartmentWithRelationships>(departmentsWithDisciplines[0]);
 
     const handleSelectDepartment = (departmentIndex: number) => {
         setSelectedDepartment(departmentsWithDisciplines[departmentIndex]);
