@@ -2,15 +2,15 @@ import {FC, Fragment, useMemo} from "react";
 import {Column, Row} from "react-table";
 import {Td, Tooltip, Tr} from "@chakra-ui/react";
 
-import {EducationComponent} from "entities/discipline";
+import {ResponseEducationComponent} from "entities/discipline";
 import {TableLayout} from "components/LayoutComponents";
 
 interface DisciplineTableProps {
-    disciplines: EducationComponent[];
+    disciplines: ResponseEducationComponent[];
 }
 
 const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
-    const columns: Column<EducationComponent>[] = useMemo(() => [
+    const columns: Column<ResponseEducationComponent>[] = useMemo(() => [
         {
             Header: "Код ОК",
             accessor: "education_component_code",
@@ -49,7 +49,7 @@ const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
             headerFontSize="sm"
             data={disciplines}
             columns={columns}
-            RowComponent={({row}: { row: Row<EducationComponent> }) => (
+            RowComponent={({row}: { row: Row<ResponseEducationComponent> }) => (
                 <Tr {...row.getRowProps()}>
                     {row.cells.map((cell) =>
                         <Fragment key={cell.getCellProps().key}>

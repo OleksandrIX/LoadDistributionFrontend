@@ -1,5 +1,5 @@
 import {EducationDegree} from "types/enums";
-import {EducationComponent} from "entities/discipline";
+import {ParsedEducationComponent} from "entities/discipline";
 
 export interface CurriculumFile {
     etag: string;
@@ -15,7 +15,7 @@ export interface CurriculumSpreadsheetBlock {
     specialty: string;
     specialization: string;
     study_groups: string;
-    education_components: EducationComponent[];
+    education_components: ParsedEducationComponent[];
 }
 
 
