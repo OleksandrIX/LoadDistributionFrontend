@@ -1,13 +1,13 @@
+import axios from "axios";
 import {FC} from "react";
 import {Button, Stack, StackDivider, useToast} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton} from "@chakra-ui/modal";
 
 import {useAuth} from "app/provider";
+import {handleAxiosError} from "utils/error.handlers";
 import {ParsedCurriculum, CurriculumService} from "entities/curriculum";
 import CurriculumError from "./CurriculumError";
 import CurriculumSpreadsheetTable from "./CurriculumSpreadsheetTable";
-import axios from "axios";
-import {handleAxiosError} from "../../../../utils/error.handlers";
 
 interface ViewParsedCurriculumProps {
     isOpen: boolean;
@@ -74,7 +74,7 @@ const ViewParsedCurriculum: FC<ViewParsedCurriculumProps> = ({isOpen, onClose, p
                 <ModalHeader>Дані з файлу {parsedCurriculum.curriculum_file.filename}</ModalHeader>
                 <ModalCloseButton/>
                 <Stack px={4} py={2} divider={<StackDivider h="1px" bg="gray.300"/>}>
-                    {parsedCurriculum.curriculum_errors &&
+                    {parsedCurriculum.curriculum_errors.length > 0 &&
                         <CurriculumError
                             curriculumErrors={parsedCurriculum.curriculum_errors}
                         />}

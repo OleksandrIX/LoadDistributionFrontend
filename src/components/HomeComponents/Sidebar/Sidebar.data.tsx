@@ -55,14 +55,14 @@ const sidebarUserElements: SidebarElementData[] = [
         children: <TeacherWrapper/>
     },
     {
-        sidebarElementName: "Індивідуальні плани викладачів",
-        sidebarElementType: SidebarElement.PLANS,
-        children: <>Індивідуальні плани викладачів</>
-    },
-    {
         sidebarElementName: "Навчальне навантаження НПП",
         sidebarElementType: SidebarElement.WORKLOAD,
         children: <>Навчальне навантаження НПП</>
+    },
+    {
+        sidebarElementName: "Індивідуальні плани викладачів",
+        sidebarElementType: SidebarElement.PLANS,
+        children: <>Індивідуальні плани викладачів</>
     }
 ];
 
