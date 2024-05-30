@@ -1,12 +1,15 @@
 import {ReactNode} from "react";
 
 import {SidebarElement} from "types/enums";
-import {Profile} from "components/UserComponents";
+import {Profile, UserWrapper} from "components/UserComponents";
 import {TeacherWrapper} from "components/TeacherComponents";
 import {DepartmentWrapper} from "components/DepartmentComponents";
 import {CurriculumWrapper} from "components/CurriculumComponents";
 import {DisciplineWrapper} from "components/DisciplineComponents";
 import {StudyGroupWrapper} from "components/StudyGroupComponents";
+import {WorkloadWrapper} from "components/WorkloadComponents";
+import {IndividualPlanWrapper} from "components/IndividualPlanComponents";
+import {WorkloadFormulaWrapper} from "components/WorkloadFormulaComponents";
 
 
 type SidebarElementData = {
@@ -15,25 +18,36 @@ type SidebarElementData = {
     children: ReactNode;
 };
 
-const defaultSidebarElements: SidebarElementData[] = [
+const sidebarAdminElements: SidebarElementData[] = [
     {
         sidebarElementName: "Профіль",
         sidebarElementType: SidebarElement.PROFILE,
         children: <Profile/>
     },
     {
-        sidebarElementName: "Дисципліни",
-        sidebarElementType: SidebarElement.DISCIPLINES,
-        children: <DisciplineWrapper/>
-    }
-];
-
-const sidebarAdminElements: SidebarElementData[] = [
-    ...defaultSidebarElements,
+        sidebarElementName: "Користувачі",
+        sidebarElementType: SidebarElement.USERS,
+        children: <UserWrapper/>
+    },
+    {
+        sidebarElementName: "Формули для розрахунків",
+        sidebarElementType: SidebarElement.FORMULAS,
+        children: <WorkloadFormulaWrapper/>
+    },
     {
         sidebarElementName: "Кафедри",
         sidebarElementType: SidebarElement.DEPARTMENTS,
         children: <DepartmentWrapper/>
+    },
+    {
+        sidebarElementName: "Науково-педагогічні працівники",
+        sidebarElementType: SidebarElement.EMPLOYEES,
+        children: <TeacherWrapper/>
+    },
+    {
+        sidebarElementName: "Дисципліни",
+        sidebarElementType: SidebarElement.DISCIPLINES,
+        children: <DisciplineWrapper/>
     },
     {
         sidebarElementName: "Навчальні групи",
@@ -48,21 +62,30 @@ const sidebarAdminElements: SidebarElementData[] = [
 ];
 
 const sidebarUserElements: SidebarElementData[] = [
-    ...defaultSidebarElements,
+    {
+        sidebarElementName: "Профіль",
+        sidebarElementType: SidebarElement.PROFILE,
+        children: <Profile/>
+    },
+    {
+        sidebarElementName: "Дисципліни",
+        sidebarElementType: SidebarElement.DISCIPLINES,
+        children: <DisciplineWrapper/>
+    },
     {
         sidebarElementName: "Науково-педагогічні працівники",
         sidebarElementType: SidebarElement.EMPLOYEES,
         children: <TeacherWrapper/>
     },
     {
-        sidebarElementName: "Навчальне навантаження НПП",
+        sidebarElementName: "Розподіл навчального навантаження",
         sidebarElementType: SidebarElement.WORKLOAD,
-        children: <>Навчальне навантаження НПП</>
+        children: <WorkloadWrapper/>
     },
     {
         sidebarElementName: "Індивідуальні плани викладачів",
         sidebarElementType: SidebarElement.PLANS,
-        children: <>Індивідуальні плани викладачів</>
+        children: <IndividualPlanWrapper/>
     }
 ];
 

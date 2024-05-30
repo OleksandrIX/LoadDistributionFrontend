@@ -11,7 +11,9 @@ enum SidebarElement {
     GROUPS = "groups",
     EMPLOYEES = "employees",
     PLANS = "plans",
-    WORKLOAD = "workload"
+    WORKLOAD = "workload",
+    USERS = "users",
+    FORMULAS = "formulas",
 }
 
 enum AcademicRank {
