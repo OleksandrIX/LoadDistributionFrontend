@@ -83,8 +83,8 @@ const sidebarUserElements: SidebarElementData[] = [
         children: <WorkloadWrapper/>
     },
     {
-        sidebarElementName: "Індивідуальні плани викладачів",
-        sidebarElementType: SidebarElement.PLANS,
+        sidebarElementName: "Документи кафедри",
+        sidebarElementType: SidebarElement.DOCUMENTS,
         children: <IndividualPlanWrapper/>
     }
 ];

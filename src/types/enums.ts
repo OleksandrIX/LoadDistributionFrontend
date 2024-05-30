@@ -10,7 +10,7 @@ enum SidebarElement {
     CURRICULUMS = "curriculums",
     GROUPS = "groups",
     EMPLOYEES = "employees",
-    PLANS = "plans",
+    DOCUMENTS = "documents",
     WORKLOAD = "workload",
     USERS = "users",
     FORMULAS = "formulas",
