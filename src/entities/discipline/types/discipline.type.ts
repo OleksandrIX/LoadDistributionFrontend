@@ -31,6 +31,7 @@ export interface ResponseEducationComponent extends IdType, TimestampType, Educa
 }
 
 export interface ResponseEducationComponentWithRelationships extends IdType, TimestampType, EducationComponentBase {
+    education_degree: EducationDegree;
     specialization: ResponseSpecialization;
     semesters: ResponseSemester[];
     academic_workloads: ResponseAcademicWorkload[];
