@@ -2,7 +2,7 @@ import {FC} from "react";
 import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/table";
 import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
 
-import {Column, Row, usePagination, useSortBy, useTable} from "react-table";
+import {Column, Row, useExpanded, usePagination, useSortBy, useTable} from "react-table";
 import TablePaginationLayout from "./TablePaginationLayout";
 
 interface TableLayoutProps<T extends object> {
@@ -42,6 +42,7 @@ const TableLayout = <T extends object>(
             initialState: {pageIndex: defaultPageIndex, pageSize: defaultPageSize}
         },
         useSortBy,
+        useExpanded,
         usePagination
     );
 

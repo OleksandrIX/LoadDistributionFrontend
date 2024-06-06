@@ -16,8 +16,6 @@ interface AcademicWorkloadBase {
     qualification_works_defense_conducting_hours: number;
     complex_exams_conducting_hours: number;
     other_types_conducting_hours: number;
-    education_component_id: string;
-    teacher_id: string;
 }
 
 export interface RequestAcademicWorkload extends AcademicWorkloadBase {

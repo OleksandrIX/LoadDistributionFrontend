@@ -2,12 +2,12 @@ import {FC} from "react";
 import {Heading, Stack} from "@chakra-ui/react";
 
 import {Department} from "entities/department";
-import {ResponseEducationComponentWithRelationships} from "entities/discipline";
+import {ResponseDiscipline} from "entities/discipline";
 import DisciplineTable from "../../DisciplineTable/DisciplineTable";
 
 interface DisciplineUserWrapperProps {
     department: Department;
-    disciplines: ResponseEducationComponentWithRelationships[];
+    disciplines: ResponseDiscipline[];
 }
 
 const DisciplineUserWrapper: FC<DisciplineUserWrapperProps> = ({department, disciplines}) => {

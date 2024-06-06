@@ -25,7 +25,7 @@ const DisciplineAdminWrapper: FC<DisciplineAdminWrapperProps> = ({departmentsWit
                 <Heading size="sm" textAlign="center">
                     {selectedDepartment.department_code} {selectedDepartment.department_name}
                 </Heading>
-                <DisciplineTable disciplines={selectedDepartment.education_components}/>
+                <DisciplineTable disciplines={selectedDepartment.disciplines}/>
             </Stack>
 
             <Modal isOpen={isOpen} onClose={onClose}>
