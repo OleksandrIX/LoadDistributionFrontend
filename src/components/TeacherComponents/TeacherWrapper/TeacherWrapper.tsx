@@ -6,7 +6,7 @@ import {handleAxiosError} from "utils/error.handlers";
 import {DepartmentService, DepartmentWithTeachers} from "entities/department";
 import {TeacherService} from "entities/teacher";
 import {useAuth} from "app/provider";
-import {Teacher} from "entities/teacher/types/teacher.type";
+import {ResponseTeacher} from "entities/teacher/types/teacher.type";
 
 import {Loader} from "components/UI";
 import TeacherTable from "../TeacherTable/TeacherTable";
@@ -18,7 +18,7 @@ const TeacherWrapper: FC = () => {
     const {department, refreshToken} = useAuth();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
-    const [teachers, setTeachers] = useState<Teacher[]>([]);
+    const [teachers, setTeachers] = useState<ResponseTeacher[]>([]);
     const [isTeacherLoading, setIsTeacherLoading] = useState<boolean>(true);
 
     const fetchTeachersByDepartmentId = useCallback(async (departmentId: string) => {
@@ -55,7 +55,7 @@ const TeacherWrapper: FC = () => {
             });
     };
 
-    const handleEditTeacher = (updatedTeacher: Teacher) => {
+    const handleEditTeacher = (updatedTeacher: ResponseTeacher) => {
         setTeachers(prevTeachers =>
             prevTeachers.map(teacher => teacher.id === updatedTeacher.id ? updatedTeacher : teacher)
         );

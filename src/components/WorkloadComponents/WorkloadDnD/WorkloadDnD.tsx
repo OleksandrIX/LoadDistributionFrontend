@@ -2,11 +2,11 @@ import {FC} from "react";
 import {Box, Flex, IconButton, Stack, Text} from "@chakra-ui/react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import {DragHandleIcon} from "@chakra-ui/icons";
-import {Teacher} from "entities/teacher";
+import {ResponseTeacher} from "entities/teacher";
 
 interface WorkloadDnDProps {
-    teachers: Teacher[];
-    setTeachers: (teachers: Teacher[]) => void;
+    teachers: ResponseTeacher[];
+    setTeachers: (teachers: ResponseTeacher[]) => void;
 }
 
 const WorkloadDnD: FC<WorkloadDnDProps> = ({teachers, setTeachers}) => {

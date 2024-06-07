@@ -89,7 +89,6 @@ const DisciplineWrapper: FC = () => {
                 >Вам ще не призначили кафедру</Heading>
             </Box>
         );
-
     }
 
     return <DisciplineUserWrapper department={department} disciplines={disciplines}/>;

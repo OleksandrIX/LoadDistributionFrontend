@@ -4,18 +4,18 @@ import {Box, Heading, Td, Tooltip} from "@chakra-ui/react";
 import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
 
 import {Position} from "types/enums";
-import {Teacher} from "entities/teacher/types/teacher.type";
+import {ResponseTeacher} from "entities/teacher/types/teacher.type";
 import {TableLayout} from "components/LayoutComponents";
 import TeacherTableRow from "./TeacherTableRow";
 
 interface TeacherTableProps {
-    teachers: Teacher[];
-    onEdit: (teacher: Teacher) => void;
+    teachers: ResponseTeacher[];
+    onEdit: (teacher: ResponseTeacher) => void;
     onDelete: (teacherId: string) => void;
 }
 
 const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
-    const columns: Column<Teacher>[] = useMemo(() => [
+    const columns: Column<ResponseTeacher>[] = useMemo(() => [
         {
             Header: "ПІБ",
             accessor: (row) => `${row.last_name} ${row.first_name} ${row.middle_name}`,
@@ -84,7 +84,7 @@ const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
             <TableLayout
                 data={teachers}
                 columns={columns}
-                RowComponent={({row}: { row: Row<Teacher> }) => (
+                RowComponent={({row}: { row: Row<ResponseTeacher> }) => (
                     <TeacherTableRow
                         row={row}
                         teacher={row.original}

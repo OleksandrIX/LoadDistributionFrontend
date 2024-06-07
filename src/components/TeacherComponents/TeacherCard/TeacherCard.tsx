@@ -2,10 +2,10 @@ import {FC} from "react";
 import {Heading, Stack, StackDivider, Text} from "@chakra-ui/react";
 import {Card, CardBody, CardFooter, CardHeader} from "@chakra-ui/card";
 
-import {Teacher} from "entities/teacher/types/teacher.type";
+import {ResponseTeacher} from "entities/teacher/types/teacher.type";
 
 interface TeacherCardProps {
-    teacher: Teacher;
+    teacher: ResponseTeacher;
 }
 
 const TeacherCard: FC<TeacherCardProps> = ({teacher}) => {

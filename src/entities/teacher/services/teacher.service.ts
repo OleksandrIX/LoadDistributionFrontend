@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
 
-import {RequestTeacher, Teacher} from "entities/teacher/types/teacher.type";
+import {RequestTeacher, ResponseTeacher} from "entities/teacher/types/teacher.type";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
@@ -23,13 +23,13 @@ class TeacherService {
         this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
-    async getAllTeachers(): Promise<Teacher[]> {
-        const response: AxiosResponse<Teacher[]> = await this.axiosInstance.get("");
+    async getAllTeachers(): Promise<ResponseTeacher[]> {
+        const response: AxiosResponse<ResponseTeacher[]> = await this.axiosInstance.get("");
         return response.data;
     }
 
-    async getTeacherById(id: string): Promise<Teacher> {
-        const response: AxiosResponse<Teacher> = await this.axiosInstance.get(`/${id}`);
+    async getTeacherById(id: string): Promise<ResponseTeacher> {
+        const response: AxiosResponse<ResponseTeacher> = await this.axiosInstance.get(`/${id}`);
         return response.data;
     }
 
@@ -38,8 +38,8 @@ class TeacherService {
         return response.data;
     }
 
-    async editTeacher(id: string, teacherData: RequestTeacher): Promise<Teacher> {
-        const response: AxiosResponse<Teacher> = await this.axiosInstance.put(`/${id}`, teacherData);
+    async editTeacher(id: string, teacherData: RequestTeacher): Promise<ResponseTeacher> {
+        const response: AxiosResponse<ResponseTeacher> = await this.axiosInstance.put(`/${id}`, teacherData);
         return response.data;
     }
 

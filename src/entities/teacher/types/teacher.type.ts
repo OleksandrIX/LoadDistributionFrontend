@@ -16,7 +16,7 @@ export interface BaseTeacher {
     department_id: string;
 }
 
-export interface Teacher extends BaseTeacher, IdType, TimestampType {
+export interface ResponseTeacher extends BaseTeacher, IdType, TimestampType {
 
 }
 
