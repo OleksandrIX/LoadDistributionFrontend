@@ -15,34 +15,11 @@ import CreateTeacher from "../TeacherOverlayComponents/CreateTeacher";
 const TeacherWrapper: FC = () => {
     const idTeacherToast = "teacher-toast";
     const teacherToast = useToast({id: idTeacherToast});
-    const {department, refreshToken} = useAuth();
+    const {isAdmin, department, refreshToken} = useAuth();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     const [teachers, setTeachers] = useState<ResponseTeacher[]>([]);
-    const [isTeacherLoading, setIsTeacherLoading] = useState<boolean>(true);
-
-    const fetchTeachersByDepartmentId = useCallback(async (departmentId: string) => {
-        try {
-            const departmentService = new DepartmentService();
-            const department: DepartmentWithTeachers = await departmentService.getDepartmentByIdWithTeachers(departmentId);
-            setTeachers(department.teachers);
-        } catch (err) {
-            if (err && axios.isAxiosError(err) && err.response) {
-                if (err.response.status === 401) {
-                    await refreshToken();
-                } else {
-                    handleAxiosError(err, teacherToast, idTeacherToast, {
-                        401: "Ви не авторизовані",
-                        403: "Відмовлено у доступі"
-                    });
-                }
-            } else {
-                console.error(err);
-            }
-        } finally {
-            setIsTeacherLoading(false);
-        }
-    }, [teacherToast, refreshToken]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const handleCreateTeacher = (teacherId: string) => {
         const teacherService = new TeacherService();
@@ -66,11 +43,44 @@ const TeacherWrapper: FC = () => {
         setTeachers(updatedTeachers);
     };
 
-    useEffect(() => {
-        department && isTeacherLoading && fetchTeachersByDepartmentId(department.id).then();
-    }, [department, isTeacherLoading, fetchTeachersByDepartmentId]);
+    const fetchTeachers = useCallback(async () => {
+        try {
+            const departmentService = new DepartmentService();
+            const teacherService = new TeacherService();
 
-    if (isTeacherLoading) {
+            if (!isAdmin) {
+                if (department) {
+                    const responseDepartment: DepartmentWithTeachers =
+                        await departmentService.getDepartmentByIdWithTeachers(department.id);
+                    setTeachers(responseDepartment.teachers);
+                }
+            } else {
+                const responseTeachers = await teacherService.getAllTeachers();
+                setTeachers(responseTeachers);
+            }
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, teacherToast, idTeacherToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isAdmin, department, teacherToast, refreshToken]);
+
+    useEffect(() => {
+        fetchTeachers().then();
+    }, []);
+
+    if (isLoading) {
         return (
             <Stack h="100%" align="center" justify="center">
                 <Loader/>
@@ -78,7 +88,7 @@ const TeacherWrapper: FC = () => {
         );
     }
 
-    if (!department) {
+    if (!department && !isAdmin) {
         return (
             <Box
                 h="100%"
@@ -138,12 +148,12 @@ const TeacherWrapper: FC = () => {
                     >Викладачів немає</Heading>
                 </Box>}
 
-            <CreateTeacher
+            {department && <CreateTeacher
                 departmentId={department.id}
                 isOpen={isOpen}
                 onClose={onClose}
                 onCreate={handleCreateTeacher}
-            />
+            />}
         </Stack>
     );
 };

@@ -45,6 +45,7 @@ module.exports = {
         "comma-dangle": ["error", "never"],
         "no-unused-vars": "off",
         "react/jsx-key": "off",
-        "no-async-promise-executor": "off"
+        "no-async-promise-executor": "off",
+        "react-hooks/exhaustive-deps": "off"
     }
 };

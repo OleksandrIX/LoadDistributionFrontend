@@ -1,6 +1,6 @@
 import axios from "axios";
 import {FC} from "react";
-import {Button, Stack, StackDivider, useToast} from "@chakra-ui/react";
+import {Button, Stack, StackDivider, useDisclosure, useToast} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton} from "@chakra-ui/modal";
 
 import {useAuth} from "app/provider";
@@ -8,6 +8,7 @@ import {handleAxiosError} from "utils/error.handlers";
 import {ParsedCurriculum, CurriculumService} from "entities/curriculum";
 import CurriculumError from "./CurriculumError";
 import CurriculumSpreadsheetTable from "./CurriculumSpreadsheetTable";
+import DataOfYearsModal from "./DataOfYearsModal";
 
 interface ViewParsedCurriculumProps {
     isOpen: boolean;
@@ -19,15 +20,21 @@ const ViewParsedCurriculum: FC<ViewParsedCurriculumProps> = ({isOpen, onClose, p
     const idSavedCurriculumToast = "curriculum-toast";
     const savedCurriculumPromiseToast = useToast();
     const savedCurriculumToast = useToast({id: idSavedCurriculumToast});
+    const {
+        isOpen: isOpenDataOfYearsModal,
+        onOpen: onOpenDataOfYearsModal,
+        onClose: onCloseDataOfYearsModal
+    } = useDisclosure();
 
     const {refreshToken} = useAuth();
 
-    const handleSaveCurriculumData = () => {
+    const handleSaveCurriculumData = (daatOfYears: string) => {
         const savedCurriculumPromise = new Promise<void>(async (resolve, reject) => {
             try {
                 const curriculumService = new CurriculumService();
                 await curriculumService.saveCurriculumData(
-                    {curriculum_spreadsheet_blocks: parsedCurriculum.curriculum_spreadsheet_blocks}
+                    {curriculum_spreadsheet_blocks: parsedCurriculum.curriculum_spreadsheet_blocks},
+                    daatOfYears
                 );
                 onClose();
                 resolve();
@@ -81,7 +88,13 @@ const ViewParsedCurriculum: FC<ViewParsedCurriculumProps> = ({isOpen, onClose, p
                     <CurriculumSpreadsheetTable
                         curriculumSpreadsheetBlocks={parsedCurriculum.curriculum_spreadsheet_blocks}
                     />
-                    <Button colorScheme="brand" onClick={handleSaveCurriculumData}>Зберегти</Button>
+                    <Button colorScheme="brand" onClick={onOpenDataOfYearsModal}>Зберегти</Button>
+
+                    <DataOfYearsModal
+                        isOpen={isOpenDataOfYearsModal}
+                        onClose={onCloseDataOfYearsModal}
+                        onSave={handleSaveCurriculumData}
+                    />
                 </Stack>
             </ModalContent>
         </Modal>

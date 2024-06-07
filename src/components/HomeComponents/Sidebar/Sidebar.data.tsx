@@ -25,16 +25,6 @@ const sidebarAdminElements: SidebarElementData[] = [
         children: <Profile/>
     },
     {
-        sidebarElementName: "Користувачі",
-        sidebarElementType: SidebarElement.USERS,
-        children: <UserWrapper/>
-    },
-    {
-        sidebarElementName: "Формули для розрахунків",
-        sidebarElementType: SidebarElement.FORMULAS,
-        children: <WorkloadFormulaWrapper/>
-    },
-    {
         sidebarElementName: "Кафедри",
         sidebarElementType: SidebarElement.DEPARTMENTS,
         children: <DepartmentWrapper/>
@@ -58,6 +48,16 @@ const sidebarAdminElements: SidebarElementData[] = [
         sidebarElementName: "Робочі навчальні плани",
         sidebarElementType: SidebarElement.CURRICULUMS,
         children: <CurriculumWrapper/>
+    },
+    {
+        sidebarElementName: "Формули для розрахунків",
+        sidebarElementType: SidebarElement.FORMULAS,
+        children: <WorkloadFormulaWrapper/>
+    },
+    {
+        sidebarElementName: "Користувачі",
+        sidebarElementType: SidebarElement.USERS,
+        children: <UserWrapper/>
     }
 ];
 
