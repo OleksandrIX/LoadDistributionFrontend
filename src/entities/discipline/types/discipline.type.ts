@@ -10,6 +10,7 @@ interface DisciplineBase {
     discipline_name: string;
     credits: number;
     hours: number;
+    data_of_years: string;
 }
 
 interface EducationComponentBase {
