@@ -6,7 +6,7 @@ interface DisciplineListItemProps {
     discipline: ResponseDiscipline;
 }
 
-const DisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) => {
+const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) => {
     return (
         <Stack
             p={4}
@@ -54,4 +54,4 @@ const DisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) => {
     );
 };
 
-export default DisciplineListItem;
+export default WorkloadDisciplineListItem;
