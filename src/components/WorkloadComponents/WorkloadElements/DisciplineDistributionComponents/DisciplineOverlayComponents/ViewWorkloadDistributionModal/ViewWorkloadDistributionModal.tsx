@@ -1,16 +1,20 @@
 import {FC} from "react";
 import {Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/modal";
 
-import {ResponseDiscipline} from "entities/discipline";
+import {DisciplineDistributionWorkload} from "entities/discipline";
 import EducationComponentList from "./EducationComponentList";
+import {TeacherDistributionWorkload} from "../../../../../../entities/teacher";
 
 interface ViewWorkloadDistributionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    discipline: ResponseDiscipline;
+    discipline: DisciplineDistributionWorkload;
+    teachers: TeacherDistributionWorkload[];
 }
 
-const ViewWorkloadDistributionModal: FC<ViewWorkloadDistributionModalProps> = ({isOpen, onClose, discipline}) => {
+const ViewWorkloadDistributionModal: FC<ViewWorkloadDistributionModalProps> = (
+    {isOpen, onClose, discipline, teachers}
+) => {
     return (
         <Modal
             size="full"
@@ -22,7 +26,7 @@ const ViewWorkloadDistributionModal: FC<ViewWorkloadDistributionModalProps> = ({
                 <ModalHeader>Розподіл навантаження для &quot;{discipline.discipline_name}&quot;</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
-                    <EducationComponentList educationComponents={discipline.education_components}/>
+                    <EducationComponentList discipline={discipline} teachers={teachers}/>
                 </ModalBody>
             </ModalContent>
         </Modal>

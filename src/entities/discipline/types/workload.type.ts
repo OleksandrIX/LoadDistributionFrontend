@@ -18,8 +18,26 @@ interface AcademicWorkloadBase {
     other_types_conducting_hours: number;
 }
 
-export interface RequestAcademicWorkload extends AcademicWorkloadBase {
+export const defaultAcademicWorkload: AcademicWorkloadBase = {
+    lecture_hours: 0,
+    group_hours: 0,
+    practical_hours: 0,
+    laboratory_reports_checking_hours: 0,
+    special_exercises_conducting_hours: 0,
+    consultation_hours: 0,
+    term_papers_conducting_hours: 0,
+    control_works_checking_hours: 0,
+    graded_tests_conducting_hours: 0,
+    exams_conducting_hours: 0,
+    military_internship_conducting_hours: 0,
+    supervision_qualification_works_hours: 0,
+    qualification_works_defense_conducting_hours: 0,
+    complex_exams_conducting_hours: 0,
+    other_types_conducting_hours: 0
+};
 
+export interface RequestAcademicWorkload extends AcademicWorkloadBase {
+    [key: string]: number;
 }
 
 export interface ResponseAcademicWorkload extends IdType, TimestampType, AcademicWorkloadBase {

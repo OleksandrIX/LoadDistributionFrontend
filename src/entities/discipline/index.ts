@@ -8,7 +8,8 @@ export type {
     ResponseEducationComponent,
     ResponseEducationComponentWithRelationships,
     RequestDiscipline,
-    ResponseDiscipline
+    ResponseDiscipline,
+    DisciplineDistributionWorkload
 } from "./types/discipline.type";
 
 export type {
@@ -23,6 +24,7 @@ export type {
     ResponseSemester
 } from "./types/semester.type";
 
+export {defaultAcademicWorkload} from "./types/workload.type";
 export type {
     RequestAcademicWorkload,
     ResponseAcademicWorkload

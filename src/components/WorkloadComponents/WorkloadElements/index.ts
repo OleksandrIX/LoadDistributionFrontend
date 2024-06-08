@@ -1,3 +1,6 @@
-import WorkloadDiscplineWrapper from "./Discipline/WorkloadDiscplineWrapper";
+import WorkloadDiscplineWrapper from "./DisciplineDistributionComponents/WorkloadDiscplineWrapper";
+import StartWrapper from "./StartWrapper";
+import DisciplineWrapper from "./DisciplineWrapper";
+import ViewTeacherWorkload from "./TeacherComponents/ViewTeacherWorkload";
 
-export {WorkloadDiscplineWrapper};
+export {StartWrapper, DisciplineWrapper, WorkloadDiscplineWrapper, ViewTeacherWorkload};

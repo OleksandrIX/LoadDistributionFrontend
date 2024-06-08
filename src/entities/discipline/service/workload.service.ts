@@ -23,22 +23,30 @@ class AcademicWorkloadService {
     }
 
     async calculationAcademicWorkloadForEducationComponent(
-        educationComponentId: string
+        workloadType: string,
+        educationComponentId: string,
+        studyGroupId?: string
     ): Promise<RequestAcademicWorkload> {
+        let url = `/education-components/${educationComponentId}?workload_type=${workloadType}`;
+        if (studyGroupId) {
+            url += `&study_group_id=${studyGroupId}`;
+        }
         const response: AxiosResponse<RequestAcademicWorkload> =
-            await this.axiosInstance.get(`/education-components/${educationComponentId}`);
+            await this.axiosInstance.get(url);
         return response.data;
     }
 
     async calculationAcademicWorkloadForEducationComponents(
+        workloadType: string,
         educationComponentIds: string[]
     ): Promise<RequestAcademicWorkload> {
         const queryString = educationComponentIds.map((id) => `education_component_ids=${id}`).join("&");
         const response: AxiosResponse<RequestAcademicWorkload> =
-            await this.axiosInstance.get(`/education-components?${queryString}`);
+            await this.axiosInstance.get(
+                `/education-components?workload_type=${workloadType}&${queryString}`
+            );
         return response.data;
     }
-
 }
 
 export default AcademicWorkloadService;

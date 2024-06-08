@@ -1,38 +1,17 @@
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import {Box, Heading} from "@chakra-ui/react";
 
 import {useAuth} from "app/provider";
-import {WorkloadStepperElement} from "./workload.stepper";
 import WorkloadStepper from "./WorkloadStepper";
-import {WorkloadDiscplineWrapper} from "../WorkloadElements";
-import {DisciplineWrapper} from "components/DisciplineComponents";
-import {TeacherWrapper} from "components/TeacherComponents";
-
-const steps: WorkloadStepperElement[] = [
-    {
-        title: "Викладачі",
-        description: "Перегляд викладів кафедри",
-        element: <TeacherWrapper/>
-    },
-    {
-        title: "Дисципліни",
-        description: "Перегляд дисциплін кафедри",
-        element: <DisciplineWrapper/>
-    },
-    {
-        title: "Розподіл навантаження",
-        description: "Розподіл навчального навантаження",
-        element: <WorkloadDiscplineWrapper/>
-    },
-    {
-        title: "Збереження",
-        description: "Збереження",
-        element: <>Збереження</>
-    }
-];
 
 const WorkloadWrapper: FC = () => {
     const {department} = useAuth();
+
+    useEffect(() => {
+        return () => {
+            alert("Ви покинули сесію розподілу");
+        };
+    }, []);
 
     if (!department) {
         return (
@@ -57,7 +36,7 @@ const WorkloadWrapper: FC = () => {
         );
     }
 
-    return <WorkloadStepper steps={steps}/>;
+    return <WorkloadStepper/>;
 };
 
 

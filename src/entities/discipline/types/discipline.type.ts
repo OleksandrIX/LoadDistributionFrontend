@@ -52,3 +52,8 @@ export interface ResponseDiscipline extends IdType, TimestampType, DisciplineBas
     academic_workload: ResponseAcademicWorkload;
     education_components: ResponseEducationComponentWithRelationships[];
 }
+
+export interface DisciplineDistributionWorkload extends ResponseDiscipline {
+    completionPercentage: number;
+    isDistributed: boolean;
+}
