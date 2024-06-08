@@ -5,8 +5,8 @@ import {Flex, Heading, Select, Stack, useToast} from "@chakra-ui/react";
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
 import {DisciplineService, ResponseDiscipline} from "entities/discipline";
+import {Loader} from "components/UI";
 import WorkloadDisciplineList from "./WorkloadDisciplineList";
-import {Loader} from "../../../UI";
 
 
 const WorkloadDiscplineWrapper: FC = () => {

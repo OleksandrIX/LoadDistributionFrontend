@@ -19,9 +19,10 @@ const HomePageWrapper: FC = () => {
         }
         return selectedSidebarElement ? selectedSidebarElement.children : <h1>UNKNOWN</h1>;
     };
+
     return (
         <Stack
-            gap={5}
+            gap={2}
             direction="row"
             minHeight="90vh"
         >

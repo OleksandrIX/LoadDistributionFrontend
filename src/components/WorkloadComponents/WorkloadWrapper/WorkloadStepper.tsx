@@ -1,8 +1,8 @@
 import {FC} from "react";
-import {Box, Button, ButtonGroup, Stack} from "@chakra-ui/react";
+import {Box, ButtonGroup, Flex, IconButton} from "@chakra-ui/react";
+import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {
     Step,
-    StepDescription,
     StepIcon,
     StepIndicator,
     StepNumber,
@@ -12,6 +12,7 @@ import {
     StepTitle,
     useSteps
 } from "@chakra-ui/stepper";
+
 
 import {WorkloadStepperElement} from "./workload.stepper";
 
@@ -26,49 +27,58 @@ const WorkloadStepper: FC<WorkloadStepperProps> = ({steps}) => {
     });
 
     return (
-        <Stack spacing={4}>
-            <Stepper index={activeStep}>
-                {steps.map((step, index) => (
-                    <Step key={`step_${step.title}_${index}`}>
-                        <StepIndicator>
-                            <StepStatus
-                                complete={<StepIcon/>}
-                                incomplete={<StepNumber/>}
-                                active={<StepNumber/>}
-                            />
-                        </StepIndicator>
+        <Flex alignItems="start" gap={2}>
+            <Box style={{
+                position: "sticky",
+                top: 0
+            }}>
+                <Stepper index={activeStep} orientation="vertical">
+                    {steps.map((step, index) => (
+                        <Step key={`step_${step.title}_${index}`}>
+                            <StepIndicator>
+                                <StepStatus
+                                    complete={<StepIcon/>}
+                                    incomplete={<StepNumber/>}
+                                    active={<StepNumber/>}
+                                />
+                            </StepIndicator>
 
-                        <Box flexShrink="0">
-                            <StepTitle>{step.title}</StepTitle>
-                            <StepDescription>{step.description}</StepDescription>
-                        </Box>
+                            <Box flexShrink="0">
+                                <StepTitle>{step.title}</StepTitle>
+                            </Box>
 
-                        <StepSeparator/>
-                    </Step>
-                ))}
-            </Stepper>
+                            <StepSeparator/>
+                        </Step>
+                    ))}
+                </Stepper>
+                <ButtonGroup colorScheme="brand" px={2} justifyContent="space-between">
+                    <IconButton
+                        w="100%"
+                        isDisabled={activeStep === 0}
+                        onClick={() => setActiveStep(activeStep - 1)}
+                        aria-label="Попередній крок"
+                        icon={<ChevronLeftIcon h={6} w={6}/>}
+                    />
 
-            <ButtonGroup colorScheme="brand" px={10} justifyContent="space-between">
-                <Button
-                    isDisabled={activeStep === 0}
-                    onClick={() => setActiveStep(activeStep - 1)}
-                >
-                    Попередній крок
-                </Button>
-
-                <Button
-                    onClick={() =>
-                        steps.length - 1 === activeStep
+                    <IconButton
+                        w="100%"
+                        onClick={() => steps.length - 1 === activeStep
                             ? alert("FINISHED")
-                            : setActiveStep(activeStep + 1)
-                    }
-                >
-                    {steps.length - 1 === activeStep ? "Завершити" : "Наступний крок"}
-                </Button>
-            </ButtonGroup>
+                            : setActiveStep(activeStep + 1)}
+                        aria-label={steps.length - 1 === activeStep
+                            ? "Завершити"
+                            : "Наступний крок"}
+                        icon={steps.length - 1 === activeStep
+                            ? <CheckCircleIcon h={6} w={6}/>
+                            : <ChevronRightIcon h={6} w={6}/>}
+                    />
+                </ButtonGroup>
+            </Box>
 
-            {steps[activeStep].element}
-        </Stack>
+            <Box flex={1}>
+                {steps[activeStep].element}
+            </Box>
+        </Flex>
     );
 };
 

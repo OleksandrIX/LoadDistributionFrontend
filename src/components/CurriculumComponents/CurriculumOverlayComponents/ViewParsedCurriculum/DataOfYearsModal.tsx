@@ -62,7 +62,7 @@ const DataOfYearsModal: FC<DataOfYearsModalProps> = ({isOpen, onClose, onSave}) 
         >
             <ModalOverlay/>
             <ModalContent>
-                <ModalHeader>Введіть роки цих даних</ModalHeader>
+                <ModalHeader>Введіть навчальний рік</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
                     <form onSubmit={handleSubmit}>

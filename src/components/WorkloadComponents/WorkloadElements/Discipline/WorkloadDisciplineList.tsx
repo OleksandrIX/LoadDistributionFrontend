@@ -7,9 +7,6 @@ interface DisciplinesListProps {
     disciplines: ResponseDiscipline[]
 }
 
-// const getTotalWorkloadHours = (workload: ResponseAcademicWorkload) =>
-//     Object.values(workload).reduce((acc, hours) => typeof hours === "number" ? acc + hours : acc, 0);
-
 const WorkloadDisciplineList: FC<DisciplinesListProps> = ({disciplines}) => {
     return (
         <Stack spacing={4}>

@@ -25,23 +25,7 @@ const DisciplineComponent: FC<DisciplineComponentProps> = () => {
     //         [group]: teacher
     //     }));
     // };
-    // {/*<Text>*/}
-    // {/*    <b>Курс навчання:</b> {discipline.course_study},*/}
-    // {/*    <b> Семестр:</b> {discipline.semester_number},*/}
-    // {/*    <Tooltip label={*/}
-    // {/*        <List>*/}
-    // {/*            {discipline.study_groups.map((group) =>*/}
-    // {/*                <ListItem key={`group_${group.group_code}`}>*/}
-    // {/*                    Група: {group.group_code}, кількість: {group.number_listeners}*/}
-    // {/*                </ListItem>*/}
-    // {/*            )}*/}
-    // {/*        </List>*/}
-    // {/*    }>*/}
-    // {/*        <span> <b>Навчальних груп:</b> {discipline.study_groups.length}, </span>*/}
-    // {/*    </Tooltip>*/}
-    // {/*    <b>Лекційних потоків:</b> {discipline.lecture_flow}*/}
-    // {/*</Text>*/}
-    //
+
     // {/*<Stack>*/}
     // {/*    <Flex alignItems="center" gap={4}>*/}
     // {/*        <Heading size="sm">Виберіть лектора:</Heading>*/}

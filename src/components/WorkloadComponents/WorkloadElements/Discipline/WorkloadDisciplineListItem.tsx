@@ -1,12 +1,15 @@
 import {FC} from "react";
 import {ResponseDiscipline} from "entities/discipline";
-import {Flex, List, ListItem, Stack, Tag, Tooltip} from "@chakra-ui/react";
+import {Flex, List, ListItem, Stack, Tag, Tooltip, useDisclosure} from "@chakra-ui/react";
+import ViewWorkloadDistributionModal from "./DisciplineOverlayComponents/ViewWorkloadDistributionModal/ViewWorkloadDistributionModal";
 
 interface DisciplineListItemProps {
     discipline: ResponseDiscipline;
 }
 
 const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+
     return (
         <Stack
             p={4}
@@ -17,6 +20,8 @@ const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) =
             borderRadius="lg"
             gap={4}
             direction="row"
+            onClick={onOpen}
+            cursor="pointer"
         >
             <Flex w="100%" alignItems="center" justify="space-between">
                 <Tooltip label={
@@ -50,6 +55,12 @@ const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline}) =
                     <b>годин</b>
                 </Flex>
             </Flex>
+
+            <ViewWorkloadDistributionModal
+                isOpen={isOpen}
+                onClose={onClose}
+                discipline={discipline}
+            />
         </Stack>
     );
 };
