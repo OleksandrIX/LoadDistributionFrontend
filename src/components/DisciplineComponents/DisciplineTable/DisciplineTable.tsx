@@ -29,20 +29,23 @@ const DisciplineTable: FC<DisciplineTableProps> = ({disciplines}) => {
         {
             Header: "Кредити",
             accessor: "credits",
+            width: "10%",
             Cell: ({value}: { value: number }) => <Td isNumeric>{value}</Td>
         },
         {
             Header: "Години",
             accessor: "hours",
+            width: "10%",
             Cell: ({value}: { value: number }) => <Td isNumeric>{value}</Td>
         },
         {
             Header: "Навчальне навантаження",
             accessor: "academic_workload",
+            width: "30%",
             Cell: ({value}: { value: ResponseAcademicWorkload }) => {
                 const totalWorkload = Object.values(value)
                     .reduce((acc, hours) => typeof hours === "number" ? acc + hours : acc, 0);
-                return <Td>{totalWorkload.toFixed(2)}</Td>;
+                return <Td isNumeric>{totalWorkload.toFixed(2)}</Td>;
             }
         }
     ], []);

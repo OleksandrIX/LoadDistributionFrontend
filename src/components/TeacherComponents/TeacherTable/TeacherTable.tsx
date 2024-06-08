@@ -19,7 +19,6 @@ const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
         {
             Header: "ПІБ",
             accessor: (row) => `${row.last_name} ${row.first_name} ${row.middle_name}`,
-            width: "45%",
             Cell: ({value}: { value: string }) => (
                 <Td overflow="hidden"
                     textOverflow="ellipsis"
@@ -34,17 +33,18 @@ const TeacherTable: FC<TeacherTableProps> = ({teachers, onEdit, onDelete}) => {
             Header: "Ставка",
             accessor: "teacher_rate",
             width: "15%",
-            Cell: ({value}: { value: number }) => <Td textAlign="center">{value}</Td>
+            Cell: ({value}: { value: number }) => <Td isNumeric>{value}</Td>
         },
         {
             Header: "Посада",
             accessor: "position",
             width: "20%",
             Cell: ({value}: { value: Position }) => (
-                <Td textAlign="center"
+                <Td
                     overflow="hidden"
                     textOverflow="ellipsis"
-                    whiteSpace="nowrap">
+                    whiteSpace="nowrap"
+                >
                     <Tooltip label={value}>
                         {value}
                     </Tooltip>
