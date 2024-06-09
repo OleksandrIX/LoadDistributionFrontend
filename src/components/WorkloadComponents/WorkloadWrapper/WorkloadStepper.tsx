@@ -16,10 +16,11 @@ import {
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
+import {displayToast} from "utils/toast";
 import {DepartmentService} from "entities/department";
 import {TeacherWrapper} from "components/TeacherComponents";
 import {TeacherDistributionWorkload} from "entities/teacher";
-import {defaultAcademicWorkload} from "entities/discipline";
+import {defaultAcademicWorkload, DistributionSessionService} from "entities/discipline";
 import {Loader} from "components/UI";
 import {WorkloadStepperElement} from "./workload.stepper";
 import {DisciplineWrapper, StartWrapper, ViewTeacherWorkload, WorkloadDiscplineWrapper} from "../WorkloadElements";
@@ -30,10 +31,13 @@ interface WorkloadStepperProps {
 
 
 const WorkloadStepper: FC<WorkloadStepperProps> = () => {
+    const idWorkloadTeacherToast = "workload-teacher-toast";
+    const idWorkloadDistributionToast = "workload-distribution-toast";
+    const workloadTeacherToast = useToast({id: idWorkloadTeacherToast});
+    const workloadDistributionToast = useToast({id: idWorkloadDistributionToast});
+
     const {department, refreshToken} = useAuth();
     const [teachers, setTeachers] = useState<TeacherDistributionWorkload[]>([]);
-    const idWorkloadTeacherToast = "workload-teacher-toast";
-    const workloadTeacherToast = useToast({id: idWorkloadTeacherToast});
     const [steps, setSteps] = useState<WorkloadStepperElement[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isComplete, setIsComplete] = useState<boolean>(false);
@@ -70,6 +74,49 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
         }
     }, [department, workloadTeacherToast, refreshToken]);
 
+    const saveDistributionSession = async () => {
+        const distributionSessionService = new DistributionSessionService();
+        try {
+            const workloadDistributionSessionString = localStorage.getItem("distribution_session");
+            if (workloadDistributionSessionString) {
+                const workloadDistributionSession: WorkloadDistributionSession = JSON.parse(workloadDistributionSessionString);
+                await distributionSessionService.saveDistributionSession(workloadDistributionSession);
+                displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+                    status: "success",
+                    title: "Дані про сесію збережено"
+                });
+            } else {
+                displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+                    status: "error",
+                    title: "Даних про сесію не знайдено"
+                });
+            }
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, workloadDistributionToast, idWorkloadDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    };
+
+    const leavDistributionSession = async () => {
+        const workloadDistributionSessionString = localStorage.getItem("distribution_session");
+        if (workloadDistributionSessionString) {
+            const isConfirmed = confirm("Ви покидаєте сесію розподілу. \nБажаєте зберегти дані про сесію?");
+            if (isConfirmed) await saveDistributionSession();
+            localStorage.removeItem("distribution_session");
+            setActiveStep(0);
+        }
+    };
+
     useEffect(() => {
         fetchTeachers().finally(() => setIsLoading(false));
     }, []);
@@ -80,7 +127,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                 {
                     title: "Створення",
                     description: "Створення розподіу",
-                    element: <StartWrapper onStart={() => setActiveStep(prevState => prevState + 1)}/>
+                    element: <StartWrapper setActiveStep={setActiveStep}/>
                 },
                 {
                     title: "Викладачі",
@@ -176,6 +223,12 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                         />
                     </ButtonGroup>
                 )}
+
+                {activeStep !== 0 &&
+                    <Button colorScheme="brand" onClick={leavDistributionSession}>Покинути сесію</Button>}
+
+                {activeStep >= 3 &&
+                    <Button colorScheme="brand" onClick={saveDistributionSession}>Зберегти сесію</Button>}
 
                 {activeStep >= 3 && <Button colorScheme="brand" onClick={onOpenTeacherModal}>Викладачі</Button>}
                 <ViewTeacherWorkload

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {ChangeEvent, FC, FormEvent, useCallback, useEffect, useState} from "react";
 import {
+    Box,
     Button,
     Flex,
     FormControl,
@@ -10,26 +11,28 @@ import {
     Select,
     Stack,
     StackDivider,
+    Text,
     useToast
 } from "@chakra-ui/react";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
-import {DisciplineService} from "entities/discipline";
+import {DisciplineService, DistributionSessionService} from "entities/discipline";
 import {Loader} from "components/UI";
 import {WorkloadDistributionSession} from "types/workload.distribution.session";
 
 interface StartWrapperProps {
-    onStart: () => void;
+    setActiveStep: (value: number) => void;
 }
 
-const StartWrapper: FC<StartWrapperProps> = ({onStart}) => {
+const StartWrapper: FC<StartWrapperProps> = ({setActiveStep}) => {
     const {refreshToken} = useAuth();
     const idStartDistributionToast = "start-distribution-toast";
     const startDistributionToast = useToast({id: idStartDistributionToast});
     const [studyYears, setStudyYears] = useState<string[]>([]);
     const [selectedStudyYear, setSelectedStudyYear] = useState<string>("");
     const [distributionName, setDistributionName] = useState<string>("");
+    const [distributionSessions, setDistributionSessions] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const fetchStudyCourse = useCallback(async () => {
@@ -67,15 +70,38 @@ const StartWrapper: FC<StartWrapperProps> = ({onStart}) => {
         }
     }, [refreshToken, startDistributionToast]);
 
+    const fetchDistributionSessions = useCallback(async () => {
+        const distributionSessionService = new DistributionSessionService();
+        try {
+            const responseDistributionSessions = await distributionSessionService.getAllDistributionSessions();
+            setDistributionSessions(responseDistributionSessions);
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, startDistributionToast, idStartDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    }, [refreshToken, startDistributionToast]);
+
     useEffect(() => {
-        fetchStudyCourse().finally(() => setIsLoading(false));
+        fetchStudyCourse().then();
+        fetchDistributionSessions().finally(() => setIsLoading(false));
     }, []);
 
     const handleSelectStudyCourse = (event: ChangeEvent<HTMLSelectElement>) => setSelectedStudyYear(event.target.value);
     const handleChangeDistributionName = (event: ChangeEvent<HTMLInputElement>) => setDistributionName(event.target.value);
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const distributionSessionService = new DistributionSessionService();
         const workloadDistributionSession: WorkloadDistributionSession = {
             study_year: selectedStudyYear,
             distribution_name: distributionName,
@@ -84,8 +110,48 @@ const StartWrapper: FC<StartWrapperProps> = ({onStart}) => {
             teachers: [],
             distributed_disciplines: []
         };
-        localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
-        onStart();
+
+        try {
+            await distributionSessionService.saveDistributionSession(workloadDistributionSession);
+            localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
+            setActiveStep(2);
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, startDistributionToast, idStartDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    };
+
+    const loadWorkloadDistributionSession = async (distributionSessionName: string) => {
+        const distributionSessionService = new DistributionSessionService();
+        try {
+            const workloadDistributionSession =
+                await distributionSessionService.loadDistributionSessionByName(distributionSessionName);
+            localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
+            setActiveStep(workloadDistributionSession.step - 1);
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, startDistributionToast, idStartDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
     };
 
     if (isLoading) {
@@ -140,9 +206,33 @@ const StartWrapper: FC<StartWrapperProps> = ({onStart}) => {
             </form>
 
             <Stack>
-                <Heading size="md">
+                <Heading size="lg" mb={5}>
                     Збереженні розподіли
                 </Heading>
+
+                <Stack
+                    p={4}
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="brand.300"
+                    borderRadius="lg"
+                >
+                    {distributionSessions.length > 0 ? (
+                        distributionSessions.map((session) =>
+                            <Box
+                                key={session}
+                                cursor="pointer"
+                                onClick={async () => await loadWorkloadDistributionSession(session)}
+                            >
+                                <Heading size="md">
+                                    {session}
+                                </Heading>
+                            </Box>
+                        )
+                    ) : (
+                        <Text fontStyle="italic" fontWeight="bold" fontSize="larger">Немає сесій</Text>
+                    )}
+                </Stack>
             </Stack>
         </Stack>
     );
