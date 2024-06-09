@@ -1,12 +1,12 @@
 import axios from "axios";
 import {ChangeEvent, FC, FormEvent, useCallback, useEffect, useState} from "react";
 import {
-    Box,
-    Button,
+    Button, ButtonGroup,
     Flex,
     FormControl,
     FormLabel,
     Heading,
+    IconButton,
     Input,
     Select,
     Stack,
@@ -14,9 +14,11 @@ import {
     Text,
     useToast
 } from "@chakra-ui/react";
+import {DeleteIcon, DownloadIcon} from "@chakra-ui/icons";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
+import {displayToast} from "utils/toast";
 import {DisciplineService, DistributionSessionService} from "entities/discipline";
 import {Loader} from "components/UI";
 import {WorkloadDistributionSession} from "types/workload.distribution.session";
@@ -115,6 +117,10 @@ const StartWrapper: FC<StartWrapperProps> = ({setActiveStep}) => {
             await distributionSessionService.saveDistributionSession(workloadDistributionSession);
             localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
             setActiveStep(2);
+            displayToast(startDistributionToast, idStartDistributionToast, {
+                status: "success",
+                title: `Сесію '${workloadDistributionSession.distribution_name}' успішно створено`
+            });
         } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
@@ -138,6 +144,37 @@ const StartWrapper: FC<StartWrapperProps> = ({setActiveStep}) => {
                 await distributionSessionService.loadDistributionSessionByName(distributionSessionName);
             localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
             setActiveStep(workloadDistributionSession.step - 1);
+            displayToast(startDistributionToast, idStartDistributionToast, {
+                status: "success",
+                title: `Сесію '${distributionSessionName}' успішно завантажено`
+            });
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, startDistributionToast, idStartDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
+    };
+
+    const deleteWorkloadDistributionSession = async (distributionSessionName: string) => {
+        const distributionSessionService = new DistributionSessionService();
+        try {
+            await distributionSessionService.deleteDistributionSessionByName(distributionSessionName);
+            displayToast(startDistributionToast, idStartDistributionToast, {
+                status: "success",
+                title: `Сесію '${distributionSessionName}' успішно видалено`
+            });
+            setDistributionSessions(prevSessions =>
+                prevSessions.filter(session => session !== distributionSessionName)
+            );
         } catch (err) {
             if (err && axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
@@ -211,23 +248,38 @@ const StartWrapper: FC<StartWrapperProps> = ({setActiveStep}) => {
                 </Heading>
 
                 <Stack
-                    p={4}
+                    p={4} spacing={5}
                     borderWidth="1px"
                     borderStyle="solid"
                     borderColor="brand.300"
                     borderRadius="lg"
+                    divider={<StackDivider h="1px" bg="brand.300"/>}
                 >
                     {distributionSessions.length > 0 ? (
                         distributionSessions.map((session) =>
-                            <Box
-                                key={session}
-                                cursor="pointer"
-                                onClick={async () => await loadWorkloadDistributionSession(session)}
-                            >
-                                <Heading size="md">
+                            <Flex key={session} justify="space-between" align="center" px={5}>
+                                <Heading fontSize="2xl" fontStyle="italic">
                                     {session}
                                 </Heading>
-                            </Box>
+
+                                <ButtonGroup colorScheme="brand">
+                                    <IconButton
+                                        py={6}
+                                        px={3}
+                                        aria-label="Завантажити"
+                                        icon={<DownloadIcon h={6} w={6}/>}
+                                        onClick={async () => await loadWorkloadDistributionSession(session)}
+                                    />
+
+                                    <IconButton
+                                        py={6}
+                                        px={3}
+                                        aria-label="Видалити"
+                                        icon={<DeleteIcon h={6} w={6}/>}
+                                        onClick={async () => await deleteWorkloadDistributionSession(session)}
+                                    />
+                                </ButtonGroup>
+                            </Flex>
                         )
                     ) : (
                         <Text fontStyle="italic" fontWeight="bold" fontSize="larger">Немає сесій</Text>

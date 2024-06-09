@@ -47,7 +47,7 @@ const theme = extendTheme({
 const App: FC = () => {
     return (
         <ChakraProvider theme={theme}
-                        toastOptions={{defaultOptions: {position: "bottom-right", duration: 10000, isClosable: true}}}>
+                        toastOptions={{defaultOptions: {position: "bottom-right", duration: 5000, isClosable: true}}}>
             <AuthProvider>
                 <RouterProvider router={router}/>
             </AuthProvider>

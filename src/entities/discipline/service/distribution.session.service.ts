@@ -35,6 +35,10 @@ class DistributionSessionService {
     async saveDistributionSession(distributionSession: WorkloadDistributionSession): Promise<AxiosResponse> {
         return await this.axiosInstance.post("", distributionSession);
     }
+
+    async deleteDistributionSessionByName(distirbutionSessionName: string): Promise<AxiosResponse> {
+        return await this.axiosInstance.delete(`/${distirbutionSessionName}`);
+    }
 }
 
 export default DistributionSessionService;
