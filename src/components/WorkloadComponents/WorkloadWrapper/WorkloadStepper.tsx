@@ -38,6 +38,7 @@ import {WorkloadStepperElement} from "./workload.stepper";
 import {DisciplineWrapper, StartWrapper, ViewTeacherWorkload, WorkloadDiscplineWrapper} from "../WorkloadElements";
 import {WorkloadDistributionSession, TeacherCorrectWorkload} from "types/workload.distribution.session";
 import {getTotalAcademicWorkload} from "utils/academic.workload";
+import FinishWrapper from "../WorkloadElements/FinishWrapper";
 
 interface WorkloadStepperProps {
 }
@@ -132,6 +133,23 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
         }
     };
 
+    const generateDocuments = async () => {
+        displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+            status: "success",
+            title: "Документи згенеровані"
+        });
+    };
+
+    const saveTeacherWorkload = async () => {
+        displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+            status: "success",
+            title: "Дані про навантаження виклдачів збережено"
+        });
+        localStorage.removeItem("distribution_session");
+        setActiveStep(0);
+        setCorrectTeachers([]);
+    };
+
     useEffect(() => {
         fetchTeachers().finally(() => setIsLoading(false));
     }, []);
@@ -167,7 +185,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                 {
                     title: "Збереження",
                     description: "Збереження",
-                    element: <>Збереження</>
+                    element: <FinishWrapper/>
                 }
             ]);
         }
@@ -248,9 +266,21 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                         <Button colorScheme="brand" onClick={saveDistributionSession}>Зберегти сесію</Button>}
 
                     {activeStep >= 3 && <Button colorScheme="brand" onClick={onOpenTeacherModal}>Викладачі</Button>}
+
+                    {activeStep === steps.length - 1 && (
+                        <Button colorScheme="brand" onClick={generateDocuments}>
+                            Згенерувати документи
+                        </Button>
+                    )}
+
+                    {activeStep === steps.length - 1 && (
+                        <Button colorScheme="brand" onClick={saveTeacherWorkload}>
+                            Зберегти
+                        </Button>
+                    )}
                 </Stack>
 
-                {correctTeachers.length !== 0 && (
+                {correctTeachers.length !== 0 && activeStep !== steps.length - 1 && (
                     <Popover placement="right">
                         <PopoverTrigger>
                             <Button
