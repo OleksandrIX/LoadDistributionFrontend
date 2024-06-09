@@ -15,7 +15,8 @@ import {Loader} from "components/UI";
 import {
     DistributedDisciplinePerCourse,
     DistributedEducationComponent,
-    WorkloadDistributionSession
+    WorkloadDistributionSession,
+    TeacherCorrectWorkload
 } from "types/workload.distribution.session";
 import WorkloadDisciplineList from "./WorkloadDisciplineList";
 import {getMaxAcademicWorkload, getTotalAcademicWorkload} from "utils/academic.workload";
@@ -23,10 +24,18 @@ import {getMaxAcademicWorkload, getTotalAcademicWorkload} from "utils/academic.w
 interface WorkloadDiscplineWrapperProps {
     teachers: TeacherDistributionWorkload[];
     setTeachers: (teachers: TeacherDistributionWorkload[]) => void;
+    setCorrectTeachers: (teachers: TeacherCorrectWorkload[]) => void;
     setIsComplete: Dispatch<SetStateAction<boolean>>;
 }
 
-const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = ({teachers, setTeachers, setIsComplete}) => {
+const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = (
+    {
+        teachers,
+        setTeachers,
+        setIsComplete,
+        setCorrectTeachers
+    }
+) => {
     const {refreshToken} = useAuth();
     const idWorkloadDisciplineToast = "workload-discipline-toast";
     const workloadDisciplineToast = useToast({id: idWorkloadDisciplineToast});
@@ -216,22 +225,49 @@ const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = ({teachers, 
             return totalCompleteDiscipline;
         };
 
-        const checkErrors = (teacher: TeacherDistributionWorkload) => {
+        const checkErrors = (teacher: TeacherDistributionWorkload): TeacherCorrectWorkload => {
+            const correctWorkload: TeacherCorrectWorkload = {
+                isCorrect: false,
+                message: "",
+                teacher: teacher
+            };
+
             const maxAcademicWorkload = getMaxAcademicWorkload(teacher);
             const totalAcademicWorkload = getTotalAcademicWorkload(teacher.academic_workload);
 
             if (maxAcademicWorkload.length === 1) {
-                if (totalAcademicWorkload > maxAcademicWorkload[0]) {
-                    console.log(`Навантаження викладача ${teacher.last_name} ${teacher.first_name} ${teacher.middle_name} перевищує максимальну норму.`);
+                const max = maxAcademicWorkload[0];
+                if (totalAcademicWorkload > max) {
+                    correctWorkload.message = "Навантаження перевищує норму";
+                    correctWorkload.isCorrect = false;
+                } else if (totalAcademicWorkload < max - 100) {
+                    correctWorkload.message = "Навантаження менше норми";
+                    correctWorkload.isCorrect = false;
+                } else {
+                    correctWorkload.isCorrect = true;
                 }
             } else if (maxAcademicWorkload.length === 2) {
-                if (totalAcademicWorkload > maxAcademicWorkload[1]) {
-                    console.log(`Навантаження викладача ${teacher.last_name} ${teacher.first_name} ${teacher.middle_name} перевищує максимальну норму.`);
+                const [min, max] = maxAcademicWorkload;
+                if (totalAcademicWorkload > max) {
+                    correctWorkload.message = "Навантаження перевищує норму";
+                    correctWorkload.isCorrect = false;
+                } else if (totalAcademicWorkload < min) {
+                    correctWorkload.message = "Навантаження менше норми";
+                    correctWorkload.isCorrect = false;
+                } else {
+                    correctWorkload.isCorrect = true;
                 }
             }
+
+            if (totalAcademicWorkload === 0) {
+                correctWorkload.message = "Навантаження не призначено";
+            }
+
+            return correctWorkload;
         };
 
-        const calculateWorkloadAndCheckErrors = (workloadDistributionSession: WorkloadDistributionSession) => {
+        const calculateWorkloadAndCheckErrors = (workloadDistributionSession: WorkloadDistributionSession): TeacherCorrectWorkload[] => {
+            const correctTeachers = [];
             for (const teacher of teachers) {
                 const academicWorkload: RequestAcademicWorkload = {...defaultAcademicWorkload};
 
@@ -259,21 +295,27 @@ const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = ({teachers, 
                 }
 
                 teacher.academic_workload = {...academicWorkload};
-                checkErrors(teacher);
+                correctTeachers.push(checkErrors(teacher));
             }
+            return correctTeachers;
         };
 
         const processingWorkload = () => {
+            // console.log(`Навантаження викладача ${teacher.last_name} ${teacher.first_name} ${teacher.middle_name} перевищує максимальну норму.`);
+
             const workloadDistributionSessionString = localStorage.getItem("distribution_session");
             if (workloadDistributionSessionString) {
                 const workloadDistributionSession: WorkloadDistributionSession = JSON.parse(workloadDistributionSessionString);
                 if (workloadDistributionSession) {
                     const totalCompleteDiscipline = calculateDisciplineProgress(workloadDistributionSession);
-                    calculateWorkloadAndCheckErrors(workloadDistributionSession);
+                    const correctTeachers = calculateWorkloadAndCheckErrors(workloadDistributionSession);
 
-                    if (disciplines.length === totalCompleteDiscipline) {
-                        setIsComplete(true);
-                    }
+                    const disciplineIsComplete = disciplines.length === totalCompleteDiscipline;
+                    const teacherIsComplete = correctTeachers.every((teacher) => teacher.isCorrect);
+
+                    if (disciplineIsComplete && teacherIsComplete) setIsComplete(true);
+                    if (!teacherIsComplete) setCorrectTeachers(correctTeachers);
+                    else setCorrectTeachers(correctTeachers);
                 }
             }
         };

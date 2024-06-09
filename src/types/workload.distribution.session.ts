@@ -27,3 +27,10 @@ export interface WorkloadDistributionSession {
     teachers: TeacherDistributionWorkload[];
     distributed_disciplines: DistributedDiscipline[];
 }
+
+export interface TeacherCorrectWorkload {
+    isCorrect: boolean;
+    message: string;
+    teacher: TeacherDistributionWorkload;
+}
+

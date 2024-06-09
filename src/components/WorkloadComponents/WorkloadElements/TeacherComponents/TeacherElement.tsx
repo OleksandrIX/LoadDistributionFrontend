@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import {FC, ReactNode, useEffect, useState} from "react";
 import {Flex, Heading, Skeleton, Stack, Text} from "@chakra-ui/react";
 
 import {TeacherDistributionWorkload} from "entities/teacher";
@@ -17,6 +17,55 @@ interface TeacherElementProps {
 
 const TeacherElement: FC<TeacherElementProps> = ({teacher}) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const getCurrentAcademicWorkload = (): ReactNode => {
+        let backgroundColor = "red";
+        const maxAcademicWorkload = getMaxAcademicWorkload(teacher);
+        const totalAcademicWorkload = getTotalAcademicWorkload(teacher.academic_workload);
+
+        if (maxAcademicWorkload.length === 1) {
+            const max = maxAcademicWorkload[0];
+            if (totalAcademicWorkload > max) {
+                backgroundColor = "red";
+            } else if (totalAcademicWorkload < max - (max * 0.2)) {
+                backgroundColor = "red";
+            } else if (totalAcademicWorkload < max - (max * 0.1)) {
+                backgroundColor = "orange";
+            } else {
+                backgroundColor = "green";
+            }
+        } else if (maxAcademicWorkload.length === 2) {
+            const [min, max] = maxAcademicWorkload;
+            if (totalAcademicWorkload > max) {
+                backgroundColor = "red";
+            } else if (totalAcademicWorkload < min - (max * 0.1)) {
+                backgroundColor = "red";
+            } else if (totalAcademicWorkload < min) {
+                backgroundColor = "orange";
+            } else {
+                backgroundColor = "green";
+            }
+        }
+
+
+        return (
+            <Heading size="sm">
+                Поточне навчальне навантаження: <span> </span>
+                <Text
+                    as="span"
+                    fontWeight="normal"
+                    fontStyle="italic"
+                    color="white"
+                    borderRadius="lg"
+                    px="5px"
+                    bg={backgroundColor}
+                >
+                    {totalAcademicWorkload.toFixed(2)}
+                </Text>
+
+            </Heading>
+        );
+    };
 
     useEffect(() => {
         const workloadDistributionSessionString = localStorage.getItem("distribution_session");
@@ -90,27 +139,7 @@ const TeacherElement: FC<TeacherElementProps> = ({teacher}) => {
                 <Text as="span" fontWeight="normal" fontStyle="italic"> {getAcademicWorkloadHours(teacher)}</Text>
             </Heading>
 
-            <Heading size="sm">
-                Поточне навчальне навантаження: <span> </span>
-                <Text
-                    as="span"
-                    fontWeight="normal"
-                    fontStyle="italic"
-                    color="white"
-                    borderRadius="lg"
-                    px="5px"
-                    backgroundColor={
-                        getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[1] ? "red" :
-                            getMaxAcademicWorkload(teacher).length === 1 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[0] ? "green" :
-                                getMaxAcademicWorkload(teacher).length === 2 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[1] - 100 ? "green" :
-                                    getMaxAcademicWorkload(teacher).length === 2 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[0] ? "orange" :
-                                        "red"
-                    }
-                >
-                    {getTotalAcademicWorkload(teacher.academic_workload).toFixed(2)}
-                </Text>
-
-            </Heading>
+            {getCurrentAcademicWorkload()}
         </Stack>
     );
 };

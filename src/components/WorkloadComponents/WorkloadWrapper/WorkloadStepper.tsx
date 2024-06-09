@@ -1,6 +1,18 @@
 import axios from "axios";
 import {FC, useCallback, useEffect, useState} from "react";
-import {Box, Button, ButtonGroup, Flex, IconButton, Stack, useDisclosure, useToast} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Button,
+    ButtonGroup,
+    Flex,
+    IconButton,
+    Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader,
+    PopoverTrigger, Portal,
+    Stack, Text,
+    useDisclosure,
+    useToast
+} from "@chakra-ui/react";
 import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {
     Step,
@@ -24,11 +36,11 @@ import {defaultAcademicWorkload, DistributionSessionService} from "entities/disc
 import {Loader} from "components/UI";
 import {WorkloadStepperElement} from "./workload.stepper";
 import {DisciplineWrapper, StartWrapper, ViewTeacherWorkload, WorkloadDiscplineWrapper} from "../WorkloadElements";
-import {WorkloadDistributionSession} from "types/workload.distribution.session";
+import {WorkloadDistributionSession, TeacherCorrectWorkload} from "types/workload.distribution.session";
+import {getTotalAcademicWorkload} from "utils/academic.workload";
 
 interface WorkloadStepperProps {
 }
-
 
 const WorkloadStepper: FC<WorkloadStepperProps> = () => {
     const idWorkloadTeacherToast = "workload-teacher-toast";
@@ -38,7 +50,9 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
 
     const {department, refreshToken} = useAuth();
     const [teachers, setTeachers] = useState<TeacherDistributionWorkload[]>([]);
+    const [correctTeachers, setCorrectTeachers] = useState<TeacherCorrectWorkload[]>([]);
     const [steps, setSteps] = useState<WorkloadStepperElement[]>([]);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isComplete, setIsComplete] = useState<boolean>(false);
 
@@ -114,6 +128,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
             if (isConfirmed) await saveDistributionSession();
             localStorage.removeItem("distribution_session");
             setActiveStep(0);
+            setCorrectTeachers([]);
         }
     };
 
@@ -145,6 +160,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                     element: <WorkloadDiscplineWrapper
                         teachers={teachers}
                         setTeachers={setTeachers}
+                        setCorrectTeachers={setCorrectTeachers}
                         setIsComplete={setIsComplete}
                     />
                 },
@@ -177,60 +193,144 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
 
     return (
         <Flex alignItems="start" gap={4}>
-            <Stack position="sticky" top={10} mt={10}>
-                <Stepper index={activeStep} orientation="vertical">
-                    {steps.map((step, index) => (
-                        <Step key={`step_${step.title}_${index}`}>
-                            <StepIndicator>
-                                <StepStatus
-                                    complete={<StepIcon/>}
-                                    incomplete={<StepNumber/>}
-                                    active={<StepNumber/>}
-                                />
-                            </StepIndicator>
+            <Stack position="sticky" top={10} mt={10} spacing={30}>
+                <Stack>
+                    <Stepper index={activeStep} orientation="vertical">
+                        {steps.map((step, index) => (
+                            <Step key={`step_${step.title}_${index}`}>
+                                <StepIndicator>
+                                    <StepStatus
+                                        complete={<StepIcon/>}
+                                        incomplete={<StepNumber/>}
+                                        active={<StepNumber/>}
+                                    />
+                                </StepIndicator>
 
-                            <Box flexShrink="0">
-                                <StepTitle>{step.title}</StepTitle>
-                            </Box>
+                                <Box flexShrink="0">
+                                    <StepTitle>{step.title}</StepTitle>
+                                </Box>
 
-                            <StepSeparator/>
-                        </Step>
-                    ))}
-                </Stepper>
+                                <StepSeparator/>
+                            </Step>
+                        ))}
+                    </Stepper>
 
-                {activeStep !== 0 && (
-                    <ButtonGroup colorScheme="brand" px={2} justifyContent="space-between">
-                        <IconButton
-                            w="100%"
-                            isDisabled={activeStep === 0}
-                            onClick={goToPrevious}
-                            aria-label="Попередній крок"
-                            icon={<ChevronLeftIcon h={6} w={6}/>}
-                        />
+                    {activeStep !== 0 && (
+                        <ButtonGroup colorScheme="brand" px={2} justifyContent="space-between">
+                            <IconButton
+                                w="100%"
+                                isDisabled={activeStep === 0}
+                                onClick={goToPrevious}
+                                aria-label="Попередній крок"
+                                icon={<ChevronLeftIcon h={6} w={6}/>}
+                            />
 
-                        <IconButton
-                            w="100%"
-                            isDisabled={activeStep === 3 && !isComplete}
-                            onClick={() => steps.length - 1 === activeStep
-                                ? alert("FINISHED")
-                                : goToNext()}
-                            aria-label={steps.length - 1 === activeStep
-                                ? "Завершити"
-                                : "Наступний крок"}
-                            icon={steps.length - 1 === activeStep
-                                ? <CheckCircleIcon h={6} w={6}/>
-                                : <ChevronRightIcon h={6} w={6}/>}
-                        />
-                    </ButtonGroup>
+                            <IconButton
+                                w="100%"
+                                isDisabled={activeStep === 3 && !isComplete}
+                                onClick={() => steps.length - 1 === activeStep
+                                    ? alert("FINISHED")
+                                    : goToNext()}
+                                aria-label={steps.length - 1 === activeStep
+                                    ? "Завершити"
+                                    : "Наступний крок"}
+                                icon={steps.length - 1 === activeStep
+                                    ? <CheckCircleIcon h={6} w={6}/>
+                                    : <ChevronRightIcon h={6} w={6}/>}
+                            />
+                        </ButtonGroup>
+                    )}
+
+                    {activeStep !== 0 &&
+                        <Button colorScheme="brand" onClick={leavDistributionSession}>Покинути сесію</Button>}
+
+                    {activeStep >= 3 &&
+                        <Button colorScheme="brand" onClick={saveDistributionSession}>Зберегти сесію</Button>}
+
+                    {activeStep >= 3 && <Button colorScheme="brand" onClick={onOpenTeacherModal}>Викладачі</Button>}
+                </Stack>
+
+                {correctTeachers.length !== 0 && (
+                    <Popover placement="right">
+                        <PopoverTrigger>
+                            <Button
+                                colorScheme="brand"
+                                position="relative"
+                                rightIcon={
+                                    <Badge
+                                        w={5} h={5}
+                                        borderRadius="full"
+                                        variant="solid"
+                                        colorScheme="red"
+                                        position="absolute"
+                                        top={-2} right={-2}
+                                    >
+                                        <Text
+                                            as="span"
+                                            w="100%" h="100%"
+                                            fontSize="medium"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                        >
+                                            {correctTeachers.filter((teacher) => !teacher.isCorrect).length}
+                                        </Text>
+                                    </Badge>
+                                }>
+                                Помилки
+                            </Button>
+                        </PopoverTrigger>
+                        <Portal>
+                            <PopoverContent w="fit-content" pr={10}>
+                                <PopoverArrow/>
+                                <PopoverHeader></PopoverHeader>
+                                <PopoverCloseButton/>
+                                <PopoverBody w="fit-content">
+                                    <Stack spacing={2}>
+                                        {correctTeachers
+                                            .filter((teacher) => !teacher.isCorrect)
+                                            .sort((a, b) =>
+                                                getTotalAcademicWorkload(b.teacher.academic_workload)
+                                                - getTotalAcademicWorkload(a.teacher.academic_workload)
+                                            )
+                                            .map(({message, teacher}) => (
+                                                <Box key={teacher.id}>
+                                                    <Text as="span" fontStyle="italic" fontSize="larger">
+                                                        <Text as="strong">{teacher.last_name}</Text>
+                                                        <Text as="strong"> {teacher.first_name.at(0)}.</Text>
+                                                        <Text as="strong">{teacher.middle_name.at(0)}.</Text>
+                                                        <Text as="span"> </Text>
+                                                        <Text as="strong">
+                                                            ({getTotalAcademicWorkload(teacher.academic_workload)
+                                                            .toFixed(2)} годин)
+                                                        </Text>
+                                                        <Text as="span"> - </Text>
+                                                        <Text
+                                                            as="strong"
+                                                            fontStyle="normal"
+                                                            color={
+                                                                message === "Навантаження не призначено"
+                                                                    ? "#BD5B00"
+                                                                    : message === "Навантаження перевищує норму"
+                                                                        ? "#BD0303"
+                                                                        : message === "Навантаження менше норми"
+                                                                            ? "#A59606"
+                                                                            : "black"
+                                                            }
+                                                        >
+                                                            {message}
+                                                        </Text>
+                                                    </Text>
+                                                </Box>
+                                            ))
+                                        }
+                                    </Stack>
+                                </PopoverBody>
+                            </PopoverContent>
+                        </Portal>
+                    </Popover>
                 )}
 
-                {activeStep !== 0 &&
-                    <Button colorScheme="brand" onClick={leavDistributionSession}>Покинути сесію</Button>}
-
-                {activeStep >= 3 &&
-                    <Button colorScheme="brand" onClick={saveDistributionSession}>Зберегти сесію</Button>}
-
-                {activeStep >= 3 && <Button colorScheme="brand" onClick={onOpenTeacherModal}>Викладачі</Button>}
                 <ViewTeacherWorkload
                     isOpen={isOpenTeacherModal}
                     onClose={onCloseTeacherModal}
