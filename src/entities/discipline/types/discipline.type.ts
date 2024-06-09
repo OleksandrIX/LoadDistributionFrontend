@@ -1,34 +1,59 @@
-import {ReportingType} from "types/enums";
 import {IdType, TimestampType} from "types/base.model.type";
+import {EducationDegree} from "types/enums";
+import {ResponseStudyGroup} from "entities/group";
+import {ResponseSpecialization} from "entities/specialization";
+import {RequestSemester, ResponseSemester} from "./semester.type";
+import {ResponseAcademicWorkload} from "./workload.type";
 
-export interface EducationComponent extends IdType, TimestampType {
-    education_component_code: string;
-    education_component_name: string;
-    department: number;
+
+interface DisciplineBase {
+    discipline_name: string;
     credits: number;
     hours: number;
-    semesters: Semester[];
+    data_of_years: string;
 }
 
-export interface Semester extends IdType, TimestampType {
-    semester_number: number;
-    total_amount_hours: number;
-    reporting_type: ReportingType | null;
-    academic_hours: AcademicHours;
-    academic_task: AcademicTask;
+interface EducationComponentBase {
+    education_component_code: string;
+    course_study: number;
+    numbers_of_flows: number;
 }
 
-export interface AcademicHours extends IdType, TimestampType {
-    amount_classroom_hours: number;
-    lecture_hours: number;
-    group_hours: number;
-    practical_hours: number;
-    self_study_hours: number;
+
+export interface ParsedEducationComponent extends EducationComponentBase {
+    department: number;
+    semesters: RequestSemester[];
 }
 
-export interface AcademicTask extends IdType, TimestampType {
-    term_papers: number;
-    modular_control_works: number;
-    calculation_graphic_works: number;
-    essays: number;
+export interface RequestEducationComponent extends EducationComponentBase {
+    education_degree: EducationDegree;
+    discipline_id: string;
+    specialization_id: string;
+}
+
+export interface ResponseEducationComponent extends IdType, TimestampType, EducationComponentBase {
+    education_degree: EducationDegree;
+    discipline_id: string;
+    specialization_id: string;
+}
+
+export interface ResponseEducationComponentWithRelationships extends IdType, TimestampType, EducationComponentBase {
+    education_degree: EducationDegree;
+    specialization: ResponseSpecialization;
+    semesters: ResponseSemester[];
+    study_groups: ResponseStudyGroup[];
+}
+
+
+export interface RequestDiscipline extends DisciplineBase {
+}
+
+export interface ResponseDiscipline extends IdType, TimestampType, DisciplineBase {
+    academic_workload: ResponseAcademicWorkload;
+    education_components: ResponseEducationComponentWithRelationships[];
+}
+
+export interface DisciplineDistributionWorkload extends ResponseDiscipline {
+    completionPercentage: number;
+    isDistributed: boolean;
 }

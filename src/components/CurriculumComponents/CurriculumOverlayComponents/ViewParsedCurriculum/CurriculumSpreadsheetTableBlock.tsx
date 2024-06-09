@@ -4,7 +4,7 @@ import {Box, Stack, Td, Text, Tooltip, Tr} from "@chakra-ui/react";
 
 import {ReportingType} from "types/enums";
 import {CurriculumSpreadsheetBlock} from "entities/curriculum";
-import {EducationComponent, AcademicHours, AcademicTask} from "entities/discipline";
+import {RequestAcademicHours, RequestAcademicTask, ParsedEducationComponent} from "entities/discipline";
 import {TableLayout} from "components/LayoutComponents";
 
 interface CurriculumSpreadsheetTableBlockProps {
@@ -12,7 +12,7 @@ interface CurriculumSpreadsheetTableBlockProps {
 }
 
 const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> = ({curriculumSpreadsheetBlock}) => {
-    const columns: Column<EducationComponent>[] = useMemo(() => {
+    const columns: Column<ParsedEducationComponent>[] = useMemo(() => {
         const educationComponentColumns = [
             {
                 Header: "Код ОК",
@@ -79,7 +79,7 @@ const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> 
             {
                 Header: "Аудиторні години",
                 accessor: "semesters[0].academic_hours",
-                Cell: ({value}: { value: AcademicHours }) => {
+                Cell: ({value}: { value: RequestAcademicHours }) => {
                     if (!value) {
                         return <Td textAlign="center">-</Td>;
                     }
@@ -114,7 +114,7 @@ const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> 
             {
                 Header: "Академічні завдання",
                 accessor: "semesters[0].academic_task",
-                Cell: ({value}: { value: AcademicTask }) => {
+                Cell: ({value}: { value: RequestAcademicTask }) => {
                     if (!value) {
                         return <Td textAlign="center">-</Td>;
                     }
@@ -170,7 +170,7 @@ const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> 
             {
                 Header: "Аудиторні години",
                 accessor: "semesters[1].academic_hours",
-                Cell: ({value}: { value: AcademicHours }) => {
+                Cell: ({value}: { value: RequestAcademicHours }) => {
                     if (!value) {
                         return <Td textAlign="center">-</Td>;
                     }
@@ -205,7 +205,7 @@ const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> 
             {
                 Header: "Академічні завдання",
                 accessor: "semesters[1].academic_task",
-                Cell: ({value}: { value: AcademicTask }) => {
+                Cell: ({value}: { value: RequestAcademicTask }) => {
                     if (!value) {
                         return <Td textAlign="center">-</Td>;
                     }
@@ -279,7 +279,7 @@ const CurriculumSpreadsheetTableBlock: FC<CurriculumSpreadsheetTableBlockProps> 
                 headerFontSize="2xs"
                 data={curriculumSpreadsheetBlock.education_components}
                 columns={columns}
-                RowComponent={({row}: { row: Row<EducationComponent> }) => (
+                RowComponent={({row}: { row: Row<ParsedEducationComponent> }) => (
                     <Tr {...row.getRowProps()}>
                         {row.cells.map((cell) =>
                             <Fragment key={cell.getCellProps().key}>

@@ -1,5 +1,4 @@
 import Loader from "./Loader/Loader";
-import {UploadIcon} from "./Icons/UploadIcon";
 import AcademicRankSelect from "./SelectComponents/AcademicRankSelect";
 import EducationDegreeSelect from "./SelectComponents/EducationDegreeSelect";
 import MilitaryRankSelect from "./SelectComponents/MilitaryRankSelect";
@@ -9,7 +8,6 @@ import ScientificDegreeSelect from "./SelectComponents/ScientificDegreeSelect";
 
 export {
     Loader,
-    UploadIcon,
     AcademicRankSelect,
     EducationDegreeSelect,
     MilitaryRankSelect,
@@ -17,3 +15,17 @@ export {
     ReportingTypeSelect,
     ScientificDegreeSelect
 };
+
+export {
+    UploadIcon,
+    ProfileIcon,
+    DepartmentIcon,
+    TeacherIcon,
+    DisciplineIcon,
+    StudyGroupIcon,
+    CurriculumIcon,
+    FormulaIcon,
+    UserIcon,
+    DocumentIcon,
+    WorkloadIcon
+} from "./Icons";

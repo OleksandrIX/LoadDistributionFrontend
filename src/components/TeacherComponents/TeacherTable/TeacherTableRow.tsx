@@ -4,16 +4,16 @@ import {Tr, useDisclosure, useToast} from "@chakra-ui/react";
 
 import {displayToast} from "utils/toast";
 import {handleAxiosError} from "utils/error.handlers";
-import {Teacher, TeacherService} from "entities/teacher";
+import {ResponseTeacher, TeacherService} from "entities/teacher";
 import ViewTeacher from "../TeacherOverlayComponents/ViewTeacher";
 import EditTeacher from "../TeacherOverlayComponents/EditTeacher";
 import DeleteTeacher from "../TeacherOverlayComponents/DeleteTeacher";
 import TeacherRowContextMenu from "../TeacherContextMenu/TeacherRowContextMenu";
 
 interface TeacherRowDataProps {
-    row: Row<Teacher>
-    teacher: Teacher;
-    onEdit: (teacher: Teacher) => void;
+    row: Row<ResponseTeacher>
+    teacher: ResponseTeacher;
+    onEdit: (teacher: ResponseTeacher) => void;
     onDelete: (teacherId: string) => void;
 }
 
@@ -27,7 +27,7 @@ const TeacherTableRow: FC<TeacherRowDataProps> = ({row, teacher, onEdit, onDelet
     const {isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit} = useDisclosure();
     const {isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete} = useDisclosure();
 
-    const handelEditTeacher = (teacherData: Teacher) => {
+    const handelEditTeacher = (teacherData: ResponseTeacher) => {
         const teacherService = new TeacherService();
         teacherService.editTeacher(teacherData.id, teacherData)
             .then((updatedTeacher) => {

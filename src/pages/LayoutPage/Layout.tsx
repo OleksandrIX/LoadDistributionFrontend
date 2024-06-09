@@ -13,19 +13,19 @@ const Layout: FC = () => {
     return (
         <div className="page-container">
 
-            {
-                isLoading
-                    ? <div className="loader-wrapper">
-                        <Loader/>
-                    </div>
-                    : <>
-                        <Header/>
-                        <main className="page__body">
-                            <Outlet/>
-                        </main>
-                        <Footer/>
-                    </>
-            }
+            {isLoading ? (
+                <div className="loader-wrapper">
+                    <Loader/>
+                </div>
+            ) : (
+                <>
+                    <Header/>
+                    <main className="page__body">
+                        <Outlet/>
+                    </main>
+                    <Footer/>
+                </>
+            )}
         </div>
     );
 };

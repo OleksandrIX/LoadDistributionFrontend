@@ -4,7 +4,7 @@ import {Box, Heading, useToast} from "@chakra-ui/react";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
-import {StudyGroup, StudyGroupService} from "entities/studyGroups";
+import {ResponseStudyGroup, StudyGroupService} from "entities/group";
 import StudyGroupTable from "../StudyGroupTable/StudyGroupTable";
 
 const StudyGroupWrapper: FC = () => {
@@ -12,7 +12,7 @@ const StudyGroupWrapper: FC = () => {
     const studyGroupToast = useToast({id: idStudyGroupToast});
 
     const {refreshToken} = useAuth();
-    const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
+    const [studyGroups, setStudyGroups] = useState<ResponseStudyGroup[]>([]);
     const [isLoadingStudyGroups, setIsLoadingStudyGroups] = useState<boolean>(true);
 
     const fetchStudyGroups = useCallback(async () => {
