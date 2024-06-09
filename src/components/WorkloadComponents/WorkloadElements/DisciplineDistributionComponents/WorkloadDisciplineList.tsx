@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Stack} from "@chakra-ui/react";
+import {Heading, Stack, Text} from "@chakra-ui/react";
 import {DisciplineDistributionWorkload} from "entities/discipline";
 import WorkloadDisciplineListItem from "./WorkloadDisciplineListItem";
 import {TeacherDistributionWorkload} from "entities/teacher";
@@ -19,6 +19,18 @@ const WorkloadDisciplineList: FC<DisciplinesListProps> = ({disciplines, teachers
                     teachers={teachers}
                 />
             )}
+
+            <Heading size="lg">
+                Загальна кількість годин:
+                <Text as="span" fontStyle="italic"
+                > {
+                    disciplines.reduce((acc, discipline) =>
+                            acc + Object.values(discipline.academic_workload).reduce((acc, hours) =>
+                                typeof hours === "number" ? acc + hours : acc, 0
+                            ), 0
+                    )
+                } годин</Text>
+            </Heading>
         </Stack>
     );
 };

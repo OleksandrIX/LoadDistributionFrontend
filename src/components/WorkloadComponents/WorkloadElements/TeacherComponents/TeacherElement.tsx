@@ -1,78 +1,22 @@
 import {FC, useEffect, useState} from "react";
-import {Flex, Heading, Skeleton, Stack, Text, useToast} from "@chakra-ui/react";
+import {Flex, Heading, Skeleton, Stack, Text} from "@chakra-ui/react";
 
 import {TeacherDistributionWorkload} from "entities/teacher";
-import {Position} from "types/enums";
+import {
+    getAcademicWorkloadHours,
+    getMaxAcademicWorkload,
+    getTotalAcademicWorkload,
+    getWorkingHoursPerYear
+} from "utils/academic.workload";
 import {WorkloadDistributionSession} from "types/workload.distribution.session";
-import {defaultAcademicWorkload, RequestAcademicWorkload} from "../../../../entities/discipline";
+import {defaultAcademicWorkload, RequestAcademicWorkload} from "entities/discipline";
 
 interface TeacherElementProps {
     teacher: TeacherDistributionWorkload;
 }
 
 const TeacherElement: FC<TeacherElementProps> = ({teacher}) => {
-    const idTeacherWorkloadToast = "teacher-workload-toast";
-    const teacherWorkloadToast = useToast({id: idTeacherWorkloadToast, position: "bottom-left"});
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    console.log(teacherWorkloadToast);
-
-    const getWorkingHoursPerYear = (): number => {
-        if (teacher.is_civilian) return 1548;
-        if (!teacher.years_of_service) return 1548;
-
-        const yearsOfService = teacher.years_of_service;
-        if (yearsOfService < 10) {
-            return 1820;
-        } else if (yearsOfService >= 10 && yearsOfService < 15) {
-            return 1800;
-        } else if (yearsOfService >= 15 && yearsOfService < 20) {
-            return 1760;
-        } else {
-            return 1720;
-        }
-    };
-
-    const getAcademicWorkloadRate = (): [number, number] => {
-        switch (teacher.position) {
-            case Position.HEAD_OF_THE_DEPARTMENT:
-                return [25, 35];
-            case Position.DEPUTY_HEAD_OF_THE_DEPARTMENT:
-                return [30, 35];
-            case Position.PROFESSOR:
-                return [25, 30];
-            case Position.ASSOCIATE_PROFESSOR:
-                return [30, 35];
-            case Position.SENIOR_LECTURER:
-                return [35, 45];
-            case Position.LECTURER:
-                return [40, 45];
-            case Position.ASSISTANT:
-                return [45, 50];
-            case Position.SERGEANT_INSTRUCTOR:
-                return [50, 55];
-        }
-    };
-
-    const getAcademicWorkloadHours = (): string => {
-        const academicWorkloadRate = getAcademicWorkloadRate();
-        const workingHoursPerYear = getWorkingHoursPerYear();
-        const minHours = ((workingHoursPerYear * academicWorkloadRate[0]) / 100) * teacher.teacher_rate;
-        let maxHours = ((workingHoursPerYear * academicWorkloadRate[1]) / 100) * teacher.teacher_rate;
-
-        if (minHours >= 600) {
-            return "600.00";
-        }
-
-        if (maxHours > 600) {
-            maxHours = 600;
-        }
-
-        return `${minHours.toFixed(2)}-${maxHours.toFixed(2)}`;
-    };
-
-    const getTotalAcademicWorkload = (): string => {
-        return Object.values(teacher.academic_workload).reduce((acc, hours) => acc + hours, 0).toFixed(2);
-    };
 
     useEffect(() => {
         const workloadDistributionSessionString = localStorage.getItem("distribution_session");
@@ -138,17 +82,34 @@ const TeacherElement: FC<TeacherElementProps> = ({teacher}) => {
 
             <Heading size="sm">
                 Службовий час на рік:
-                <Text as="span" fontWeight="normal" fontStyle="italic"> {getWorkingHoursPerYear()}</Text>
+                <Text as="span" fontWeight="normal" fontStyle="italic"> {getWorkingHoursPerYear(teacher)}</Text>
             </Heading>
 
             <Heading size="sm">
                 Можливе навчальне навантаження на рік:
-                <Text as="span" fontWeight="normal" fontStyle="italic"> {getAcademicWorkloadHours()}</Text>
+                <Text as="span" fontWeight="normal" fontStyle="italic"> {getAcademicWorkloadHours(teacher)}</Text>
             </Heading>
 
             <Heading size="sm">
-                Поточне навчальне навантаження:
-                <Text as="span" fontWeight="normal" fontStyle="italic"> {getTotalAcademicWorkload()}</Text>
+                Поточне навчальне навантаження: <span> </span>
+                <Text
+                    as="span"
+                    fontWeight="normal"
+                    fontStyle="italic"
+                    color="white"
+                    borderRadius="lg"
+                    px="5px"
+                    backgroundColor={
+                        getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[1] ? "red" :
+                            getMaxAcademicWorkload(teacher).length === 1 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[0] ? "green" :
+                                getMaxAcademicWorkload(teacher).length === 2 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[1] - 100 ? "green" :
+                                    getMaxAcademicWorkload(teacher).length === 2 && getTotalAcademicWorkload(teacher.academic_workload) >= getMaxAcademicWorkload(teacher)[0] ? "orange" :
+                                        "red"
+                    }
+                >
+                    {getTotalAcademicWorkload(teacher.academic_workload).toFixed(2)}
+                </Text>
+
             </Heading>
         </Stack>
     );

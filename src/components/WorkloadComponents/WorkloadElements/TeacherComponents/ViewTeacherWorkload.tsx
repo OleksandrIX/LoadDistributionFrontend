@@ -24,7 +24,12 @@ const ViewTeacherWorkload: FC<ViewTeacherWorkloadProps> = ({isOpen, onClose, tea
                 <ModalCloseButton/>
                 <ModalBody>
                     <Stack spacing={4} mb={4}>
-                        {teachers.map((teacher) => <TeacherElement key={teacher.id} teacher={teacher}/>)}
+                        {teachers.map((teacher) =>
+                            <TeacherElement
+                                key={teacher.id}
+                                teacher={teacher}
+                            />
+                        )}
                     </Stack>
                 </ModalBody>
             </ModalContent>

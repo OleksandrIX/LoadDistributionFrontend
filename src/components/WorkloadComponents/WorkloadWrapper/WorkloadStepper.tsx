@@ -22,7 +22,7 @@ import {TeacherDistributionWorkload} from "entities/teacher";
 import {defaultAcademicWorkload} from "entities/discipline";
 import {Loader} from "components/UI";
 import {WorkloadStepperElement} from "./workload.stepper";
-import {DisciplineWrapper, StartWrapper, WorkloadDiscplineWrapper, ViewTeacherWorkload} from "../WorkloadElements";
+import {DisciplineWrapper, StartWrapper, ViewTeacherWorkload, WorkloadDiscplineWrapper} from "../WorkloadElements";
 import {WorkloadDistributionSession} from "types/workload.distribution.session";
 
 interface WorkloadStepperProps {
@@ -36,6 +36,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
     const workloadTeacherToast = useToast({id: idWorkloadTeacherToast});
     const [steps, setSteps] = useState<WorkloadStepperElement[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isComplete, setIsComplete] = useState<boolean>(false);
 
     const {isOpen: isOpenTeacherModal, onOpen: onOpenTeacherModal, onClose: onCloseTeacherModal} = useDisclosure();
     const {activeStep, setActiveStep, goToNext, goToPrevious} = useSteps({
@@ -97,6 +98,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
                     element: <WorkloadDiscplineWrapper
                         teachers={teachers}
                         setTeachers={setTeachers}
+                        setIsComplete={setIsComplete}
                     />
                 },
                 {
@@ -161,6 +163,7 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
 
                         <IconButton
                             w="100%"
+                            isDisabled={activeStep === 3 && !isComplete}
                             onClick={() => steps.length - 1 === activeStep
                                 ? alert("FINISHED")
                                 : goToNext()}

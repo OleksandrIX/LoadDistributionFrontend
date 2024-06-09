@@ -37,7 +37,7 @@ const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline, te
                             colorScheme={discipline.completionPercentage > 33 ? discipline.completionPercentage < 100 ? "yellow" : "green" : "red"}
                             fontSize="medium"
                         >
-                            {discipline.completionPercentage} %
+                            {discipline.completionPercentage.toFixed(2)} %
                         </Tag>
                     </Flex>
 
