@@ -22,7 +22,7 @@ const WorkloadDisciplineListItem: FC<DisciplineListItemProps> = ({discipline, te
             borderColor="brand.300"
             borderRadius="lg"
             direction="row" gap={4} cursor="pointer"
-            onClick={() => !discipline.isDistributed && onOpen()}
+            onClick={onOpen}
         >
             <Flex w="100%" alignItems="center" gap={4}>
                 <Text w="65%">

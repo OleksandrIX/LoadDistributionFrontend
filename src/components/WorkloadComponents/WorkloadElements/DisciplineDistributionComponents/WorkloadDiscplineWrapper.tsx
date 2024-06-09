@@ -82,20 +82,28 @@ const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = ({teachers, 
             if (workloadDistributionSessionString) {
                 const workloadDistributionSession: WorkloadDistributionSession = JSON.parse(workloadDistributionSessionString);
 
-                if (workloadDistributionSession.teachers.length === 0) {
-                    workloadDistributionSession.teachers = teachers;
-                } else {
-                    setTeachers(workloadDistributionSession.teachers);
-                }
+                const updatedTeachers = [...workloadDistributionSession.teachers];
+                teachers.forEach((teacher) => {
+                    if (!updatedTeachers.some(t => t.id === teacher.id)) {
+                        updatedTeachers.push(teacher);
+                    }
+                });
+                setTeachers(updatedTeachers);
+                workloadDistributionSession.teachers = updatedTeachers;
 
-                if (workloadDistributionSession.disciplines.length === 0) {
-                    workloadDistributionSession.disciplines = disciplines;
-                } else {
-                    setDisciplines(workloadDistributionSession.disciplines);
-                }
+                const updatedDisciplines = [...workloadDistributionSession.disciplines];
+                disciplines.forEach((discipline) => {
+                    if (!updatedDisciplines.some(d => d.id === discipline.id)) {
+                        updatedDisciplines.push(discipline);
+                    }
+                });
+                setDisciplines(updatedDisciplines);
+                workloadDistributionSession.disciplines = updatedDisciplines;
 
-                if (workloadDistributionSession.distributed_disciplines.length === 0) {
-                    workloadDistributionSession.distributed_disciplines = disciplines.map((discipline) => {
+                const updatedDistributedDisciplines = [...workloadDistributionSession.distributed_disciplines];
+                updatedDisciplines.forEach((discipline) => {
+                    const existingDistributedDiscipline = updatedDistributedDisciplines.find(dd => dd.id === discipline.id);
+                    if (!existingDistributedDiscipline) {
                         const disciplinePerCourse: Record<number, DistributedDisciplinePerCourse> = {};
 
                         for (const education_component of discipline.education_components) {
@@ -119,13 +127,47 @@ const WorkloadDiscplineWrapper: FC<WorkloadDiscplineWrapperProps> = ({teachers, 
                             disciplinePerCourse[education_component.course_study].education_components.push(distributedEducationComponent);
                         }
 
-                        return {
+                        updatedDistributedDisciplines.push({
                             id: discipline.id,
                             discipline_name: discipline.discipline_name,
                             course_study: disciplinePerCourse
-                        };
-                    });
-                }
+                        });
+                    } else {
+                        discipline.education_components.forEach((education_component) => {
+                            if (!existingDistributedDiscipline.course_study[education_component.course_study]) {
+                                existingDistributedDiscipline.course_study[education_component.course_study] = {
+                                    lecture: null,
+                                    education_components: []
+                                };
+                            }
+
+                            const existingCourseStudy = existingDistributedDiscipline.course_study[education_component.course_study];
+                            const existingEducationComponent = existingCourseStudy.education_components.find(ec => ec.id === education_component.id);
+
+                            if (!existingEducationComponent) {
+                                const distributedEducationComponent: DistributedEducationComponent = {
+                                    id: education_component.id,
+                                    education_component_code: education_component.education_component_code,
+                                    teacher_per_study_group: {}
+                                };
+
+                                for (const study_group of education_component.study_groups) {
+                                    distributedEducationComponent.teacher_per_study_group[study_group.group_code] = null;
+                                }
+
+                                existingCourseStudy.education_components.push(distributedEducationComponent);
+                            } else {
+                                education_component.study_groups.forEach((study_group) => {
+                                    if (!existingEducationComponent.teacher_per_study_group[study_group.group_code]) {
+                                        existingEducationComponent.teacher_per_study_group[study_group.group_code] = null;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                workloadDistributionSession.distributed_disciplines = updatedDistributedDisciplines;
 
                 localStorage.setItem("distribution_session", JSON.stringify(workloadDistributionSession));
                 setIsLoadingLocalStorage(false);

@@ -28,7 +28,7 @@ const WorkloadDisciplineList: FC<DisciplinesListProps> = ({disciplines, teachers
                             acc + Object.values(discipline.academic_workload).reduce((acc, hours) =>
                                 typeof hours === "number" ? acc + hours : acc, 0
                             ), 0
-                    )
+                    ).toFixed(2)
                 } годин</Text>
             </Heading>
         </Stack>
