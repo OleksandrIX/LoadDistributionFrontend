@@ -7,13 +7,12 @@ import {
     ButtonGroup,
     Flex,
     IconButton,
-    Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader,
-    PopoverTrigger, Portal,
-    Stack, Text,
+    Portal,
+    Stack,
+    Text,
     useDisclosure,
     useToast
 } from "@chakra-ui/react";
-import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {
     Step,
     StepIcon,
@@ -25,6 +24,16 @@ import {
     StepTitle,
     useSteps
 } from "@chakra-ui/stepper";
+import {
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverHeader,
+    PopoverTrigger
+} from "@chakra-ui/popover";
+import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
@@ -32,13 +41,19 @@ import {displayToast} from "utils/toast";
 import {DepartmentService} from "entities/department";
 import {TeacherWrapper} from "components/TeacherComponents";
 import {TeacherDistributionWorkload} from "entities/teacher";
-import {defaultAcademicWorkload, DistributionSessionService} from "entities/discipline";
+import {
+    AcademicWorkloadService,
+    defaultAcademicWorkload,
+    DistributionSessionService,
+    RequestAcademicWorkloadTeacher
+} from "entities/discipline";
 import {Loader} from "components/UI";
 import {WorkloadStepperElement} from "./workload.stepper";
 import {DisciplineWrapper, StartWrapper, ViewTeacherWorkload, WorkloadDiscplineWrapper} from "../WorkloadElements";
-import {WorkloadDistributionSession, TeacherCorrectWorkload} from "types/workload.distribution.session";
+import {TeacherCorrectWorkload, WorkloadDistributionSession} from "types/workload.distribution.session";
 import {getTotalAcademicWorkload} from "utils/academic.workload";
 import FinishWrapper from "../WorkloadElements/FinishWrapper";
+import {EducationComponentService} from "entities/discipline";
 
 interface WorkloadStepperProps {
 }
@@ -141,13 +156,61 @@ const WorkloadStepper: FC<WorkloadStepperProps> = () => {
     };
 
     const saveTeacherWorkload = async () => {
-        displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
-            status: "success",
-            title: "Дані про навантаження виклдачів збережено"
-        });
-        localStorage.removeItem("distribution_session");
-        setActiveStep(0);
-        setCorrectTeachers([]);
+        const academicWorkloadService = new AcademicWorkloadService();
+        const educationComponentService = new EducationComponentService();
+        console.log(academicWorkloadService);
+        console.log(educationComponentService);
+        try {
+            const workloadDistributionSessionString = localStorage.getItem("distribution_session");
+            if (workloadDistributionSessionString) {
+                const workloadForTeachers: RequestAcademicWorkloadTeacher[] = [];
+                const workloadDistributionSession: WorkloadDistributionSession = JSON.parse(workloadDistributionSessionString);
+
+                for (const distributedDiscipline of workloadDistributionSession.distributed_disciplines) {
+                    const request: RequestAcademicWorkloadTeacher = {
+                        discipline_id: distributedDiscipline.id,
+                        teacher_id: "",
+                        semester_number: 0,
+                        academic_workload: {...defaultAcademicWorkload}
+                    };
+
+                    for (const courseStudyKey in distributedDiscipline.course_study) {
+                        const courseStudy = distributedDiscipline.course_study[courseStudyKey];
+                        console.log(courseStudy);
+                    }
+
+                    if (request.teacher_id !== "") {
+                        workloadForTeachers.push();
+                    }
+                }
+
+                displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+                    status: "success",
+                    title: "Дані про навантаження виклдачів збережено"
+                });
+                localStorage.removeItem("distribution_session");
+                setActiveStep(0);
+                setCorrectTeachers([]);
+            } else {
+                displayToast(workloadDistributionToast, idWorkloadDistributionToast, {
+                    status: "error",
+                    title: "Дані про сесію відсутні"
+                });
+            }
+        } catch (err) {
+            if (err && axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 401) {
+                    await refreshToken();
+                } else {
+                    handleAxiosError(err, workloadDistributionToast, idWorkloadDistributionToast, {
+                        401: "Ви не авторизовані",
+                        403: "Відмовлено у доступі"
+                    });
+                }
+            } else {
+                console.error(err);
+            }
+        }
     };
 
     useEffect(() => {

@@ -1,9 +1,10 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
 import {RequestAcademicWorkload} from "entities/discipline";
+import {RequestAcademicWorkloadTeacher} from "../types/workload.type";
 
 const host = process.env.REACT_APP_SERVER_ADDRESS;
 
-class AcademicWorkloadService {
+class CalculationAcademicWorkloadService {
     private axiosInstance: AxiosInstance;
 
     constructor() {
@@ -49,4 +50,34 @@ class AcademicWorkloadService {
     }
 }
 
-export default AcademicWorkloadService;
+class AcademicWorkloadService {
+    private axiosInstance: AxiosInstance;
+
+    constructor() {
+        const defaultHeaders = axios.defaults.headers;
+        this.axiosInstance = axios.create({
+            baseURL: `${host}/api/v1/academic-workloads`,
+            withCredentials: true,
+            headers: {
+                ...defaultHeaders,
+                "Content-Type": "application/json"
+            }
+        });
+    }
+
+    setAuthorizationToken(token: string) {
+        this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
+    async saveWorkloadForTeacher(
+        request: RequestAcademicWorkloadTeacher
+    ): Promise<AxiosResponse> {
+        const response: AxiosResponse = await this.axiosInstance.post(
+            `/${request.discipline_id}/teachers/${request.teacher_id}?semester_number=${request.semester_number}`,
+            request.academic_workload
+        );
+        return response.data;
+    }
+}
+
+export {CalculationAcademicWorkloadService, AcademicWorkloadService};

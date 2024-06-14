@@ -1,11 +1,12 @@
 import {FC, useEffect, useState} from "react";
-import {Card, CardBody, Heading, ListItem, SimpleGrid, Stack, Text, UnorderedList} from "@chakra-ui/react";
+import {Heading, ListItem, SimpleGrid, Stack, Text, UnorderedList} from "@chakra-ui/react";
+import {Card, CardBody, CardHeader} from "@chakra-ui/card";
 
 import {DistributedDiscipline, WorkloadDistributionSession} from "types/workload.distribution.session";
 import {DisciplineDistributionWorkload} from "entities/discipline";
 import {TeacherDistributionWorkload} from "entities/teacher";
 import {Loader} from "components/UI";
-import {CardHeader} from "@chakra-ui/card";
+import {getDisciplinesForTeacher} from "utils/distributed.workload";
 
 interface FinishWrapperProps {
 
@@ -17,36 +18,6 @@ const FinishWrapper: FC<FinishWrapperProps> = () => {
     const [teachers, setTeachers] = useState<TeacherDistributionWorkload[]>([]);
     const [studyYear, setStudyYear] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const getDisciplinesForTeacher = (teacher: TeacherDistributionWorkload) => {
-        const responseDiscipline: DisciplineDistributionWorkload[] = [];
-        for (const distributedDisciplineElement of distributedDiscipline) {
-            for (const courseStudyKey in distributedDisciplineElement.course_study) {
-                const courseStudy = distributedDisciplineElement.course_study[courseStudyKey];
-                if (courseStudy.lecture && courseStudy.lecture.id === teacher.id) {
-                    const existingDiscipline = responseDiscipline.find((rd) => rd.id === distributedDisciplineElement.id);
-                    if (!existingDiscipline) {
-                        const discipline = disciplines.find((d) => d.id === distributedDisciplineElement.id);
-                        discipline && responseDiscipline.push(discipline);
-                    }
-                }
-
-                for (const educationComponent of courseStudy.education_components) {
-                    for (const teacherPerStudyGroupKey in educationComponent.teacher_per_study_group) {
-                        const studyGroupTeacher = educationComponent.teacher_per_study_group[teacherPerStudyGroupKey];
-                        if (studyGroupTeacher && studyGroupTeacher.id === teacher.id) {
-                            const existingDiscipline = responseDiscipline.find((rd) => rd.id === distributedDisciplineElement.id);
-                            if (!existingDiscipline) {
-                                const discipline = disciplines.find((d) => d.id === distributedDisciplineElement.id);
-                                discipline && responseDiscipline.push(discipline);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return responseDiscipline;
-    };
 
     useEffect(() => {
         const workloadDistributionSessionString = localStorage.getItem("distribution_session");
@@ -75,7 +46,6 @@ const FinishWrapper: FC<FinishWrapperProps> = () => {
     console.log(teachers);
     console.log(studyYear);
 
-
     return (
         <Stack mt={5}>
             <SimpleGrid columns={{base: 1, custom1: 2, custom2: 2}} spacing={4} my={5}>
@@ -98,7 +68,7 @@ const FinishWrapper: FC<FinishWrapperProps> = () => {
                             </Heading>
 
                             <UnorderedList>
-                                {getDisciplinesForTeacher(teacher).map((discipline) =>
+                                {getDisciplinesForTeacher(distributedDiscipline, disciplines, teacher).map((discipline) =>
                                     <ListItem key={discipline.id}>
                                         {discipline.discipline_name}
                                     </ListItem>
