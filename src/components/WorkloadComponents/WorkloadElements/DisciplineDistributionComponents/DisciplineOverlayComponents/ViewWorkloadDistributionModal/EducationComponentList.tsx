@@ -23,7 +23,7 @@ import {ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
 import {
-    AcademicWorkloadService,
+    CalculationAcademicWorkloadService,
     DisciplineDistributionWorkload,
     RequestAcademicWorkload,
     defaultAcademicWorkload
@@ -63,7 +63,7 @@ const EducationComponentList: FC<EducationComponentElementProps> = ({discipline,
     }, [educationComponents]);
 
     const fetchAcademicWorkloadForEducationComponents = useCallback(async () => {
-        const academicWorkloadService = new AcademicWorkloadService();
+        const academicWorkloadService = new CalculationAcademicWorkloadService();
         try {
             const educationComponentIds = educationComponents.map((educationComponent) => educationComponent.id);
             const responseLectureWorkload = await academicWorkloadService
@@ -181,17 +181,23 @@ const EducationComponentList: FC<EducationComponentElementProps> = ({discipline,
                                 <Heading size="md">
                                     Лекційні потоки:
                                     <Text as="span" fontWeight="normal" fontStyle="italic"
-                                    > {Math.ceil(educationComponents.reduce((acc, educationComponent) =>
-                                        acc + educationComponent.study_groups.reduce((acc, group) =>
-                                            acc + group.number_listeners, 0), 0) / 100)}
+                                    > {Math.ceil(
+                                        educationComponents
+                                            .filter((ec) => ec.course_study === courseStudyArray[courseStudyIndex])
+                                            .reduce((acc, educationComponent) =>
+                                                acc + educationComponent.study_groups.reduce((acc, group) =>
+                                                    acc + group.number_listeners, 0), 0) / 100
+                                    )}
                                     </Text>,
                                 </Heading>
                                 <Heading size="md">
                                     Загальна кількість здобувачів освіти:
                                     <Text as="span" fontWeight="normal" fontStyle="italic"
-                                    > {educationComponents.reduce((acc, educationComponent) =>
-                                        acc + educationComponent.study_groups.reduce((acc, group) =>
-                                            acc + group.number_listeners, 0), 0)}
+                                    > {educationComponents
+                                        .filter((ec) => ec.course_study === courseStudyArray[courseStudyIndex])
+                                        .reduce((acc, educationComponent) =>
+                                            acc + educationComponent.study_groups.reduce((acc, group) =>
+                                                acc + group.number_listeners, 0), 0)}
                                     </Text>
                                 </Heading>
                             </Flex>

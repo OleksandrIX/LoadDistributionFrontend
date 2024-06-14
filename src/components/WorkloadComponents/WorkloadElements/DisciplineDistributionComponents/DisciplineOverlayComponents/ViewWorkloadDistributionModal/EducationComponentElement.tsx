@@ -21,7 +21,7 @@ import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
 import {displayToast} from "utils/toast";
 import {
-    AcademicWorkloadService,
+    CalculationAcademicWorkloadService,
     RequestAcademicWorkload,
     ResponseEducationComponentWithRelationships
 } from "entities/discipline";
@@ -54,7 +54,7 @@ const EducationComponentElement: FC<EducationComponentElementProps> = ({educatio
     );
 
     const fetchTotalAcademicWorkload = useCallback(async () => {
-        const academicWorkloadService = new AcademicWorkloadService();
+        const academicWorkloadService = new CalculationAcademicWorkloadService();
         try {
             const responseTotalAcademicWorkload = await academicWorkloadService
                 .calculationAcademicWorkloadForEducationComponent(
@@ -80,7 +80,7 @@ const EducationComponentElement: FC<EducationComponentElementProps> = ({educatio
     }, [refreshToken, workloadToast, educationComponent.id]);
 
     const handleSelectTeacherForGroup = async (group: string, selectedTeacher: TeacherDistributionWorkload) => {
-        const academicWorkloadService = new AcademicWorkloadService();
+        const academicWorkloadService = new CalculationAcademicWorkloadService();
         const studyGroup = educationComponent.study_groups.find(studyGroup => studyGroup.group_code === group);
         try {
             if (studyGroup) {

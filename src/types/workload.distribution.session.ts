@@ -34,3 +34,12 @@ export interface TeacherCorrectWorkload {
     teacher: TeacherDistributionWorkload;
 }
 
+export interface AcademicWorkloadForTeacher {
+    teacher: TeacherDistributionWorkload;
+    disiciplines: [
+        {
+            discipline: DisciplineDistributionWorkload;
+            semesters: []
+        }
+    ]
+}

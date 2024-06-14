@@ -1,4 +1,5 @@
 import {IdType, TimestampType} from "types/base.model.type";
+import {ResponseTeacher} from "../../teacher";
 
 interface AcademicWorkloadBase {
     lecture_hours: number;
@@ -42,4 +43,20 @@ export interface RequestAcademicWorkload extends AcademicWorkloadBase {
 
 export interface ResponseAcademicWorkload extends IdType, TimestampType, AcademicWorkloadBase {
 
+}
+
+export interface RequestAcademicWorkloadTeacher {
+    discipline_id: string;
+    teacher_id: string;
+    semester_number: number;
+    academic_workload: RequestAcademicWorkload
+}
+
+export interface ResponseAcademicWorkloadTeacher extends IdType, TimestampType {
+    semester_number: number;
+    academic_workload_id: string;
+    discipline_id: string;
+    teacher_id: string;
+    teacher: ResponseTeacher;
+    academic_workload: ResponseAcademicWorkload;
 }

@@ -7,13 +7,12 @@ import {
     ButtonGroup,
     Flex,
     IconButton,
-    Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader,
-    PopoverTrigger, Portal,
-    Stack, Text,
+    Portal,
+    Stack,
+    Text,
     useDisclosure,
     useToast
 } from "@chakra-ui/react";
-import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {
     Step,
     StepIcon,
@@ -25,6 +24,16 @@ import {
     StepTitle,
     useSteps
 } from "@chakra-ui/stepper";
+import {
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverHeader,
+    PopoverTrigger
+} from "@chakra-ui/popover";
+import {CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
 
 import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
