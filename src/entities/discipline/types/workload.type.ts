@@ -1,4 +1,5 @@
 import {IdType, TimestampType} from "types/base.model.type";
+import {ResponseTeacher} from "../../teacher";
 
 interface AcademicWorkloadBase {
     lecture_hours: number;
@@ -16,14 +17,46 @@ interface AcademicWorkloadBase {
     qualification_works_defense_conducting_hours: number;
     complex_exams_conducting_hours: number;
     other_types_conducting_hours: number;
-    education_component_id: string;
-    teacher_id: string;
 }
 
-export interface RequestAcademicWorkload extends AcademicWorkloadBase {
+export const defaultAcademicWorkload: AcademicWorkloadBase = {
+    lecture_hours: 0,
+    group_hours: 0,
+    practical_hours: 0,
+    laboratory_reports_checking_hours: 0,
+    special_exercises_conducting_hours: 0,
+    consultation_hours: 0,
+    term_papers_conducting_hours: 0,
+    control_works_checking_hours: 0,
+    graded_tests_conducting_hours: 0,
+    exams_conducting_hours: 0,
+    military_internship_conducting_hours: 0,
+    supervision_qualification_works_hours: 0,
+    qualification_works_defense_conducting_hours: 0,
+    complex_exams_conducting_hours: 0,
+    other_types_conducting_hours: 0
+};
 
+export interface RequestAcademicWorkload extends AcademicWorkloadBase {
+    [key: string]: number;
 }
 
 export interface ResponseAcademicWorkload extends IdType, TimestampType, AcademicWorkloadBase {
 
+}
+
+export interface RequestAcademicWorkloadTeacher {
+    discipline_id: string;
+    teacher_id: string;
+    semester_number: number;
+    academic_workload: RequestAcademicWorkload
+}
+
+export interface ResponseAcademicWorkloadTeacher extends IdType, TimestampType {
+    semester_number: number;
+    academic_workload_id: string;
+    discipline_id: string;
+    teacher_id: string;
+    teacher: ResponseTeacher;
+    academic_workload: ResponseAcademicWorkload;
 }

@@ -1,23 +1,23 @@
 import {FC, FormEvent, useRef, useState} from "react";
 import {Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/modal";
 
-import {Teacher} from "entities/teacher";
+import {ResponseTeacher} from "entities/teacher";
 import TeacherForm from "../TeacherForm/TeacherForm";
 
 interface EditTeacherProps {
-    teacher: Teacher;
+    teacher: ResponseTeacher;
     isOpen: boolean;
     onClose: () => void;
-    onEdit: (updatedTeacher: Teacher) => void;
+    onEdit: (updatedTeacher: ResponseTeacher) => void;
 }
 
 const EditTeacher: FC<EditTeacherProps> = ({teacher, isOpen, onClose, onEdit}) => {
     const initialRef = useRef<HTMLInputElement>(null);
-    const [updatedTeacher, setUpdatedTeacher] = useState<Teacher>({...teacher});
+    const [updatedTeacher, setUpdatedTeacher] = useState<ResponseTeacher>({...teacher});
 
     const handleSubmitUpdatedTeacher = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const teacherData: Teacher = {
+        const teacherData: ResponseTeacher = {
             ...updatedTeacher,
             "military_rank": updatedTeacher.military_rank ? updatedTeacher.military_rank : null,
             "academic_rank": updatedTeacher.academic_rank ? updatedTeacher.academic_rank : null,

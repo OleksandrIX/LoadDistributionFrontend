@@ -6,12 +6,19 @@ import {RequestSemester, ResponseSemester} from "./semester.type";
 import {ResponseAcademicWorkload} from "./workload.type";
 
 
-interface EducationComponentBase {
-    education_component_code: string;
-    education_component_name: string;
+interface DisciplineBase {
+    discipline_name: string;
     credits: number;
     hours: number;
+    data_of_years: string;
 }
+
+interface EducationComponentBase {
+    education_component_code: string;
+    course_study: number;
+    numbers_of_flows: number;
+}
+
 
 export interface ParsedEducationComponent extends EducationComponentBase {
     department: number;
@@ -20,19 +27,33 @@ export interface ParsedEducationComponent extends EducationComponentBase {
 
 export interface RequestEducationComponent extends EducationComponentBase {
     education_degree: EducationDegree;
-    department_id: string;
+    discipline_id: string;
     specialization_id: string;
 }
 
 export interface ResponseEducationComponent extends IdType, TimestampType, EducationComponentBase {
     education_degree: EducationDegree;
-    department_id: string;
+    discipline_id: string;
     specialization_id: string;
 }
 
 export interface ResponseEducationComponentWithRelationships extends IdType, TimestampType, EducationComponentBase {
+    education_degree: EducationDegree;
     specialization: ResponseSpecialization;
     semesters: ResponseSemester[];
-    academic_workloads: ResponseAcademicWorkload[];
     study_groups: ResponseStudyGroup[];
+}
+
+
+export interface RequestDiscipline extends DisciplineBase {
+}
+
+export interface ResponseDiscipline extends IdType, TimestampType, DisciplineBase {
+    academic_workload: ResponseAcademicWorkload;
+    education_components: ResponseEducationComponentWithRelationships[];
+}
+
+export interface DisciplineDistributionWorkload extends ResponseDiscipline {
+    completionPercentage: number;
+    isDistributed: boolean;
 }

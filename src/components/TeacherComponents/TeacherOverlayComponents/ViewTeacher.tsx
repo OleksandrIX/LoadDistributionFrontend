@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/modal";
 
 import TeacherCard from "../TeacherCard/TeacherCard";
-import {Teacher} from "entities/teacher";
+import {ResponseTeacher} from "entities/teacher";
 
 interface ViewTeacherProps {
     isOpen: boolean;
     onClose: () => void;
-    teacher: Teacher;
+    teacher: ResponseTeacher;
 }
 
 const ViewTeacher: FC<ViewTeacherProps> = ({isOpen, onClose, teacher}) => {

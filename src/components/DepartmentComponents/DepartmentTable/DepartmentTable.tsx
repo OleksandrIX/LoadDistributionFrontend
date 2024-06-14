@@ -4,7 +4,7 @@ import {Td, Tooltip} from "@chakra-ui/react";
 
 import {DepartmentWithTeachers} from "entities/department";
 import {TableLayout} from "components/LayoutComponents";
-import {Teacher} from "entities/teacher";
+import {ResponseTeacher} from "entities/teacher";
 import DepartmentTableRow from "./DepartmentTableRow";
 
 interface DepartmentTableProps {
@@ -34,7 +34,7 @@ const DepartmentTable: FC<DepartmentTableProps> = ({departments}) => {
         {
             Header: "Всього НПП",
             accessor: "teachers",
-            Cell: ({value}: { value: Teacher[] }) => <Td textAlign="center">{value.length}</Td>,
+            Cell: ({value}: { value: ResponseTeacher[] }) => <Td textAlign="center">{value.length}</Td>,
             width: "15%"
         },
         {

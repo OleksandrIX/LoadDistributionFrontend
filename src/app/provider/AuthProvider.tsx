@@ -54,6 +54,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
         setDepartment(null);
         setIsAdmin(false);
         localStorage.removeItem("access_token");
+        localStorage.clear();
     };
 
 

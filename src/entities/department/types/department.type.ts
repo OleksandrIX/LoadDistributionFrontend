@@ -1,5 +1,5 @@
-import {Teacher} from "entities/teacher";
-import {ResponseEducationComponentWithRelationships} from "entities/discipline";
+import {ResponseTeacher} from "entities/teacher";
+import {ResponseDiscipline} from "entities/discipline";
 import {IdType, TimestampType} from "types/base.model.type";
 
 interface DepartmentBase {
@@ -12,11 +12,11 @@ export interface Department extends DepartmentBase, IdType, TimestampType {
 }
 
 export interface DepartmentWithTeachers extends Department {
-    teachers: Teacher[];
+    teachers: ResponseTeacher[];
 }
 
 export interface DepartmentWithRelationships extends Department {
-    education_components: ResponseEducationComponentWithRelationships[];
+    disciplines: ResponseDiscipline[];
 }
 
 export interface RequestDepartment extends DepartmentBase {

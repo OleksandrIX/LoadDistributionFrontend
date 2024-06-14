@@ -8,6 +8,14 @@ import "./styles/app.scss";
 
 
 const theme = extendTheme({
+    breakpoints: {
+        sm: "30em", // 480px
+        md: "48em", // 768px
+        lg: "62em", // 992px
+        xl: "80em", // 1280px
+        custom1: "62.5em", // 1000px
+        custom2: "93.75em" // 1500px
+    },
     colors: {
         dark: {
             50: "#000000",
@@ -39,7 +47,7 @@ const theme = extendTheme({
 const App: FC = () => {
     return (
         <ChakraProvider theme={theme}
-                        toastOptions={{defaultOptions: {position: "bottom-right", duration: 10000, isClosable: true}}}>
+                        toastOptions={{defaultOptions: {position: "bottom-right", duration: 5000, isClosable: true}}}>
             <AuthProvider>
                 <RouterProvider router={router}/>
             </AuthProvider>

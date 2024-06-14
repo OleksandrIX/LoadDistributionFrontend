@@ -1,5 +1,6 @@
 import {Position, MilitaryRank, AcademicRank, ScientificDegree} from "types/enums";
 import {IdType, TimestampType} from "types/base.model.type";
+import {RequestAcademicWorkload} from "../../discipline";
 
 
 export interface BaseTeacher {
@@ -16,10 +17,14 @@ export interface BaseTeacher {
     department_id: string;
 }
 
-export interface Teacher extends BaseTeacher, IdType, TimestampType {
+export interface ResponseTeacher extends BaseTeacher, IdType, TimestampType {
 
 }
 
 export interface RequestTeacher extends BaseTeacher {
 
+}
+
+export interface TeacherDistributionWorkload extends ResponseTeacher {
+    academic_workload: RequestAcademicWorkload;
 }

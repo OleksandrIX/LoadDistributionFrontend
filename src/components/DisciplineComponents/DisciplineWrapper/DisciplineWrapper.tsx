@@ -6,9 +6,10 @@ import {useAuth} from "app/provider";
 import {handleAxiosError} from "utils/error.handlers";
 import {Loader} from "components/UI";
 import {DepartmentService, DepartmentWithRelationships} from "entities/department";
-import {ResponseEducationComponentWithRelationships} from "entities/discipline";
+import {ResponseDiscipline} from "entities/discipline";
 import DisciplineAdminWrapper from "./DisciplineAdminWrapper/DisciplineAdminWrapper";
 import DisciplineUserWrapper from "./DisciplineUserWrapper/DisciplineUserWrapper";
+import {DisciplineService} from "../../../entities/discipline";
 
 const DisciplineWrapper: FC = () => {
     const idEducationComponentToast = "education-component-toast";
@@ -16,22 +17,22 @@ const DisciplineWrapper: FC = () => {
 
     const {isAdmin, department, refreshToken} = useAuth();
     const [departmentsWithDisciplines, setDepartmentsWithDisciplines] = useState<DepartmentWithRelationships[]>([]);
-    const [disciplines, setDisciplines] = useState<ResponseEducationComponentWithRelationships[]>([]);
+    const [disciplines, setDisciplines] = useState<ResponseDiscipline[]>([]);
     const [isLoadingEducationComponent, setIsLoadingEducationComponent] = useState<boolean>(true);
 
     const fetchDisciplines = useCallback(async () => {
         try {
             const departmentService = new DepartmentService();
+            const disciplineService = new DisciplineService();
             if (isAdmin) {
                 const departmentsWithEducationComponents = await departmentService
                     .getAllDepartmentsWithEducationComponents();
                 setDepartmentsWithDisciplines(departmentsWithEducationComponents);
             } else {
                 if (department) {
-                    const departmentWithEducationComponents = await departmentService
-                        .getDepartmentByIdWithEducationComponents(department.id);
+                    const disciplines = await disciplineService.getAllDisciplines();
                     setDisciplines(prevState =>
-                        [...prevState, ...departmentWithEducationComponents.education_components]
+                        [...prevState, ...disciplines]
                     );
                 }
             }
@@ -88,7 +89,6 @@ const DisciplineWrapper: FC = () => {
                 >Вам ще не призначили кафедру</Heading>
             </Box>
         );
-
     }
 
     return <DisciplineUserWrapper department={department} disciplines={disciplines}/>;

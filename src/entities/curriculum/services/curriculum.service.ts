@@ -61,8 +61,11 @@ class CurriculumService {
         return response.data;
     }
 
-    async saveCurriculumData(curriculumData: SaveCurriculumRequest): Promise<SaveCurriculumResponse> {
-        const response: AxiosResponse<SaveCurriculumResponse> = await this.axiosInstance.post("/save", curriculumData);
+    async saveCurriculumData(curriculumData: SaveCurriculumRequest, dataOfYears: string): Promise<SaveCurriculumResponse> {
+        const response: AxiosResponse<SaveCurriculumResponse> = await this.axiosInstance.post(
+            `/save?data_of_years=${dataOfYears}`,
+            curriculumData
+        );
         return response.data;
     }
 }
